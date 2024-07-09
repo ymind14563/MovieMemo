@@ -1,6 +1,58 @@
-// - 리뷰
-//     - postReview - 리뷰 생성 (닉네임, 별점, 내용)
-//     - getReview - 리뷰 하나
-//     - getReviewList - 리뷰 리스트
-//     - patchReview - 리뷰 수정
-//     - deleteReview - 리뷰 삭제
+const reviewModel = (sequelize, DataTypes) => {
+    const Review = sequelize.define('Review', {
+        
+        // 리뷰 식별 번호
+        review_id: {
+            type: DataTypes.BIGINT,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        },
+
+        // 사용자 식별 번호
+        member_id: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+        },
+
+        // 영화 식별 번호
+        movie_id: {
+            type: DataTypes.BIGINT,
+            allowNull: false
+        },
+
+        // 리뷰 내용
+        review: {
+            type: DataTypes.STRING(2000),
+            allowNull: false
+        },
+
+        // 리뷰에 작성한 영화 평점
+        review_movie_rating: {
+            type: DataTypes.INTEGER,
+            defaultValue: 5
+        },
+
+        // 리뷰 좋아요 수
+        like_count: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+
+        // 리뷰 신고 수
+        report_count: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+    }, 
+        {
+            tableName: 'Review',
+            freezeTableName: true,
+            timestamps: true, // 리뷰작성일자(createdAt), 리뷰수정일자(updatedAt)
+        }
+    );
+  
+    return Review;
+};
+
+module.exports = reviewModel;
