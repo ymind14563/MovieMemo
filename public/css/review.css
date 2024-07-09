@@ -1,0 +1,61 @@
+h1{
+    color: green;
+}
+
+#movie_info_container{
+    width: 80%;
+    max-width: 1600px;
+    margin: 0 auto;
+    background: yellow;
+}
+
+#movie_poster{
+    width: 100%;
+    max-width: inherit;
+    height: 500px;
+    background: lime;
+}
+
+#movie_info_sub_container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background: violet;
+}
+
+.movie_info_01{
+    width: 65%;
+    max-width: 1050px;
+    background: beige;
+}
+
+.movie_description{
+    width: 100%;
+    margin-bottom: 20px;
+    background: lightcyan;
+}
+.movie_cast{
+    width: 100%;
+    margin-bottom: 20px;
+    background: lightcyan;
+}
+
+.movie_review{
+    width: 100%;
+    background: lightcyan;
+}
+
+
+
+
+
+.movie_info_02{
+    width: 32%;
+    max-width: 520px;
+    background: lightblue;
+}
+
+.moive_release{
+    width: 100%;
+    background: lightgreen;
+}
