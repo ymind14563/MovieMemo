@@ -2,7 +2,7 @@ const { where } = require('sequelize');
 const { reviewModel, memberModel } = require('../model');
 
 // 리뷰 생성
-const postReview = async (req, res) => {
+exports.postReview = async (req, res) => {
     const { memberId, movieId, nick, rating, content } = req.body;
 
     try {
@@ -20,7 +20,7 @@ const postReview = async (req, res) => {
 }
 
 // 특정 리뷰 한개 조회
-const getReview = async (req, res) => {
+exports.getReview = async (req, res) => {
     const { reviewId } = req.params;
 
     try {
@@ -45,7 +45,7 @@ const getReview = async (req, res) => {
 }
 
 // 회원이 작성한 리뷰 목록
-const getMemberReviewList = async (req, res) => {
+exports.getMemberReviewList = async (req, res) => {
     const { memberId } = req.body;
 
     try {
@@ -74,7 +74,7 @@ const getMemberReviewList = async (req, res) => {
 }
 
 // 영화에 작성된 리뷰 목록
-const getMovieReviewList = async (req, res) => {
+exports.getMovieReviewList = async (req, res) => {
     const { movieId } = req.params;
 
     try {
@@ -94,7 +94,7 @@ const getMovieReviewList = async (req, res) => {
 
 
 // 특정 리뷰 내용 수정
-const patchReview = async (req, res) => {
+exports.patchReview = async (req, res) => {
     const { reviewId } = req.params;
     const { rating, content } = req.body;
 
@@ -118,7 +118,7 @@ const patchReview = async (req, res) => {
 }
 
 // 특정 리뷰 삭제
-const deleteReview = async (req, res) => {
+exports.deleteReview = async (req, res) => {
     const { reviewId } = req.params;
     
     try {
