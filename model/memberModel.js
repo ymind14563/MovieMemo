@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       },
 
       //관리자 활성화
-      is_admin: {
+      isAdmin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
