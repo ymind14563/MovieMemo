@@ -4,6 +4,9 @@ const controller = require(`../controller/CReview`);
 
 // 기본 요청 경로 localhost:PORT/review
 
+// 리뷰 생성
+router.get(`/`, controller.postReview);
+
 // 특정 리뷰 한개 조회
 router.get(`/:review_id`, controller.getReview);
 
