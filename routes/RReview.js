@@ -8,18 +8,18 @@ const controller = require(`../controller/CReview`);
 router.get(`/`, controller.postReview);
 
 // 특정 리뷰 한개 조회
-router.get(`/:review_id`, controller.getReview);
+router.get(`/:reviewId`, controller.getReview);
 
 // 회원이 작성한 리뷰 목록
-router.get(`/member/:member_id`, controller.getMemberReviewList);
+router.get(`/member/:memberId`, controller.getMemberReviewList);
 
 // 영화에 작성된 리뷰 목록
-router.get(`/movie/:movie_id`, controller.getMovieReviewList);
+router.get(`/movie/:movieId`, controller.getMovieReviewList);
 
 // 특정 리뷰 내용 수정
-router.patch(`/:review_id`, controller.updateReview);
+router.patch(`/:reviewId`, controller.updateReview);
 
 // 특정 리뷰 내용 삭제
-router.delete(`/:review_id`, controller.deleteReview);
+router.delete(`/:reviewId`, controller.deleteReview);
 
 module.exports = router;
