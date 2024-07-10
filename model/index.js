@@ -20,6 +20,7 @@ const Movie = require("./movieModel")(sequelize, Sequelize);
 const Genre = require("./genreModel")(sequelize, Sequelize);
 const MovieGenre = require("./movieGenreModel")(sequelize, Sequelize);
 const Member = require("./memberModel")(sequelize, Sequelize);
+const Review = require("./reviewModel")(sequelize, Sequelize);
 
 // db 객체에 모델 추가
 db.sequelize = sequelize;
@@ -29,6 +30,7 @@ db.Movie = Movie;
 db.Genre = Genre;
 db.MovieGenre = MovieGenre;
 db.Member = member;
+db.Review = Review;
 
 // 모델 동기화
 const syncModels = async () => {
@@ -36,6 +38,7 @@ const syncModels = async () => {
   await Genre.sync();
   await MovieGenre.sync();
   await Member.sync();
+  await Review.sync();
 };
 
 db.syncModels = syncModels;
