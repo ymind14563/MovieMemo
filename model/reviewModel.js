@@ -2,7 +2,7 @@ const reviewModel = (sequelize, DataTypes) => {
     const Review = sequelize.define('Review', {
         
         // 리뷰 식별 번호
-        review_id: {
+        reviewId: {
             type: DataTypes.BIGINT,
             primaryKey: true,
             autoIncrement: true,
@@ -10,13 +10,13 @@ const reviewModel = (sequelize, DataTypes) => {
         },
 
         // 사용자 식별 번호
-        member_id: {
+        memberId: {
             type: DataTypes.BIGINT,
             allowNull: false
         },
 
         // 영화 식별 번호
-        movie_id: {
+        movieId: {
             type: DataTypes.BIGINT,
             allowNull: false
         },
@@ -28,19 +28,19 @@ const reviewModel = (sequelize, DataTypes) => {
         },
 
         // 리뷰에 작성한 영화 평점
-        review_movie_rating: {
+        reviewMovieRating: {
             type: DataTypes.INTEGER,
             defaultValue: 5
         },
 
         // 리뷰 좋아요 수
-        like_count: {
+        likeCount: {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
 
         // 리뷰 신고 수
-        report_count: {
+        reportCount: {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
