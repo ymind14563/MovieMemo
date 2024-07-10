@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     // 작성, 최종 수정시간 기록
-    timestamps: false
+    timestamps: true
   });
   // 모델간 관계 설정하기 
   Movie.associate = (models) => {
