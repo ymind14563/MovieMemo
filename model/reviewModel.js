@@ -22,7 +22,7 @@ const reviewModel = (sequelize, DataTypes) => {
         },
 
         // 리뷰 내용
-        review: {
+        content: {
             type: DataTypes.STRING(2000),
             allowNull: false
         },
