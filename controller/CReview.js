@@ -11,6 +11,16 @@ exports.postReview = async (req, res) => {
             memberId, movieId, content, movie_rating : rating
         });
 
+        // 해당 영화의 모든 리뷰 조회
+        const reviews = await Review.findAll({ where: { movieId } });
+
+        // 새로운 평균 평점 계산
+        const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+        // 영화의 평균 평점 업데이트
+        await movieModel.update({ avgRating }, { where: { id: movieId } });
+
+        
         return res.status(201).json({ message: `리뷰가 작성되었습니다.`, review});
         // 추후 생성 시 필요한 nick은 session 참조
         // return res.status(201).render(`review`, { data: review, session: session });
