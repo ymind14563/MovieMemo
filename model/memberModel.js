@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
 
-      // 회원 비밀번호
+      //회원 비밀번호
       password: {
         type: DataTypes.STRING(70),
         allowNull: false,
@@ -44,8 +44,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
-      // 관리자 활성화
-      isAdmin: {
+
+      //관리자 활성화
+      is_admin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
