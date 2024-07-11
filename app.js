@@ -1,23 +1,56 @@
 const express = require("express");
+const path = require(`path`);
+const dotenv = require(`dotenv`);
 const app = express();
-const PORT = 8000;
+const { sequelize } = require(`./model/index`);
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-const indexRouter = require("./routes/index"); //index는 생략가능
-app.use("/", indexRouter); //기본 요청주소가 localhost:port이다
+app.use(express.urlencoded({ extended : true }));
+app.use(express.json());
 
-const userRouter = require("./routes/user");
-app.use("/user", userRouter);
 
-//404
-//맨 마지막 라우트(주소를 설계한 행위)로 선언 : 그렇지 않으면 나머지 라우팅이 전부 무시 됨
-//선언 순서가 중요 함
+// 기본 .env 파일을 로드
+dotenv.config({
+  path: path.resolve(__dirname, `.env`)
+});
+
+
+// process.env 객체를 통해 환경 변수에 접근
+const port = process.env.PORT || 5000;
+
+
+// 미들웨어 등록
+app.use(`/static`, express.static(__dirname + `/public`));
+
+
+//기본 요청주소 localhost:8000
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter); 
+
+const Router = require("./routes/Rmember");
+app.use("/member", userRouter);
+
+const reviewRouter = require("./routes/RReview");
+app.use("/review", reviewRouter);
+
+const movieRouter = require("./routes/RMovie");
+app.use("/movie", reviewRouter);
+
+// 404
 app.get("*", (req, res) => {
   res.render("404");
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+
+sequelize
+  // force : true ; 서버 실행할 때마다 테이블 재생성
+  // force : false ; 서버 실행 시 테이블이 없으면 생성
+  .sync({ force : true })
+  .then(() => {
+      app.listen(port, () => console.log(`${port}에 연결됨`), console.log(`Database connection succeeded!`));
+  })
+  .catch((err) => {
+      console.error(err);
+  });
