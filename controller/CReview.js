@@ -1,4 +1,5 @@
 const { reviewModel, memberModel, movieModel } = require('../model');
+const { paginate, paginateResponse } = require('../utils/paginate');
 const { where } = require('sequelize');
 const { query } = require('express');
 
@@ -85,8 +86,8 @@ exports.getMemberReviewList = async (req, res) => {
     } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']]; // 등록일순
     } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; } // 평점순, 평점이 같다면 최신순
         
-    const limit = parseInt(pageSize, 10); // 한 페이지에 몇 개의 결과를 보여줄지 설정
-    const offset = (page - 1) * limit; // 몇 개의 결과를 건너뛸지 계산
+    const { limit, offset } = paginate(page, pageSize); // pagination
+
 
     try {
         const { count, rows } = await reviewModel.findAndCountAll({
@@ -107,16 +108,9 @@ exports.getMemberReviewList = async (req, res) => {
             limit
         });
 
-        const totalPages = Math.ceil(count / limit); // 전체 페이지 수 계산
-
         if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
 
-        return res.status(200).json({
-            reviews : rows,
-            currentPage : page,
-            totalPages,
-            totalReviews : count
-        });
+        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews'));
 
     } catch (error) {
         console.log(`Error : ${error.message}`);
@@ -131,13 +125,11 @@ exports.getMovieReviewList = async (req, res) => {
 
     let order = [];
 
-    // 정렬 기준
     if (sortBy === 'latest') { order = [['createdAt', 'DESC']];
     } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']];
     } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; }
 
-    const limit = parseInt(pageSize, 10);
-    const offset = (page - 1) * limit;
+    const { limit, offset } = paginate(page, pageSize);
 
     try {
         const { count, rows } = await reviewModel.findAndCountAll({
@@ -153,16 +145,9 @@ exports.getMovieReviewList = async (req, res) => {
             limit
         });
 
-        const totalPages = Math.ceil(count / limit);
-
         if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
 
-        return res.status(200).json({
-            reviews : rows,
-            currentPage : page,
-            totalPages,
-            totalReviews : count
-        });
+        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews'));
         
     } catch (error) {
         console.log(`Error : ${error.message}`);
