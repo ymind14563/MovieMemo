@@ -29,7 +29,7 @@ db.Sequelize = Sequelize;
 db.Movie = Movie;
 db.Genre = Genre;
 db.MovieGenre = MovieGenre;
-db.Member = member;
+db.Member = Member;
 db.Review = Review;
 
 // 모델 동기화
