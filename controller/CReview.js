@@ -76,7 +76,7 @@ exports.getReview = async (req, res) => {
 // 회원이 작성한 리뷰 목록
 exports.getMemberReviewList = async (req, res) => {
     const { memberId } = req.body;
-    const { sortBy } = req.query;
+    const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
 
     let order = [];
 
@@ -85,8 +85,11 @@ exports.getMemberReviewList = async (req, res) => {
     } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']]; // 등록일순
     } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; } // 평점순, 평점이 같다면 최신순
         
+    const limit = parseInt(pageSize, 10); // 한 페이지에 몇 개의 결과를 보여줄지 설정
+    const offset = (page - 1) * limit; // 몇 개의 결과를 건너뛸지 계산
+
     try {
-        const reviews = await reviewModel.findAll({
+        const { count, rows } = await reviewModel.findAndCountAll({
             where: { memberId },
 
             // SET: memberModel에서 nick, movieModel에서 title
@@ -99,12 +102,21 @@ exports.getMemberReviewList = async (req, res) => {
                 attributes: [`title`]
             }],
 
-            order // order : order
+            order, // order : order
+            offset,
+            limit
         });
 
-        if (!reviews.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+        const totalPages = Math.ceil(count / limit); // 전체 페이지 수 계산
 
-        return res.status(200).json(reviews);
+        if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+
+        return res.status(200).json({
+            reviews : rows,
+            currentPage : page,
+            totalPages,
+            totalReviews : count
+        });
 
     } catch (error) {
         console.log(`Error : ${error.message}`);
@@ -115,7 +127,7 @@ exports.getMemberReviewList = async (req, res) => {
 // 영화에 작성된 리뷰 목록
 exports.getMovieReviewList = async (req, res) => {
     const { movieId } = req.params;
-    const { sortBy } = req.query;
+    const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
 
     let order = [];
 
@@ -124,8 +136,11 @@ exports.getMovieReviewList = async (req, res) => {
     } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']];
     } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; }
 
+    const limit = parseInt(pageSize, 10);
+    const offset = (page - 1) * limit;
+
     try {
-        const reviews = await reviewModel.findAll({
+        const { count, rows } = await reviewModel.findAndCountAll({
             where: { movieId },
 
             include: [{
@@ -133,12 +148,21 @@ exports.getMovieReviewList = async (req, res) => {
                 attributes: [`nick`]
             }],
 
-            order
+            order,
+            offset,
+            limit
         });
 
-        if (!reviews.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+        const totalPages = Math.ceil(count / limit);
 
-        return res.status(200).json(reviews);
+        if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+
+        return res.status(200).json({
+            reviews : rows,
+            currentPage : page,
+            totalPages,
+            totalReviews : count
+        });
         
     } catch (error) {
         console.log(`Error : ${error.message}`);
