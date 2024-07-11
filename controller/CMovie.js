@@ -1,4 +1,5 @@
 const db = require('../model/index');
+const {} = require('../utils/apiHandler');
 const axios = require('axios');
 
 /** 
@@ -6,20 +7,35 @@ const axios = require('axios');
  *  data 에 담겨야할 정보들 : ( 포스터,  제목,  평점,  줄거리,  출연진 )
  * 
 */
-async function insertToDb(data) {
+const insertToDb = async (data, genres, t) => {
   try {
-    const result = await db.Movie.create({
+    const movie = await db.Movie.create({
       posterUrl: data.posterUrl,
       movieTitle: data.movieTitle,
+      vodUrl: data.vodUrl,
       movieInfo: data.movieInfo,
       movieCast: data.movieCast,
-    });
-    return result;
+    }, { transaction: t });
+
+    for (const genreName of genres) {
+      let [genre] = await db.Genre.findOrCreate({
+        where: { genreType: genreName },
+        defaults: { genreType: genreName },
+        transaction: t
+      });
+
+      await db.MovieGenre.create({
+        movieId: movie.movieId,
+        genreId: genre.genreId
+      }, { transaction: t });
+    }
+
+    return movie;
   } catch (error) {
     console.error('DB 저장 중 오류 발생 controller/CMovie/insertToDb:', error);
     throw error;
   }
-}
+};
 
 /**
  * 에러처리 함수. 상태코드 500에 대응
@@ -45,37 +61,47 @@ exports.getMovie = async (req, res) => {
 
     // DB에서 영화 정보 확인
     let movie = await db.Movie.findOne({
-      where: { movieTitle: movieTitle }
+      where: { movieTitle: movieTitle },
+      include: [{ model: db.Genre, through: db.MovieGenre }]
     });
 
     // DB에 영화 정보가 없는 경우
     if (!movie) {
-      // API 호출
-      const apiKey = 'YOUR_API_KEY';
-      const encodedTitle = encodeURIComponent(movieTitle);
-      const apiResponse = await axios.get(`https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&title=${encodedTitle}&ServiceKey=${apiKey}`);
-      
-      if (!apiResponse.data.Data[0]?.Result[0]) {
+      const movieData = await fetchMovieDataFromAPI(movieTitle);
+
+      if (!movieData) {
         return res.status(404).json({ message: '영화 정보를 찾을 수 없습니다.' });
       }
 
-      const movieData = apiResponse.data.Data[0].Result[0];
+      const dataToInsert = processMovieData(movieData);
 
-      // API 응답을 가공하여 DB 저장 형식에 맞춤
-      const dataToInsert = {
-        posterUrl: movieData.posters.split('|')[0] || '', // 첫 번째 포스터 URL
-        movieTitle: movieData.title.replace(/!HS|!HE/g, '').trim(), // !HS와 !HE 태그 제거
-        reviewMovieRating: '0',
-        movieInfo: movieData.plots.plot[0]?.plotText || '',
-        movieCast: movieData.actors.actor.slice(0, 5).map(actor => actor.actorNm).join(', ') // 상위 5명의 배우
-      };
-
-      // 데이터 유효성 검사
       if (!dataToInsert.movieTitle) {
         return res.status(400).json({ message: '영화 제목 정보가 없습니다.' });
       }
-      // DB에 저장
-      movie = await insertToDb(dataToInsert);
+
+      const genres = movieData.genre.split(',').map(g => g.trim());
+
+      // 트랜잭션 시작
+      const t = await db.sequelize.transaction();
+
+      try {
+        // Movie 테이블에 데이터 삽입 및 Genre, MovieGenre 테이블 처리
+        movie = await insertToDb(dataToInsert, genres, t);
+
+        // 트랜잭션 커밋
+        await t.commit();
+
+        // 생성된 영화 정보를 다시 조회 (장르 정보 포함)
+        movie = await db.Movie.findOne({
+          where: { movieId: movie.movieId },
+          include: [{ model: db.Genre, through: db.MovieGenre }]
+        });
+
+      } catch (error) {
+        // 오류 발생 시 롤백
+        await t.rollback();
+        throw error;
+      }
     }
 
     // 영화 정보 응답
@@ -85,7 +111,6 @@ exports.getMovie = async (req, res) => {
     errorHandler(res, err);
   }
 };
-
 // 영화에 리스트 요청하기추후 박스오피스 기능에 사용할듯
 // exports.getMovieList= async(req,res)=>{
 //   try{
@@ -128,15 +153,24 @@ exports.getMovieType = async (req, res) => {
  * 영화 정보 추가 생성( 관리자 권한일때 실행, session 체크 필요 ), 
  */
 exports.postMovie = async (req, res) => {
+  const t = await db.sequelize.transaction();
   try {
-    const { posterUrl, movieTitle, movieInfo, movieCast } = req.body;
-    const newMovie = await db.Movie.create({ posterUrl, movieTitle, movieInfo, movieCast });
+    const { posterUrl, movieTitle, vodUrl, movieInfo, movieCast, genres } = req.body;
+    const newMovie = await insertToDb({posterUrl, movieTitle, vodUrl, movieInfo, movieCast}, genres, t);
+
+    await t.commit();
+
+    const movieWithGenres = await db.Movie.findOne({
+      where: { movieId: newMovie.movieId },
+      include: [{ model: db.Genre, through: db.MovieGenre }]
+    });
 
     res.status(201).json({
       message: '영화 정보가 성공적으로 추가되었습니다.',
-      movie: newMovie
+      movie: movieWithGenres
     });
   } catch (err) {
+    await t.rollback();
     errorHandler(res, err);
   }
 };
