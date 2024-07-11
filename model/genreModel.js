@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     genreType: {
-      type: DataTypes.STRING,
+      type: DataTypes.varchar(10),
       allowNull: false,
       unique: true
     }
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Genre.associate = (models) => {
-    Genre.belongsToMany(models.Movie, { through: 'MovieGenre', foreignKey: 'genreId' });
+    Genre.belongsToMany(models.Movie, { through: models.movieGenre , foreignKey: 'genreId' });
   };
   return Genre;
 };
