@@ -1,5 +1,6 @@
 const { reviewModel, memberModel, movieModel } = require('../model');
 const { paginate, paginateResponse } = require('../utils/paginate');
+const { sort } = require('../utils/sort');
 const { where } = require('sequelize');
 const { query } = require('express');
 
@@ -79,12 +80,7 @@ exports.getMemberReviewList = async (req, res) => {
     const { memberId } = req.body;
     const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
 
-    let order = [];
-
-    // 정렬 기준
-    if (sortBy === 'latest') { order = [['createdAt', 'DESC']]; // 최신순
-    } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']]; // 등록일순
-    } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; } // 평점순, 평점이 같다면 최신순
+    const order = sort(sortBy); // 정렬
         
     const { limit, offset } = paginate(page, pageSize); // pagination
 
@@ -110,7 +106,7 @@ exports.getMemberReviewList = async (req, res) => {
 
         if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
 
-        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews'));
+        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews')); // pagination적용 response
 
     } catch (error) {
         console.log(`Error : ${error.message}`);
@@ -123,11 +119,7 @@ exports.getMovieReviewList = async (req, res) => {
     const { movieId } = req.params;
     const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
 
-    let order = [];
-
-    if (sortBy === 'latest') { order = [['createdAt', 'DESC']];
-    } else if (sortBy === 'oldest') { order = [['createdAt', 'ASC']];
-    } else if (sortBy === 'rating') { order = [['reviewMovieRating', 'DESC'], ['createdAt', 'DESC']]; }
+    const order = sort(sortBy);
 
     const { limit, offset } = paginate(page, pageSize);
 
