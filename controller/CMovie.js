@@ -1,10 +1,3 @@
-// - 영화
-//     - postMovie - 영화 추가
-//     - getMovie - 영화 하나 조회
-//     - getMoiveList - 영화 리스트
-//     - patchMovie - 영화 정보 수정
-//     - deleteMovie - 영화 정보 삭제
-//     - getMovieType - 영화 장르로 조회
 const db = require('../model/index');
 const axios = require('axios');
 
@@ -29,12 +22,20 @@ async function insertToDb(data) {
 }
 
 /**
+ * 에러처리 함수. 상태코드 500에 대응
+ * 
+ */
+const errorHandler = (res, err) => {
+  console.error('오류 발생:', err);
+  res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음 (양태완이 만듬ㅇㅇ..)' });
+};
+
+/**
  *  특정 영화 상세 정보 조회 - 수정할 것 api key 정보 .env로 옮기기 
  *  요청 url `/:movieTitle` - 추후에 영화 평점을 리뷰 페이지로부터 = 영화 제목이 일치하는 부분들의 평점을 평균내서 보여주게 할 수 있을까요오?
  *   요청을 받았을때
  *   1) DB에 해당 영화 제목과 일치하는 영화 데이터가 존재하는지 확인
  *   2) DB에 영화 정보가 없는 경우 API 에 영화 정보 호출 후 저장 DB에 영화 정보 저장
- *   
  * 
  *   성공적 호출시 응답       res.status(200).json(movie);
  */
@@ -81,8 +82,7 @@ exports.getMovie = async (req, res) => {
     res.status(200).json(movie);
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음 (양태완이 만듬ㅇㅇ..)' });
+    errorHandler(res, err);
   }
 };
 
@@ -122,31 +122,22 @@ exports.getMovieType = async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음(양태완이 만듬ㅇㅇ..)' });
-  }
+    errorHandler(res, err);}
 };
 /**
  * 영화 정보 추가 생성( 관리자 권한일때 실행, session 체크 필요 ), 
  */
 exports.postMovie = async (req, res) => {
   try {
-    const data = {
-      posterUrl: req.body.posterUrl,
-      movieTitle: req.body.movieTitle,
-      movieInfo: req.body.movieInfo,
-      movieCast: req.body.movieCast
-    };
-    const newMovie = await insertToDb(data);
+    const { posterUrl, movieTitle, movieInfo, movieCast } = req.body;
+    const newMovie = await db.Movie.create({ posterUrl, movieTitle, movieInfo, movieCast });
 
     res.status(201).json({
       message: '영화 정보가 성공적으로 추가되었습니다.',
       movie: newMovie
     });
-
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음(양태완이 만듬ㅇㅇ..)' });
+    errorHandler(res, err);
   }
 };
 
@@ -166,19 +157,14 @@ exports.patchMovie = async (req, res) => {
       return res.status(404).json({ message: '영화를 찾을 수 없습니다.' });
     }
 
-    await movie.update({
-      posterUrl,
-      movieInfo,
-      movieCast
-    });
+    await movie.update({ posterUrl, movieInfo, movieCast });
 
     res.status(200).json({
       message: '영화 정보 수정 완료',
       movie: movie
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음(양태완이 만듬ㅇㅇ..)' });
+    errorHandler(res, err);
   }
 };
 
@@ -191,8 +177,6 @@ exports.deleteMovie = async (req, res) => {
   try {
     const { movieTitle } = req.body;
     
-    console.log('deleteMovie: movieTitle', movieTitle);
-    
     const movie = await db.Movie.findOne({ where: { movieTitle } });
     
     if (!movie) {
@@ -203,7 +187,6 @@ exports.deleteMovie = async (req, res) => {
     
     res.status(200).json({ message: '영화 정보 삭제 완료' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: '이거 만든놈이 몬가 잘못했음(양태완이 만듬ㅇㅇ..)' });
+    errorHandler(res, err);
   }
 };
