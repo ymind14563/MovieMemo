@@ -186,14 +186,14 @@ h3 {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 40%;
+    width: 20%;
     /* position the close button */
     position: relative;
     text-align: center;
 }
 
 form input {
-    width: 50%;
+    width: 80%;
     outline: none;
     border: 1px solid #fff;
     padding: 12px 20px;
