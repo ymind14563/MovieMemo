@@ -14,14 +14,14 @@ router.get(`/:movieTitle`, controller.getMovie);
 // 특정 장르로 영화 리스트 불러오기 
 router.get(`/genreList/:genreId`, controller.getMovieTyp);
 
-// 영화 정보 추가 생성( 관리자 권한일때 실행, session 체크 필요 )
+// 영화 정보 추가 생성( 관리자 권한일때 실행, session 또는 권한 체크 필요 )
 router.post(`/`, controller.postMovie);
 
-// 영화 정보 수정하기( 관리자 권한일떄 실행, session 체크 필요 )
-router.patch(`/:movieId`, controller.patchMovie);
+// 영화 정보 수정하기( 관리자 권한일떄 실행, session 또는 권한 체크 필요 )
+router.patch(`/`, controller.patchMovie);
 
-// 영화 정보 삭제하기( 관리자 권한일떄 실행, session 체크 필요 )
-router.delete(`/:movieId`, controller.deleteMovie);
+// 영화 정보 삭제하기( 관리자 권한일떄 실행, session 또는 권한 체크 필요 )
+router.delete(`/`, controller.deleteMovie);
 
 
 module.exports = router;
