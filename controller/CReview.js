@@ -1,4 +1,4 @@
-const { reviewModel, memberModel, movieModel, reportModel } = require('../model');
+const { reviewModel, memberModel, movieModel, likeModel, reportModel } = require('../model');
 const { paginate, paginateResponse } = require('../utils/paginate');
 const { sort } = require('../utils/sort');
 const { where } = require('sequelize');
@@ -299,6 +299,42 @@ exports.deleteReview = async (req, res) => {
     }
 }
 
+// 좋아요
+exports.likeReview = async (req, res) => {
+    const {memberId, reviewId } = req.body;
+
+    try {
+        const review = await reviewModel.findOne({
+            where: { reviewId }
+        })
+
+        if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+
+        // 좋아요 내역 확인
+        const existLike = await likeModel.findOne({ where : { memberId, reviewId }});
+        if (existLike) {
+            // return res.status(400).json({ message : `이미 좋아요를 눌렀습니다. `});
+
+            // 좋아요 있으면 취소
+            await likeModel.destroy({ where : { memberId, reviewId }});
+            review.likeCount -= 1;
+            await review.save();
+
+            return res.status(200).json({ message : `좋아요가 취소 되었습니다.`, review });
+
+        }
+
+        // 좋아요 증가
+        await likeModel.create({ memberId, reviewId });
+        review.likeCount += 1;
+        await review.save();
+
+        return res.status(200).json({ message : `좋아요가 추가 되었습니다.`, review });
+    } catch (error) {
+        console.log(`Error : ${error.message}`);
+        return res.status(500).json({ message: `좋아요가 추가 중 오류가 발생했습니다.` });
+    }
+}
 
 // 신고
 exports.reportReview = async (req, res) => {
