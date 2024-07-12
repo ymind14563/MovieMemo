@@ -19,24 +19,24 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     movieTitle: {
-      type: DataTypes.varchar(50),
+      type: DataTypes.STRING(50),
       allowNull: false
     },
     posterUrl: {
-      type: DataTypes.varchar(300),
-      allowNull: false
+      type: DataTypes.STRING(300),
+      allowNull: true
     },
     vodUrl: {
-      type: DataTypes.varchar(300),
-      allowNull: false
+      type: DataTypes.STRING(300),
+      allowNull: true
     },
     movieInfo: {
-      type: DataTypes.varchar(1000),
-      allowNull: false
+      type: DataTypes.STRING(1000),
+      allowNull: true
     },
     movieCast: {
-      type: DataTypes.varchar(100),
-      allowNull: false
+      type: DataTypes.STRING(100),
+      allowNull: true
     }
   }, {
     // 작성, 최종 수정시간 기록

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     genreType: {
-      type: DataTypes.varchar(10),
+      type: DataTypes.STRING(10),
       allowNull: false,
       unique: true
     }
