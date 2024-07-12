@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(300),
       allowNull: true
     },
+    reviewMovieRating:{
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     movieInfo: {
       type: DataTypes.STRING(1000),
       allowNull: true

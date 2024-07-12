@@ -47,6 +47,12 @@ const syncModels = async () => {
   await Report.sync();
 };
 
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
 db.syncModels = syncModels;
 
 module.exports = db;
