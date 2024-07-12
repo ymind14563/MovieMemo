@@ -29,5 +29,11 @@ module.exports = (sequelize, DataTypes) => {
         ]
     });
 
+    // 관계 설정
+    Report.associate = (models) => {
+        Report.belongsTo(models.Member, { foreignKey : 'memberId'}); // 다대일 : 각 신고는 하나의 회원
+        Report.belongsTo(models.Review, { foreignKey : 'reviewId'}); // 다대일 : 각 신고는 하나의 리뷰
+    }
+
     return Report;
 };

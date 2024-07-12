@@ -28,5 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         ]
     });
 
+    // 관계 설정
+    Like.associate = (models) => {
+        Like.belongsTo(models.Member, { foreignKey : 'memberId'}); // 다대일 : 각 좋아요는 하나의 회원
+        Like.belongsTo(models.Review, { foreignKey : 'reviewId'}); // 다대일 : 각 좋아요는 하나의 리뷰
+    }
+
     return Like;
 };
