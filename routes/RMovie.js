@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controller/CMovie');
-const auth = require('../middleware/auth');
+// const auth = require('../middleware/auth');
 
 
 // 기본 요청 경로 localhost:PORT/movie
@@ -16,12 +16,12 @@ router.get('/:movieTitle', controller.getMovie);
 router.get('/genreList/:genreId', controller.getMovieType);
 
 // 영화 정보 추가 생성 (관리자 권한 필요)
-router.post('/', auth.checkAdminAuth, controller.postMovie);
+router.post('/', controller.postMovie);
 
 // 영화 정보 수정하기 (관리자 권한 필요)
-router.patch('/', auth.checkAdminAuth, controller.patchMovie);
+router.patch('/', controller.patchMovie);
 
 // 영화 정보 삭제하기 (관리자 권한 필요)
-router.delete('/', auth.checkAdminAuth, controller.deleteMovie);
+router.delete('/', controller.deleteMovie);
 
 module.exports = router;

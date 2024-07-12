@@ -34,8 +34,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
-    movieInfo: {
+    movieSynopsys: {
       type: DataTypes.STRING(1000),
+      allowNull: true
+    },
+    moviereleaseDate: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    movie_salesAcc: {
+      type: DataTypes.STRING(10),
       allowNull: true
     },
     movieCast: {
