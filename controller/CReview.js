@@ -1,5 +1,6 @@
 const { reviewModel, memberModel, movieModel, likeModel, reportModel } = require('../model');
 const { paginate, paginateResponse } = require('../utils/paginate');
+const checkBadWords = require('./utils/badWordsFilter');
 const { sort } = require('../utils/sort');
 const { where } = require('sequelize');
 const { query } = require('express');
@@ -31,10 +32,17 @@ exports.postReview = async (req, res) => {
 
     const { movieId, rating, content } = req.body;
 
+    // 다국어 및 한국어 필터링
+    if (checkBadWords(content)) {
+        return res.status(400).json({ message: "부적절한 단어가 포함되어 있습니다." });
+    }
+
     try {
         const review = await reviewModel.create({
             memberId, movieId, content, reviewMovieRating: rating
         });
+
+
 
         /* // 해당 영화의 모든 리뷰 조회
         const movieReviewList = await reviewModel.findAll({ where: { movieId } });
@@ -210,6 +218,10 @@ exports.patchReview = async (req, res) => {
         if (review.memberId !== memberId) {
             console.log(`권한이 없습니다.`);
             return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
+        }
+
+        if (checkBadWords(content)) {
+            return res.status(400).json({ message: "부적절한 단어가 포함되어 있습니다." });
         }
 
         // 수정 전 영화 리뷰 평점
