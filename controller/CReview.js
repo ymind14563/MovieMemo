@@ -1,4 +1,4 @@
-const { reviewModel, memberModel, movieModel } = require('../model');
+const { reviewModel, memberModel, movieModel, reportModel } = require('../model');
 const { paginate, paginateResponse } = require('../utils/paginate');
 const { sort } = require('../utils/sort');
 const { where } = require('sequelize');
@@ -215,5 +215,41 @@ exports.deleteReview = async (req, res) => {
     } catch (error) {
         console.log(`Error : ${error.message}`);
         return res.status(500).json({ message: `리뷰 삭제 중 오류가 발생했습니다.` });
+    }
+}
+
+
+// 신고
+exports.reportReview = async (req, res) => {
+    const {memberId, reviewId } = req.body;
+
+    try {
+        const review = await reviewModel.findOne({
+            where: { reviewId }
+        })
+
+        if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+
+        // 신고 내역 확인
+        const existReport = await reportModel.findOne({ where : { memberId, reviewId }});
+        if (existReport) {
+                        
+            // 신고 있으면 취소
+            await reportModel.destroy({ where : { memberId, reviewId }});
+            review.reportCount -= 1;
+            await review.save();
+
+            return res.status(200).json({ message : `신고가 취소 되었습니다.`, review });
+        }
+
+        // 신고 증가
+        await reportModel.create({ memberId, reviewId });
+        review.reportCount += 1;
+        await review.save();
+
+        return res.status(200).json({ message : `신고가 추가 되었습니다.`, review });
+    } catch (error) {
+        console.log(`Error : ${error.message}`);
+        return res.status(500).json({ message: `신고 추가 중 오류가 발생했습니다.` });
     }
 }
