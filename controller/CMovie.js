@@ -1,10 +1,9 @@
 const db = require('../model/index');
-const {} = require('../utils/apiHandler');
-const axios = require('axios');
+const { requestAPI, manufactureAPI } = require('../utils/apiHandler');
 
 /** 
  *  정보를 DB에 추가하는 공통 기능을 함수로 분리,
- *  data 에 담겨야할 정보들 : ( 포스터,  제목,  평점,  줄거리,  출연진 )
+ *  data 에 담겨야할 정보들 : ( 포스터,  제목,  vod,  줄거리,  출연진 )
  * 
 */
 const insertToDb = async (data, genres, t) => {
@@ -67,13 +66,13 @@ exports.getMovie = async (req, res) => {
 
     // DB에 영화 정보가 없는 경우
     if (!movie) {
-      const movieData = await fetchMovieDataFromAPI(movieTitle);
+      const movieData = await requestAPI(movieTitle);
 
       if (!movieData) {
         return res.status(404).json({ message: '영화 정보를 찾을 수 없습니다.' });
       }
 
-      const dataToInsert = processMovieData(movieData);
+      const dataToInsert = manufactureAPI(movieData);
 
       if (!dataToInsert.movieTitle) {
         return res.status(400).json({ message: '영화 제목 정보가 없습니다.' });
@@ -156,8 +155,14 @@ exports.postMovie = async (req, res) => {
   const t = await db.sequelize.transaction();
   try {
     const { posterUrl, movieTitle, vodUrl, movieInfo, movieCast, genres } = req.body;
+    
+    if (!movieTitle ) {
+      throw new Error('필수 정보가 누락되었습니다. ');
+    }
+
     const newMovie = await insertToDb({posterUrl, movieTitle, vodUrl, movieInfo, movieCast}, genres, t);
 
+    // 트랜잭션 커밋
     await t.commit();
 
     const movieWithGenres = await db.Movie.findOne({
@@ -170,6 +175,7 @@ exports.postMovie = async (req, res) => {
       movie: movieWithGenres
     });
   } catch (err) {
+    // 에러 발생 시 롤백
     await t.rollback();
     errorHandler(res, err);
   }
