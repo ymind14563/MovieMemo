@@ -22,6 +22,9 @@ router.patch(`/:reviewId`, controller.patchReview);
 // 특정 리뷰 내용 삭제
 router.delete(`/:reviewId`, controller.deleteReview);
 
+// 좋아요
+router.post('/like', controller.likeReview);
+
 // 신고
 router.post('/report', controller.reportReview);
 
