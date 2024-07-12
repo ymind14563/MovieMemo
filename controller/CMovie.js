@@ -56,7 +56,7 @@ const errorHandler = (res, err) => {
  */
 exports.getMovie = async (req, res) => {
   try {
-    const { movieTitle } = req.query;
+    const { movieTitle } = req.params;
 
     // DB에서 영화 정보 확인
     let movie = await db.Movie.findOne({
