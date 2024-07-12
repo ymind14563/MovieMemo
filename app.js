@@ -56,11 +56,10 @@ sequelize
   // force : false ; 서버 실행 시 테이블이 없으면 생성
   .sync({ force: true })
   .then(() => {
-    app.listen(
-      port,
-      () => console.log(`${port}에 연결됨`),
-      console.log(`Database connection succeeded!`)
-    );
+    app.listen(port, () => {
+      console.log(`${port}에 연결됨`);
+      console.log(`Database connection succeeded!`);
+    });
   })
   .catch((err) => {
     console.error(err);

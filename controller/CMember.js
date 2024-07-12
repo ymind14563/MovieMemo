@@ -32,15 +32,11 @@ exports.getMember = async (req, res) => {
     }
 
     // JWT 토큰 생성
-    const secretKey = member.isAdmin
-      ? process.env.JWT_ADMIN_SECRET
-      : process.env.JWT_USER_SECRET;
-
     const token = jwt.sign(
       { memberId: member.memberId, isAdmin: member.isAdmin },
-      secretKey,
+      process.env.JWT_SECRET,
       {
-        expiresIn: "600 * 1000",
+        expiresIn: "10m",
       }
     );
 
