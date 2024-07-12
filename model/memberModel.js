@@ -22,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
+      // 회원 성별
+      gender: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+      },
+
+      // 회원 나이
+      age: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+
       // 회원 e-mail
       email: {
         type: DataTypes.STRING(50),
