@@ -2,13 +2,11 @@ const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const path = require("path");
 
-process.env.NODE_ENV = process.env.NODE_ENV;
-
 dotenv.config({
   path: path.resolve(__dirname, `../.env`),
 });
 
-const saltN = process.env.SALTROUND; //2^10 회 반복
+const saltN = parseInt(process.env.SALTROUND, 10); //2^10 회 반복
 
 /**
  * 솔트 라운드 숫자가 커진다? => 해시 생성 시간이 느려짐, 보안성이 향상됨

@@ -32,13 +32,17 @@ exports.getMember = async (req, res) => {
     }
 
     // JWT 토큰 생성
+    const secretKey = member.isAdmin
+      ? process.env.JWT_ADMIN_SECRET
+      : process.env.JWT_USER_SECRET;
+
     const token = jwt.sign(
       { memberId: member.memberId, isAdmin: member.isAdmin },
-      process.env.JWT_SECRET,
+      secretKey,
       {
         expiresIn: "600 * 1000",
       }
-    ); //.env 파일에 JWT_SECRET=your-secret-key 키 추가
+    );
 
     // 세션에 저장
     req.session.token = token;
@@ -61,7 +65,7 @@ exports.postMember = async (req, res) => {
     }
 
     // 비밀번호 해시화
-    const hashedPassword = await encUtil.hashPw(password, 10);
+    const hashedPassword = await encUtil.hashPw(password);
 
     // 회원 생성
     const newMember = await Member.create({
@@ -77,10 +81,42 @@ exports.postMember = async (req, res) => {
   }
 };
 
+//비밀번호 수정
 exports.patchMember = async (req, res) => {
-  // 비밀번호 수정 로직 구현
+  try {
+    const { password } = req.body;
+
+    // 입력값 검증
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const hashedPassword = await encUtil.hashPw(password);
+
+    await Member.update(
+      { password: hashedPassword },
+      { where: { memberId: req.memberId } }
+    );
+
+    res.status(200).json({ message: "비밀번호가 변경되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
 };
 
+//회원 탈퇴
 exports.deleteMember = async (req, res) => {
-  // 회원 탈퇴 로직 구현
+  try {
+    await Member.destroy({ where: { memberId: req.memberId } });
+
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "로그아웃 실패" });
+      }
+      res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
 };
