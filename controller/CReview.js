@@ -9,27 +9,6 @@ const jwt = require('jsonwebtoken');
 // 리뷰 생성
 exports.postReview = async (req, res) => {
 
-    // 토큰 유효성 검증
-    const authorHeader = req.headers.authorization; // Authorization 헤더에서 토큰 추출
-    if (!authorHeader) {
-        console.log("토큰이 없습니다.");
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const token = authorHeader.split(" ")[1]; // "Bearer "를 제거하고 실제 토큰만 추출
-
-    let decoded;
-
-    // 사용자 인증
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (error) {
-        console.log(`유효하지 않은 토큰입니다: ${error.message}`);
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const { memberId } = decoded;
-
     const { movieId, rating, content } = req.body;
 
     // 다국어 및 한국어 필터링
@@ -182,27 +161,6 @@ exports.getMovieReviewList = async (req, res) => {
 // 특정 리뷰 내용 수정
 exports.patchReview = async (req, res) => {
 
-    // 토큰 유효성 검증
-    const authorHeader = req.headers.authorization;
-    if (!authorHeader) {
-        console.log(`토큰이 없습니다.`);
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const token = authorHeader.split(" ")[1];
-
-    let decoded;
-
-    // 사용자 인증
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (error) {
-        console.log(`유효하지 않은 토큰입니다: ${error.message}`);
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const { memberId } = decoded;
-
     const { reviewId } = req.params;
     const { rating, content } = req.body;
 
@@ -250,28 +208,6 @@ exports.patchReview = async (req, res) => {
 
 // 특정 리뷰 삭제
 exports.deleteReview = async (req, res) => {
-
-    // 토큰 유효성 검증
-    const authorHeader = req.headers.authorization;
-    if (!authorHeader) {
-        console.log(`토큰이 없습니다.`);
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const token = authorHeader.split(" ")[1];
-
-    let decoded;
-
-    // 사용자 인증
-    try {
-        decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (error) {
-        console.log(`유효하지 않은 토큰입니다: ${error.message}`);
-        return res.status(401).json({ message: `유효하지 않은 접근입니다.` });
-    }
-
-    const { memberId, isAdmin } = decoded;
-
 
     const { reviewId } = req.params;
     
