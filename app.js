@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require(`path`);
 const dotenv = require(`dotenv`);
-const routerMiddleware = require('./middleware/routerMiddleware');
+const {routerMiddleware} = require('./middleware/routerMiddleware');
+const router = express.Router();
 
 // 기본 .env 파일을 로드
 dotenv.config({
@@ -35,6 +36,10 @@ const port = process.env.PORT || 5000;
 app.use(`/static`, express.static(__dirname + `/public`));
 
 //기본 요청주소 localhost:8000
+
+router.get('/', (req,res)=>{
+  res.render('index');
+});
 
 routerMiddleware(app);
 
