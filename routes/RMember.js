@@ -2,7 +2,6 @@ const express = require("express");
 const { check } = require("express-validator");
 const router = express.Router();
 const controller = require("../controller/CMember");
-const { authenticateUser, authenticateAdmin } = require("../middleware/auth");
 
 // 기본 요청 경로 localhost:PORT/member
 
@@ -47,9 +46,6 @@ router.post(
   controller.postMember
 );
 
-// 회원 검색
-router.get("/search", authenticateUser, controller.getFindMember);
-
 // 비밀번호 수정
 router.patch(
   "/password",
@@ -66,11 +62,10 @@ router.patch(
       .matches(/[\W]/)
       .withMessage("비밀번호는 특수문자를 포함해야 합니다."),
   ],
-  authenticateUser,
   controller.patchMember
 );
 
 // 회원 탈퇴
-router.delete("/", authenticateUser, controller.deleteMember);
+router.delete("/", controller.deleteMember);
 
 module.exports = router;
