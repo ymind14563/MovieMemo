@@ -52,3 +52,18 @@ document.addEventListener("keydown", function (e) {
     overlay.classList.toggle("hidden");
   }
 });
+
+document.getElementById('login-form').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const form = document.getElementById('login-form')
+  const formData = new FormData(form);
+
+  //send post request
+  try {
+    const response = await axios.post("/signin", formData);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+  
+})
