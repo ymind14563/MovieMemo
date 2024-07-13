@@ -22,7 +22,7 @@ router.get(`/movie/:movieId`, controller.getMovieReviewList);
 router.patch(`/:reviewId`, authenticateUser, controller.patchReview);
 
 // 특정 리뷰 내용 삭제
-router.delete(`/:reviewId`, authenticateAdmin, controller.deleteReview);
+router.delete(`/:reviewId`, authenticateUser, controller.deleteReview);
 
 // 좋아요
 router.post('/like', authenticateUser, controller.likeReview);
