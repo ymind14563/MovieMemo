@@ -25,7 +25,12 @@ module.exports = (sequelize, DataTypes) => {
                 unique: true, // 중복 방지
                 fields: ['memberId', 'reviewId']
             }
-        ]
+        ],
+        
+        tableName: 'Report',
+        freezeTableName: true,
+        timestamps: true
+
     });
 
     // 관계 설정

@@ -54,10 +54,10 @@ const reviewModel = (sequelize, DataTypes) => {
 
     // 관계 설정
     Review.associate = (models) => {
-        Review.belongsTo(models.Member, { foreignKey: 'member_id' }); // 다대일 : 각 리뷰는 하나의 회원
-        Review.belongsTo(models.Movie, { foreignKey: 'movie_id' }); // 다대일 : 각 리뷰는 하나의 영화
-        Review.hasMany(models.Like, { foreignKey: 'review_id' }); // 일대다 : 각 리뷰는 여러개의 좋아요
-        Review.hasMany(models.Report, { foreignKey: 'review_id' }); // 일대다 : 각 리뷰는 여러개의 신고
+        Review.belongsTo(models.Member, { foreignKey: 'memberId' }); // 다대일 : 각 리뷰는 하나의 회원
+        Review.belongsTo(models.Movie, { foreignKey: 'movieId' }); // 다대일 : 각 리뷰는 하나의 영화
+        Review.hasMany(models.Like, { foreignKey: 'reviewId' }); // 일대다 : 각 리뷰는 여러개의 좋아요
+        Review.hasMany(models.Report, { foreignKey: 'reviewId' }); // 일대다 : 각 리뷰는 여러개의 신고
       };
   
     return Review;
