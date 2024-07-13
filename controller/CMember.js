@@ -26,9 +26,7 @@ exports.getMember = async (req, res) => {
     const isMatch = await encUtil.comparePw(password, member.password);
 
     if (!isMatch) {
-      return res
-        .status(401)
-        .json({ message: "아이디 또는 비밀번호가 틀렸습니다." });
+      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
     }
 
     // JWT 토큰 생성
@@ -44,22 +42,23 @@ exports.getMember = async (req, res) => {
     req.session.token = token;
 
     // 로그인 성공
-    res.redirect("/member");
+    // res.redirect("/member");
+    res.json({ message: member });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: "서버 오류" });
   }
 };
 
 exports.postMember = async (req, res) => {
   try {
-    const { name, nick, email, password } = req.body;
+    const { gender, age, name, nick, email, password } = req.body;
 
     // 입력값 검증
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     // 비밀번호 해시화
     const hashedPassword = await encUtil.hashPw(password);
 
@@ -69,10 +68,13 @@ exports.postMember = async (req, res) => {
       nick,
       email,
       password: hashedPassword,
+      gender,
+      age,
     });
 
     res.status(201).json(newMember);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: "서버 오류" });
   }
 };
@@ -88,15 +90,18 @@ exports.patchMember = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
+    // 비밀번호 해싱 처리
     const hashedPassword = await encUtil.hashPw(password);
 
+    // 회원 비밀번호 업데이트
     await Member.update(
       { password: hashedPassword },
-      { where: { memberId: req.memberId } }
+      { where: { name: req.body.name } }
     );
 
     res.status(200).json({ message: "비밀번호가 변경되었습니다." });
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: "서버 오류" });
   }
 };
@@ -104,7 +109,7 @@ exports.patchMember = async (req, res) => {
 //회원 탈퇴
 exports.deleteMember = async (req, res) => {
   try {
-    await Member.destroy({ where: { memberId: req.memberId } });
+    await Member.destroy({ where: { name: req.body.name } });
 
     req.session.destroy((err) => {
       if (err) {

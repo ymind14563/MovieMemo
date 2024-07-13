@@ -8,7 +8,7 @@ const authenticateUser = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_USER_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.memberId = decoded.memberId;
     req.isAdmin = decoded.isAdmin;
     next();
@@ -25,7 +25,7 @@ const authenticateAdmin = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded.isAdmin) {
       return res.status(403).json({ message: "유효하지 않은 접근입니다." });
     }

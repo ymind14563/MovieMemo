@@ -16,7 +16,7 @@ const saltN = parseInt(process.env.SALTROUND, 10); //2^10 회 반복
  */
 
 exports.hashPw = (password) => {
-  console.log(saltN);
+  // console.log(saltN);
   return bcrypt.hashSync(password, saltN);
 };
 
@@ -26,6 +26,7 @@ exports.hashPw = (password) => {
  * @param {*} originalPW
  * @returns  사용자가 입력한 평문과 해시값을 비교하여 boolean 형태로 반환
  */
+
 exports.comparePw = (password, originalPW) => {
   return bcrypt.compareSync(password, originalPW);
 };
