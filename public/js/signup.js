@@ -4,7 +4,7 @@ form.addEventListener('submit',async function(e) {
   e.preventDefault();
 
   const formData = new FormData(form);
-  // { userId, password, confirmPassword, username }
+  // { userId:값, password:값, confirmPassword:값, username:값, gender:값, age:값 }
 
   try {
     const response = await axios.post("/signup", formData);
