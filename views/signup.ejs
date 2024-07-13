@@ -6,27 +6,63 @@
     <link rel="stylesheet" href="/css/signup.css">
     <title>Document</title>
 </head>
-<body>
-        <nav class="navbar">
-            <div class="navdiv">
-                <div class="logo">
-                    <a href="#">MovieMemo</a>
-                </div>
-            </div>
-        </nav>
- 
-        <div class="wrapper">
-            <h1>회원가입</h1>
-            <form action="#" method="POST">
-                <input type="text" id="user-id" name="user-id" placeholder="아이디"><br>
-                <input type="password" id="password" name="password" placeholder="비밀번호"><br>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인"><br>
-                <input type="text" id="username" name="username" placeholder="닉네임"><br>
-                <button class="signup-btn"type="submit">가입하기</button>
-            </form>
-        </div>
+<nav class="navbar">
+    <div class="navdiv">
+      <div class="logo">
+        <a href="#">MovieMemo</a>
+      </div>
+    </div>
+  </nav>
 
+  <div class="wrapper">
+    <h1>회원가입</h1>
+    <form action="#" method="POST">
+      <input
+        type="text"
+        id="user-id"
+        name="user-id"
+        placeholder="아이디"
+      /><br />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="비밀번호"
+      /><br />
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        placeholder="비밀번호 확인"
+      /><br />
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="닉네임"
+      /><br />
 
-<script src="/js/signup.js"></script>    
+      <label for="gender">성별</label><br /><br />
+      <input type="radio" id="male" name="gender" value="male" />
+      <label for="male">남성</label>
+      <input type="radio" id="female" name="gender" value="female" />
+      <label for="female">여성</label><br /><br />
+
+      <label for="age">연령대</label><br /><br />
+      <input type="radio" id="age10s" name="age" value="10s" />
+      <label for="age10s">10대</label>
+      <input type="radio" id="age20s" name="age" value="20s" />
+      <label for="age20s">20대</label>
+      <input type="radio" id="age30s" name="age" value="30s" />
+      <label for="age30s">30대</label>
+      <input type="radio" id="age40s" name="age" value="40s" />
+      <label for="age40s">40대이상</label><br /><br />
+
+      <button class="signup-btn" type="submit">가입하기</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/signup.js"></script>
 </body>
 </html>
