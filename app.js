@@ -1,13 +1,13 @@
 const express = require("express");
 const path = require(`path`);
 const dotenv = require(`dotenv`);
-const {routerMiddleware} = require('./middleware/routerMiddleware');
+const { routerMiddleware } = require("./middleware/routerMiddleware");
 const router = express.Router();
-
 // 기본 .env 파일을 로드
 dotenv.config({
   path: path.resolve(__dirname, `.env`),
 });
+const aaa = process.env.SESSION_SECRET;
 
 const session = require("express-session");
 const app = express();
@@ -22,7 +22,7 @@ app.use(express.json());
 // 세션 미들웨어 설정
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: aaa,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }, // HTTPS를 사용할 경우 true로 설정
@@ -37,8 +37,8 @@ app.use(`/static`, express.static(__dirname + `/public`));
 
 //기본 요청주소 localhost:8000
 
-router.get('/', (req,res)=>{
-  res.render('index');
+router.get("/", (req, res) => {
+  res.render("index");
 });
 
 routerMiddleware(app);
