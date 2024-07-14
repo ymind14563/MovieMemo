@@ -74,7 +74,7 @@ async function fetchDataByGenre(genre, sectionClass) {
       //posters into an array
       const posterUrls = movie.posters.split("|").map((url) => url.trim());
       const firstPosterUrl = posterUrls.length > 0 ? posterUrls[0] : null;
-      dynamicSlides(firstPosterUrl, sectionClass);
+      dynamicSlides(firstPosterUrl, sectionClass,movie);
     });
 
     const secondSwiper = new Swiper(".second-swiper", {
@@ -91,7 +91,7 @@ async function fetchDataByGenre(genre, sectionClass) {
   }
 }
 
-function dynamicSlides(url, sectionClass) {
+function dynamicSlides(url, sectionClass,movieData) {
   const swiperWrapper = document.querySelector(
     `.${sectionClass} .swiper-wrapper`
   );
@@ -123,6 +123,16 @@ function dynamicSlides(url, sectionClass) {
 
   // Append swiperSlide to swiper wrapper
   swiperWrapper.appendChild(swiperSlide);
+
+  image.addEventListener('click',()=>{
+    const movieId = movieData.DOCID;
+    if(movieId){
+      window.location.href = `/review/${encodeURIComponent(movieId)}`
+    } else {
+      console.error('No DOCID for this movie', movieData)
+    }
+   })
+
 }
 
 fetchDataByGenre("액션", "action-section"); // Fetch action genre posters
