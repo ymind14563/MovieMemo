@@ -49,15 +49,37 @@ document
     e.preventDefault();
     const form = document.getElementById("login-form");
     const formData = new FormData(form);
+    const data = {};
+
+    formData.forEach((value,key) => {
+      data[key] = value; //add key and value in data object
+    })
 
     //send post request
     try {
-      const response = await axios.post("/signin", formData);
+      const response = await axios.post("/login", data);
       console.log(response);
+      window.location.href = '/' //main page when successed
     } catch (error) {
-      console.log(error);
+      if(error.response && error.response.status === 400){
+        const errors = error.response.data.errors;
+        displayErrors(errors)
+      } else {
+        console.log(error);
+      }
+      
     }
   });
+
+  function displayErrors(errors){
+    const errorContainer = document.getElementById('error-container')
+    errorContainer.innerHTML = '';
+
+    errors.forEach((error) => {
+     errorContainer.innerHTML +=`<p>${error.msg}</p>` 
+    })
+  }
+
 
 async function fetchDataByGenre(genre, sectionClass) {
   const apiKey = "BNUTWI8LOC2C99593QD4";
