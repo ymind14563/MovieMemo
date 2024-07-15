@@ -201,7 +201,7 @@
       <div class="modal-content">
         <span class="close">&times;</span>
         <h2 class="login">로그인</h2>
-        <form id="login-form" action="#" method="post">
+        <form id="login-form" action="/login" method="post">
           <div class="login-box">
             <input type="text" id="user-id" name="user-id" placeholder="id" />
             <input
@@ -210,6 +210,7 @@
               name="password"
               placeholder="password"
             />
+            <div id="error-container"></div>
             <button class="login-btn" type="submit">로그인</button>
           </div>
         </form>
