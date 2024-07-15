@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const authenticateUser = (req, res, next) => {
-  const token = req.session.token;
+  const authorHeader = req.headers.authorization;
+  const token = authorHeader.split(" ")[1] || req.session.token ;
 
   if (!token) {
     return res.status(401).json({ message: "유효하지 않은 접근입니다." });
@@ -18,7 +19,8 @@ const authenticateUser = (req, res, next) => {
 };
 
 const authenticateAdmin = (req, res, next) => {
-  const token = req.session.token;
+  const authorHeader = req.headers.authorization;
+  const token = authorHeader.split(" ")[1] || req.session.token ;
 
   if (!token) {
     return res.status(401).json({ message: "유효하지 않은 접근입니다." });
