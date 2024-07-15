@@ -24,7 +24,7 @@ router.post(
       .matches(/[\W]/)
       .withMessage("비밀번호는 특수문자를 포함해야 합니다."),
   ],
-  controller.getMember
+  controller.loginMember
 );
 
 // 회원가입
@@ -73,6 +73,6 @@ router.patch(
 router.delete("/", authenticateUser, controller.deleteMember);
 
 // 로그아웃
-router.post("/logout", authenticateUser, controller.logoutMember);
+router.delete("/logout", authenticateUser, controller.logoutMember);
 
 module.exports = router;

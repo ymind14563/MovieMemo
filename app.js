@@ -44,8 +44,6 @@ app.get("/", (req, res) => {
   res.render("main");
 });
 
-
-
 routerMiddleware(app);
 
 // 404

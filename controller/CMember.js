@@ -4,7 +4,7 @@ const { Member } = require("../model");
 const { validationResult } = require("express-validator");
 
 //로그인
-exports.postMember = async (req, res) => {
+exports.loginMember = async (req, res) => {
   try {
     const { name, password } = req.body;
 
