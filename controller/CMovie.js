@@ -4,7 +4,7 @@ const { Op } = require('sequelize'); // sequelize Operator(연산자)
 
 /** 
  *  정보를 DB에 추가하는 공통 기능을 함수로 분리,
- *  data 에 담겨야할 정보들 : ( 포스터,  제목,  vod,  줄거리, 개봉일 ,출연진, 판매액, 평점 )
+ *  data 에 담겨야할 정보들 : ( 포스터,  제목,  vod,  줄거리, 개봉일 ,출연진, 판매액, 평점 ) 추후 추가 가능
  *  이 함수의 사용전후엔 트랜잭션이 필요해요오
  *  genres, 는 다른 테이블에 담길 것이므로, 미리 분리해둠.
  *  t 는 트랜지션 객체
@@ -20,7 +20,9 @@ const insertToDb = async (data, genres, t) => {
       movieCast: data.movieCast,
       moviereleaseDate: data.moviereleaseDate,
       movie_salesAcc: data.movie_salesAcc,
+      directorNm: data.directorNm,
       reviewMovieRating: data.reviewMovieRating || 0,
+    
     }, { transaction: t });
     // 장르는 중복값은 필요없고 새로 발견된 녀석들만 저장하려고 함.
     for (const genreName of genres) {
@@ -322,7 +324,7 @@ exports.getMovieType = async (req, res) => {
  */
 exports.postMovie = async (req, res) => {
   try {
-    const { posterUrl, movieTitle, vodUrl, movieSynopsys, movieCast, genres, moviereleaseDate, movie_salesAcc, reviewMovieRating } = req.body;
+    const { posterUrl, movieTitle, vodUrl, movieSynopsys, movieCast, genres, directorNm,moviereleaseDate, movie_salesAcc, reviewMovieRating } = req.body;
     
     if (!movieTitle) {
       return errorHandler(400, res, '필수 정보가 누락되었습니다.');
@@ -330,7 +332,7 @@ exports.postMovie = async (req, res) => {
     //트랜잭션 시작
     const t = await db.sequelize.transaction();
 
-    const newMovie = await insertToDb({ posterUrl, movieTitle, vodUrl, movieSynopsys, movieCast, moviereleaseDate, movie_salesAcc, reviewMovieRating }, genres, t);
+    const newMovie = await insertToDb({ posterUrl, movieTitle, vodUrl, movieSynopsys, directorNm, movieCast, moviereleaseDate, movie_salesAcc, reviewMovieRating }, genres, t);
 
     // 트랜잭션 종료
     await t.commit();
@@ -360,7 +362,7 @@ exports.postMovie = async (req, res) => {
 exports.patchMovie = async (req, res) => {
   const t = await db.sequelize.transaction();
   try {
-    const { posterUrl, movieTitle, vodUrl, movieSynopsys, movieCast, genres, moviereleaseDate, movie_salesAcc, reviewMovieRating } = req.body;
+    const { posterUrl, movieTitle, vodUrl, movieSynopsys, movieCast, genres, moviereleaseDate, directorNm, movie_salesAcc, reviewMovieRating } = req.body;
 
     if (!movieTitle) {
       return errorHandler(400, res, '필수 정보가 누락되었습니다.');
@@ -375,15 +377,7 @@ exports.patchMovie = async (req, res) => {
       return errorHandler(404, res, '해당 영화 정보를 찾을 수 없습니다.');
     }
 
-    await movie.update({
-      posterUrl,
-      vodUrl,
-      movieSynopsys,
-      movieCast,
-      moviereleaseDate,
-      movie_salesAcc,
-      reviewMovieRating
-    }, { transaction: t });
+    await movie.update({ posterUrl, vodUrl, movieSynopsys, movieCast, directorNm, moviereleaseDate, movie_salesAcc, reviewMovieRating }, { transaction: t });
 
     if (genres) {
       // 기존 장르 삭제
