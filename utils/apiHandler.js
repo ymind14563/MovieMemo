@@ -56,78 +56,25 @@ exports.requestAPIByActor = async (Actor) => {
   }
 };
 
+
 /**
  * 영화 데이터를 가공하는 함수
  */
-exports.manufactureAPI = ( method ,movieDataList) => {
-
-  // const processedMovies = movieDataList.Result.map(movieData => {
-  //   return {
-  //     posterUrl : movieData.posters ? movieData.posters.split('|')[0] : '',
-  //     vodUrl : movieData.vods?.vod[0]?.vodUrl || '',
-  //     movieSynopsys : movieData.plots?.plot[0]?.plotText || '',
-  //     moviereleaseDate : movieData.repRlsDate || '',
-  //     movie_salesAcc : movieData.salesAcc || '',
-  //     reviewMovieRating : 0,
-  //     genre : movieData.genre || '',
-  //     movieTitle : method==='title'? movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '': movieData.title ? movieData.title.trim() : '',
-  //     movieCast :method ==='actor'?movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '':movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').trim() || '',
-  //   };
-  // });
-  // return processedMovies;
-
-
-  if (method==='title') {  
-    const processedMovies = movieDataList.Result.map(movieData => {
-      const posterUrl = movieData.posters ? movieData.posters.split('|')[0] : '';
-      const movieTitle = movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '';
-      const vodUrl = movieData.vods?.vod[0]?.vodUrl || '';
-      const movieSynopsys = movieData.plots?.plot[0]?.plotText || '';
-      const movieCast = movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ') || '';
-      const moviereleaseDate = movieData.repRlsDate || '';
-      const movie_salesAcc = movieData.salesAcc || '';
-      const reviewMovieRating = 0;
-      const genre = movieData.genre || '';
-
-      return {
-        posterUrl,
-        movieTitle,
-        vodUrl,
-        movieSynopsys,
-        movieCast,
-        moviereleaseDate,
-        movie_salesAcc,
-        reviewMovieRating,
-        genre
-      };
-    });
-    return processedMovies;
-  }else if(method ==='actor'){
-    const processedMovies = movieDataList.Result.map(movieData => {
-      const posterUrl = movieData.posters ? movieData.posters.split('|')[0] : '';
-      const movieTitle = movieData.title ? movieData.title : '';
-      const vodUrl = movieData.vods?.vod[0]?.vodUrl || '';
-      const movieSynopsys = movieData.plots?.plot[0]?.plotText || '';
-      const movieCast = movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '';
-      const moviereleaseDate = movieData.repRlsDate || '';
-      const movie_salesAcc = movieData.salesAcc || '';
-      const reviewMovieRating = 0;
-      const genre = movieData.genre || '';
-  
-      return {
-        posterUrl,
-        movieTitle,
-        vodUrl,
-        movieSynopsys,
-        movieCast,
-        moviereleaseDate,
-        movie_salesAcc,
-        reviewMovieRating,
-        genre
-      };
-    });
-    return processedMovies;
-  }
-
+exports.manufactureAPI = (method, movieDataList) => {
+  const processedMovies = movieDataList.Result.map(movieData => {
+    return {
+      posterUrl: movieData.posters ? movieData.posters.split('|')[0] : '',
+      vodUrl: movieData.vods?.vod[0]?.vodUrl || '',
+      movieSynopsys: movieData.plots?.plot[0]?.plotText || '',
+      moviereleaseDate: movieData.repRlsDate || '',
+      movie_salesAcc: movieData.salesAcc || '',
+      reviewMovieRating: 0,
+      genre: movieData.genre || '',
+      directorNm: movieData.directors?.director?.map(dir => dir.directorNm).join(', ') || '',
+      movieTitle: method === 'title' ? movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '' : movieData.title ? movieData.title.trim() : '',
+      movieCast: method === 'actor' ? movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '' : movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').trim() || ''
+    };
+  });
+  return processedMovies;
 };
 
