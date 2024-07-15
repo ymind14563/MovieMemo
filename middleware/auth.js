@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 
+//유저 인증 미들웨어
 const authenticateUser = (req, res, next) => {
   const authorHeader = req.headers.authorization;
-  const token = authorHeader.split(" ")[1] || req.session.token ;
+  const token = authorHeader.split(" ")[1] || req.session.token;
 
   if (!token) {
     return res.status(401).json({ message: "유효하지 않은 접근입니다." });
@@ -18,9 +19,10 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
+//관리자 인증 미들웨어
 const authenticateAdmin = (req, res, next) => {
   const authorHeader = req.headers.authorization;
-  const token = authorHeader.split(" ")[1] || req.session.token ;
+  const token = authorHeader.split(" ")[1] || req.session.token;
 
   if (!token) {
     return res.status(401).json({ message: "유효하지 않은 접근입니다." });

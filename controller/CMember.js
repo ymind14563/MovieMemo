@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 const { Member } = require("../model");
 const { validationResult } = require("express-validator");
 
-exports.getMember = async (req, res) => {
+//로그인
+exports.postMember = async (req, res) => {
   try {
     const { name, password } = req.body;
 
@@ -52,6 +53,7 @@ exports.getMember = async (req, res) => {
   }
 };
 
+//회원 가입
 exports.postMember = async (req, res) => {
   try {
     const { gender, age, name, nick, email, password } = req.body;
@@ -110,6 +112,13 @@ exports.patchMember = async (req, res) => {
 
 //회원 탈퇴
 exports.deleteMember = async (req, res) => {
+  const memberId = req.memberId;
+  const isAdmin = req.isAdmin;
+  // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
+  if (review.memberId !== memberId && !isAdmin) {
+    console.log(`권한이 없습니다.`);
+    return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
+  }
   try {
     await Member.destroy({ where: { name: req.body.name } });
 
@@ -118,6 +127,20 @@ exports.deleteMember = async (req, res) => {
         return res.status(500).json({ message: "로그아웃 실패" });
       }
       res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
+    });
+  } catch (error) {
+    res.status(500).json({ message: "서버 오류" });
+  }
+};
+
+// 로그아웃
+exports.logoutMember = async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: "로그아웃 실패" });
+      }
+      res.status(200).json({ message: "로그아웃 되었습니다." });
     });
   } catch (error) {
     res.status(500).json({ message: "서버 오류" });
