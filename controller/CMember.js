@@ -39,11 +39,13 @@ exports.getMember = async (req, res) => {
     );
 
     // 세션에 저장
+    req.headers.authorization = token;
     req.session.token = token;
 
+    console.log(token);
     // 로그인 성공
     // res.redirect("/member");
-    res.json({ message: member });
+    res.json({ message: member, token });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "서버 오류" });

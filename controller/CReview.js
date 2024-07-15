@@ -225,7 +225,7 @@ exports.deleteReview = async (req, res) => {
         // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
         if (review.memberId !== memberId && !isAdmin) {
             console.log(`권한이 없습니다.`);
-            return res.status(403).json({ message: `4유효하지 않은 접근입니다.` });
+            return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
         }
 
         // 삭제 할 영화 리뷰 평점

@@ -75,6 +75,8 @@ module.exports = (sequelize, DataTypes) => {
   // 관계 설정
   Member.associate = (models) => {
     Member.hasMany(models.Review, { foreignKey: "memberId" });
+    Member.hasMany(models.Like, { foreignKey: 'likeId' });
+    Member.hasMany(models.Report, { foreignKey: 'reportId' });
   };
 
   return Member;
