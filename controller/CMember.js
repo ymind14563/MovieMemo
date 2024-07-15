@@ -40,7 +40,7 @@ exports.postMember = async (req, res) => {
     );
 
     // 세션에 저장
-    req.headers.authorization = `Bearer ${token}`;
+    req.headers.authorization = token;
     req.session.token = token;
 
     console.log(token);
