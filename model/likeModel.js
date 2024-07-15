@@ -11,12 +11,24 @@ module.exports = (sequelize, DataTypes) => {
         memberId: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'Member', // 참조하는 테이블 이름
+                key: 'memberId'
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
 
         // 리뷰 식별 번호
         reviewId: {
             type: DataTypes.BIGINT,
             allowNull: false,
+            references: {
+                model: 'Review', // 참조하는 테이블 이름
+                key: 'reviewId'
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         },
     },
     {
