@@ -114,8 +114,15 @@ exports.patchMember = async (req, res) => {
 exports.deleteMember = async (req, res) => {
   const memberId = req.memberId;
   const isAdmin = req.isAdmin;
+
+  const member = await Member.findOne({
+    where: { memberId }
+})
+
+if (!member) return res.status(404).json({ message: `회원을 찾을 수 없습니다.`})
+
   // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
-  if (review.memberId !== memberId && !isAdmin) {
+  if (member.memberId !== memberId && !isAdmin) {
     console.log(`권한이 없습니다.`);
     return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
   }
@@ -141,6 +148,7 @@ exports.logoutMember = async (req, res) => {
         return res.status(500).json({ message: "로그아웃 실패" });
       }
       res.status(200).json({ message: "로그아웃 되었습니다." });
+      req.headers.authorization = '';
     });
   } catch (error) {
     res.status(500).json({ message: "서버 오류" });

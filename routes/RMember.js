@@ -10,7 +10,6 @@ const { authenticateUser, authenticateAdmin } = require("../middleware/auth");
 router.post(
   "/login",
   [
-    authenticateUser,
     check("name").notEmpty().withMessage("이름을 입력해주세요."),
     check("password")
       .isLength({ min: 8 })
@@ -31,7 +30,6 @@ router.post(
 router.post(
   "/register",
   [
-    authenticateUser,
     check("name").notEmpty().withMessage("이름을 입력해주세요."),
     check("nick").notEmpty().withMessage("닉네임을 입력해주세요."),
     check("password")
