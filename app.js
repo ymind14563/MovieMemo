@@ -2,7 +2,7 @@ const express = require("express");
 const path = require(`path`);
 const dotenv = require(`dotenv`);
 const { routerMiddleware } = require("./middleware/routerMiddleware");
-const router = express.Router();
+
 // 기본 .env 파일을 로드
 dotenv.config({
   path: path.resolve(__dirname, `.env`),
@@ -34,11 +34,14 @@ const port = process.env.PORT || 5000;
 
 // 미들웨어 등록
 app.use(`/static`, express.static(__dirname + `/public`));
+app.use(`/css`, express.static(__dirname + `/public/css`));
+app.use(`/js`, express.static(__dirname + `/public/js`));
+app.use(`/img`, express.static(__dirname + `/public/img`));
 
 //기본 요청주소 localhost:8000
 
-router.get("/", (req, res) => {
-  res.render("index");
+app.get("/", (req, res) => {
+  res.render("main");
 });
 
 
