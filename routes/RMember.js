@@ -2,6 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const router = express.Router();
 const controller = require("../controller/CMember");
+const { authenticateUser, authenticateAdmin } = require("../middleware/auth");
 
 // 기본 요청 경로 localhost:PORT/member
 
@@ -9,6 +10,7 @@ const controller = require("../controller/CMember");
 router.post(
   "/login",
   [
+    authenticateUser,
     check("name").notEmpty().withMessage("이름을 입력해주세요."),
     check("password")
       .isLength({ min: 8 })
@@ -29,6 +31,7 @@ router.post(
 router.post(
   "/register",
   [
+    authenticateUser,
     check("name").notEmpty().withMessage("이름을 입력해주세요."),
     check("nick").notEmpty().withMessage("닉네임을 입력해주세요."),
     check("password")
@@ -50,6 +53,7 @@ router.post(
 router.patch(
   "/password",
   [
+    authenticateUser,
     check("password")
       .isLength({ min: 8 })
       .withMessage("비밀번호는 최소 8자 이상이어야 합니다.")
@@ -66,6 +70,9 @@ router.patch(
 );
 
 // 회원 탈퇴
-router.delete("/", controller.deleteMember);
+router.delete("/", authenticateUser, controller.deleteMember);
+
+// 로그아웃
+router.post("/logout", authenticateUser, controller.logoutMember);
 
 module.exports = router;
