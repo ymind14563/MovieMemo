@@ -1,5 +1,5 @@
 const db = require('../model/index');
-const { requestAPIByTitle, requestAPIByActor, manufactureAPI } = require('../utils/apiHandler');
+const { requestAPI, manufactureAPI } = require('../utils/apiHandler');
 const { Op } = require('sequelize'); // sequelize Operator(연산자)
 
 /** 
@@ -44,7 +44,18 @@ const insertToDb = async (data, genres, t) => {
     throw error;
   }
 };
-
+/**
+ * 사이에 공백이 존재하는 검색어를 처리하기 위한 함수 
+ */
+function searchWordFunc(searchTerm) {
+  // 문자열 앞뒤의 공백을 제거하고, 연속된 공백을 하나의 공백으로 변경
+  const step1 = searchTerm.trim().replace(/\s+/g, ' ');
+  // 공백을 기준으로 단어들을 분리
+  const step2 = step1.split(' ');
+  // 각 단어 사이에 '%'를 삽입하고, 전체 문자열의 앞뒤에도 '%' 추가
+  const result = '%' + step2.join('%') + '%'; 
+  return result;
+}
 /**
  * 에러처리 함수. 상태코드 400, 404, 500에 대응
  * 
@@ -71,54 +82,72 @@ const errorHandler = (statusCode, res, msg) => {
 };
 
 /**
- *  제목을 통한 영화 목록 조회
- *  요청 url router.get('/search/:movieTitle', controller.getMovieByTitle);
+ *  검색을 통한 영화 목록 조회를 통합
+ * 
+ *  제목을 통한 요청 url router.get('/searchT/:movieTitle', controller.getMovieBySearch);
+ *  배우를 통한 요청 url router.get('/searchA/:movieActor', controller.getMovieBySearch);
  *   
  *    요청을 받았을때
- *   1) DB에 해당 영화 제목과 일치하는 영화 데이터가 존재하는지 확인
- *   2) DB에 영화 정보가 없는 경우 API 에 영화 정보 호출 후 저장 DB에 영화 정보 저장
+ *   1) DB에 해당 영화 검색 결과와 일치하거나 유사한 영화 데이터가 존재하는지 확인
+ *   2) DB에 영화 정보가 없는 경우 API 에 영화 정보 요청 후 저장 DB에 영화 정보 저장
+ *   3) 정보가 성공적으로 저장된 후 , 트랜잭션 종료, 재검색 후 결과를 반환
  *   
  *   API 호출 후 데이터베이스에 저장하는 작업이 동반되는 경우 함수의 시작부터 종료까지 3초 이상 걸릴 수도 있었음.
- *   성공적 호출시 응답 res.status(200).json(movie);
+ *   성공적 호출시 응답 res.status(200).render('searchResult',movie);
+ * 
+ *  아직 제목, 배우 두가지 방식으로만 검색을 받기 때문에 삼항연산자를 사용해서 구분
  */
-exports.getMovieByTitle = async (req, res) => {
-  console.time('getMovieList'); // 함수의 작동시간 측정을 위해 사용
+exports.getMovieBySearch = async (req, res) => {
+  const urlParts = req.url.split('/'); 
+  const searchType = urlParts[1]; // searchT 또는 searchA 가 담길 예정
+  console.time('getMovieList'); // 함수의 성능 측정을 위한 타이머
   try {
-    const { movieTitle } = req.params;
-    if (!movieTitle || movieTitle.trim() === '') { //빈 문자열을 입력한 경우를 걸러냄      
+    const searchWord = searchType==='searchA'? req.params.movieActor: req.params.movieTitle;
+    if (!searchWord || searchWord.trim() === '') {    //빈 문자열을 입력한 경우를 걸러냄   
       console.timeEnd('getMovieList');
-      return errorHandler(400, res, '영화 제목이 누락되었습니다.');
+      return errorHandler(400, res, '배우 이름이 누락되었습니다.');
     }
-
-    // DB에서 유사한 제목을 가진 영화 정보 확인
-    let movies = await db.Movie.findAll({
-      where: {
-        movieTitle: {
-          [Op.like]: `%${movieTitle.trim()}%` // [Op.like]: %${movieTitle.trim()}%는 SQL의 like 검색을 위한 부분, movietitle.trim() 이 포함된 모든 값을 검색
-        }
-      },
-      include: [{ model: db.Genre, through: { attributes: [] } }] //관계 중간 테이블의 속성과 값은 가져오지 않음
-    });
+    let searchWordMF = searchWordFunc(searchWord);
+    // DB에서 영화 목록 을 확인
+    let movies = searchType === 'searchA'
+    ? await db.Movie.findAll({
+        where: {
+          movieCast: {
+            [Op.like]: `${searchWordMF}`// [Op.like]: %${searchWord.trim()}%는 SQL의 like 검색을 위한 부분, searchWord.trim() 이 포함된 모든 값을 검색
+          }
+        },
+        include: [{ model: db.Genre, through: { attributes: [] } }] //관계 중간 테이블의 속성과 값은 가져오지 않음
+      })
+    : await db.Movie.findAll({
+        where: {
+          movieTitle: {
+            [Op.like]: `${searchWordMF}` // [Op.like]: %${searchWord.trim()}%는 SQL의 like 검색을 위한 부분, searchWord.trim() 이 포함된 모든 값을 검색
+          }
+        },
+        include: [{ model: db.Genre, through: { attributes: [] } }] //관계 중간 테이블의 속성과 값은 가져오지 않음
+      });
+    ;
     
-    // 검색 결과가 없거나 적은 경우에만 API 호출
+    // 검색 결과가 없는 경우에만 API 호출
     if (!movies || movies.length < 5) {
-      const movieDataList = await requestAPIByTitle(movieTitle); // utils/apiHandler.js 의 api 요청함수
+      const movieDataList = await requestAPI( searchType, searchWord ); // utils/apiHandler.js 의 api 요청함수
       if (!movieDataList || movieDataList.length === 0) { // API검색 결과가 모두 없는 경우를 걸러냄
         console.timeEnd('getMovieList');
         return errorHandler(404, res, 'API에 일치하거나 유사한 제목을 가진 영화가 존재하지 않습니다.');
       }
 
-      const dataToInsert = manufactureAPI('title',movieDataList); // utils/apiHandler.js 의 데이터 가공함수 성공적으로 여기까지 도달했으면 여러 객체가 담겨있을것, 'title' 을 통해, 가공함수에 제목을 통한 검색임을 알리고, 데이터를 보내 가공함
+      const dataToInsert = manufactureAPI( searchType, movieDataList);  // utils/apiHandler.js 의 데이터 가공함수 성공적으로 여기까지 도달했으면 여러 객체가 담겨있을것, 제목 또는 배우 이름을 을 통해 검색, 가공함수에 검색어의 종류를 알리고, 데이터를 보내 가공함
 
-      // 트랜잭션(transaction, DB의 일관성을 위해서 트랜잭션을 사용 ) 시작 API 응답을 통한 데이터를 하나씩 DB에 넣음
+
+      // 트랜잭션 시작
       const t = await db.sequelize.transaction();
 
       try {
         for (const movieData of dataToInsert) {
-          const genres = movieData.genre.split(',').map(g => g.trim()); // 장르는 여러 문자열 공포,코미디,멜로 처럼 하나의 문자열로 응답받았기 때문에 ,를 기준으로 잘라서 객체화함
+          const genres = movieData.genre.split(',').map(g => g.trim());// 장르는 여러 문자열 공포,코미디,멜로 처럼 하나의 문자열로 응답받았기 때문에 ,를 기준으로 잘라서 객체화함
 
           // 중복 체크, 하나씩 확인해서 DB에 같은 이름의 영화가 이미 존재하면 입력하지 않음
-          const existingMovie = await db.Movie.findOne({ 
+          const existingMovie = await db.Movie.findOne({
             where: { movieTitle: movieData.movieTitle },
             transaction: t
           });
@@ -130,26 +159,35 @@ exports.getMovieByTitle = async (req, res) => {
 
         // 트랜잭션 종료 DB 입력, 수정, 삭제 하는 작업은 모두 종료되었음
         await t.commit();
-
+        console.log(`%${searchWord}%`);
         // 저장된 영화 정보 다시 조회, 함수의 응답 형식을 일정하게 하기 위해서, DB 에서 재검색 후 반환할 것
-        movies = await db.Movie.findAll({ 
-          where: {
-            movieTitle: {
-              [Op.like]: `%${movieTitle}%`
-            }
-          },
-          include: [{ model: db.Genre, through: { attributes: [] } }],
-        });
-
+        movies = searchType ==='searchA'
+        ? await db.Movie.findAll({
+            where: {
+              movieCast: {
+                [Op.like]: `${searchWordMF}`
+              }
+            },
+            include: [{ model: db.Genre, through: { attributes: [] } }],
+          })
+        : await db.Movie.findAll({ 
+            where: {
+              movieTitle: {
+                [Op.like]: `${searchWordMF}`
+              }
+            },
+            include: [{ model: db.Genre, through: { attributes: [] } }],
+          });
+        ;
       } catch (error) {
-        // 오류 발생 시 롤백 
-        await t.rollback(); // 트랜잭션의 경우 실패했기 때문에 다시 롤백, DB 의 일관성을 유지
+        // 오류 발생 시 롤백
+        await t.rollback();// 트랜잭션의 경우 실패했기 때문에 다시 롤백, DB 의 일관성을 유지
         console.timeEnd('getMovieList');
         return errorHandler(500, res, '영화 정보 저장 중 오류가 발생했습니다.');
       }
     }
 
-    console.timeEnd('getMovieList'); // 여기까지 도달했으면 함수는 성공적으로 작동한 것, 의도하지 않은 작동의 확인 위해 다양한 검색을 시도해 볼것
+    console.timeEnd('getMovieList');// 여기까지 도달했으면 함수는 성공적으로 작동한 것, 의도하지 않은 작동의 확인 위해 다양한 검색을 시도해 볼것
     res.status(200).json({  // 상태코드 200 ! 성공적! 나의 작고 소중한 movies 객체를 반환한다.
       message: '영화 목록을 성공적으로 조회했습니다.',
       data: movies
@@ -161,95 +199,6 @@ exports.getMovieByTitle = async (req, res) => {
   }
 };
 
-/**
- *  배우 이름을 통한 영화 목록 조회 , 구조는 제목을 통한 검색과 동일 
- *  요청 url router.get('/searchA/:movieActor', controller.getMovieByActor);
- *   
- *    요청을 받았을때
- *   1) DB에 해당 배우와 일치하거나 유사한 배우 데이터가 존재하는지 확인
- *   2) DB에 영화 정보가 없는 경우 API 에 영화 정보 호출 후 저장 DB에 영화 정보 저장
- * 
- *   성공적 호출시 응답 res.status(200).json(movie);
- */
-exports.getMovieByActor = async (req, res) => {
-  console.time('getMovieList');
-  try {
-    const { movieActor } = req.params;
-    if (!movieActor || movieActor.trim() === '') {      
-      console.timeEnd('getMovieList');
-      return errorHandler(400, res, '영화 제목이 누락되었습니다.');
-    }
-
-    // DB에서 배우가 참여한 영화 목록 확인
-    let movies = await db.Movie.findAll({
-      where: {
-        movieCast: {
-          [Op.like]: `%${movieActor.trim()}%`
-        }
-      },
-      include: [{ model: db.Genre, through: { attributes: [] } }]
-    });
-    
-    // 검색 결과가 없는 경우에만 API 호출
-    if (!movies || movies.length < 5) {
-      const movieDataList = await requestAPIByActor(movieActor);
-      if (!movieDataList || movieDataList.length === 0) {
-        console.timeEnd('getMovieList');
-        return errorHandler(404, res, 'API에 일치하거나 유사한 제목을 가진 영화가 존재하지 않습니다.');
-      }
-
-      const dataToInsert = manufactureAPI('actor',movieDataList);
-
-      // 트랜잭션 시작
-      const t = await db.sequelize.transaction();
-
-      try {
-        for (const movieData of dataToInsert) {
-          const genres = movieData.genre.split(',').map(g => g.trim());
-
-          // 중복 체크
-          const existingMovie = await db.Movie.findOne({
-            where: { movieTitle: movieData.movieTitle },
-            transaction: t
-          });
-
-          if (!existingMovie) {
-            await insertToDb(movieData, genres, t);
-          }
-        }
-
-        // 트랜잭션 종료
-        await t.commit();
-
-        // 저장된 영화 정보 다시 조회
-        movies = await db.Movie.findAll({
-          where: {
-            movieCast: {
-              [Op.like]: `%${movieActor}%`
-            }
-          },
-          include: [{ model: db.Genre, through: { attributes: [] } }],
-        });
-
-      } catch (error) {
-        // 오류 발생 시 롤백
-        await t.rollback();
-        console.timeEnd('getMovieList');
-        return errorHandler(500, res, '영화 정보 저장 중 오류가 발생했습니다.');
-      }
-    }
-
-    console.timeEnd('getMovieList');
-    res.status(200).json({
-      message: '영화 목록을 성공적으로 조회했습니다.',
-      data: movies
-    });
-
-  } catch (err) {
-    console.timeEnd('getMovieList');
-    return errorHandler(500, res, err);
-  }
-};
 
 /**
  * id 를 통해서 특정영화 한가지 불러오기 // url parameter 로 한가지 영화를 검색! 쉬움!
@@ -292,13 +241,15 @@ exports.getMovieInfo = async (req,res) => {
 exports.getMovieType = async (req, res) => {
   try {
     const { genreType } = req.params;
+    
+    let genreTypeMF = searchWordFunc(genreType);
 
     const movies = await db.Movie.findAll({ 
       include: [{
         model: db.Genre,
         where: {
           genreType: {
-            [db.Sequelize.Op.like]: `%${genreType}%`
+            [db.Sequelize.Op.like]: `${genreTypeMF}`
           }
         },
         through: { attributes: [] }
