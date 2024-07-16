@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="ko">
-<%- include('partials/head.ejs') %>
+<head>
+  <%- include('partials/head.ejs') %>
+  <!-- 공통 css 이외에 이 페이지에서만 사용할 css를 호출!-->
+  <link rel="stylesheet" href="/css/searchresult.css">
+</head>
 <body>
   <%- include('partials/components/navBar') %>
-  <h3>검색 결과 페이지 입니다. 총 <%= data.length%> 개 의 결과가 검색되었습니다. </h3>
-  <%= data[0].movieTitle; %>
-  <% for( let i =0 ; i < data.length% ; i ++){ %>
+  <h3>검색 결과 페이지 입니다. 총 <%= totalCount %> 개의 결과가 검색되었습니다.</h3>
   
-  
-  <% } %>
-
+  <% Object.keys(data).forEach((page, index) => { %>
+    <h4>페이지 <%= index + 1 %></h4>
+    <ul>
+      <% data[page].forEach(movie => { %>
+        <li><%= movie.dataValues.movieTitle %></li>
+      <% }); %>
+    </ul>
+  <% }); %>
 </body>
 <%- include('partials/tail.ejs') %>
 <script src="/js/searchResult.js"></script>
-</html> 
+</html>

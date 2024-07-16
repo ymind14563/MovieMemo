@@ -14,7 +14,7 @@ const app = express();
 const { sequelize } = require(`./model/index`);
 
 app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("views", "views");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -54,7 +54,7 @@ app.get("*", (req, res) => {
 sequelize
   // force : true ; 서버 실행할 때마다 테이블 재생성
   // force : false ; 서버 실행 시 테이블이 없으면 생성
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     app.listen(port, () => {
       console.log(`${port}에 연결됨`);

@@ -43,12 +43,12 @@ exports.manufactureAPI = (method, movieDataList) => {
     return {
       posterUrl: movieData.posters ? movieData.posters.split('|')[0] : '',
       vodUrl: movieData.vods?.vod[0]?.vodUrl || '',
-      movieSynopsys: movieData.plots?.plot[0]?.plotText || '',
+      movieSynopsys: movieData.plots?.plot[0]?.plotText.replace(/!HS|!HE/g, '').trim() || '',
       moviereleaseDate: movieData.repRlsDate || '',
       movie_salesAcc: movieData.salesAcc || '',
       reviewMovieRating: 0,
       genre: movieData.genre || '',
-      directorNm: movieData.directors?.director?.map(dir => dir.directorNm).join(', ') || '',
+      directorNm: movieData.directors?.director?.map(dir => dir.directorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '',
       movieTitle: method === 'searchT' ? movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '' : movieData.title ? movieData.title.trim() : '',
       movieCast: method === 'searchA' ? movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '' : movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').trim() || ''
     };

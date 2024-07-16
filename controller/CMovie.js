@@ -68,7 +68,7 @@ const errorHandler = (statusCode, res, msg) => {
       break;
     case 404:
       console.error('오류 발생:', msg);
-      res.status(statusCode).json({ message: msg || '존재하지 않는 페이지 입니다.' });
+      res.status(statusCode).render('404',{ message: msg || '존재하지 않는 페이지 입니다.' });
       break;
     case 500:
       console.error('서버 오류 발생:', msg);
@@ -80,6 +80,49 @@ const errorHandler = (statusCode, res, msg) => {
       break;
   }
 };
+
+/**
+ * movies 객체를 page 안에 moviesInpage 숫자만큼 나눠서 저장하기 위한함수
+ * 
+*/
+const pagingMovie = (movies) => {
+  const totalMovie = movies.length; // 객체의 총 길이
+  const moviesInPage = 10; // 한 페이지당 저장될 객체의 데이터 수
+  let book = {};
+  
+  for (let i = 0; i < Math.ceil(totalMovie / moviesInPage); i++) {
+    let page = [];  
+    let nowIndex = i * moviesInPage;
+    
+    // 여기서 수정이 필요합니다
+    for (let j = nowIndex; j < Math.min(nowIndex + moviesInPage, totalMovie); j++) {
+      page.push(movies[j]);
+    }
+    book[`page${i+1}`] = page;
+  }
+  return book;
+}
+
+// const pagingMovie = (movies) => {
+//   const totalMovie = movies.length; // 객체의 총 길이
+//   const moviesPerPage = 10; // 한 페이지당 저장될 객체의 데이터 수
+//   const result = {};
+
+//   for (let i = 0; i < Math.ceil(totalMovie / moviesPerPage); i++) {
+//     let page = [];
+    
+//     let startIndex = i * moviesPerPage;
+//     let endIndex = Math.min(startIndex + moviesPerPage, totalMovie);
+    
+//     for (let j = startIndex; j < endIndex; j++) {
+//       page.push(movies[j]);
+//     }
+    
+//     result[`page${i + 1}`] = page;
+//   }
+
+//   return result;
+// };
 
 /**
  *  검색을 통한 영화 목록 조회를 통합
@@ -186,11 +229,14 @@ exports.getMovieBySearch = async (req, res) => {
         return errorHandler(500, res, '영화 정보 저장 중 오류가 발생했습니다.');
       }
     }
+    let book = pagingMovie(movies);
 
+    console.log(book);
     console.timeEnd('getMovieList');// 여기까지 도달했으면 함수는 성공적으로 작동한 것, 의도하지 않은 작동의 확인 위해 다양한 검색을 시도해 볼것
-    res.status(200).json({  // 상태코드 200 ! 성공적! 나의 작고 소중한 movies 객체를 반환한다.
+    res.status(200).render('searchResult',{  // 상태코드 200 ! 성공적! 나의 작고 소중한 movies 객체를 반환한다.
       message: '영화 목록을 성공적으로 조회했습니다.',
-      data: movies
+      totalCount : movies.length,
+      data: book
     });
 
   } catch (err) {
@@ -214,7 +260,7 @@ exports.getMovieInfo = async (req,res) => {
     if (!result) {    
       return errorHandler(404, res, '삭제되거나 존재하지 않는 영화 데이터 입니다.');
     }
-    res.status(200).json({
+    res.status(200).render('review',{
       message: '영화 정보를 성공적으로 조회했습니다.',
       data: result
     });
