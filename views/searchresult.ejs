@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<%- include('partials/head.ejs') %>
+<body>
+  <%- include('partials/components/navBar') %>
+  <h3>검색 결과 페이지 입니다. 총 <%= data.length%> 개 의 결과가 검색되었습니다. </h3>
+  <%= data[0].movieTitle; %>
+  <% for( let i =0 ; i < data.length% ; i ++){ %>
+  
+  
+  <% } %>
+
+</body>
+<%- include('partials/tail.ejs') %>
+<script src="/js/searchResult.js"></script>
+</html> 
