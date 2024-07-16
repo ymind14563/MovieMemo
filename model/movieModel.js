@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     directorNm: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(100),
       allowNull: true
     },
     movie_salesAcc: {
