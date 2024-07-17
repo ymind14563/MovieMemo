@@ -1,132 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="/public/css/review.css">
-    <script defer src="/public/js/review.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>new rendering</title>
+  <link rel="stylesheet" href="/css/review.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <main id="movie_info_container">
-        <section id="movie_poster">
-            <div class="poster_box">
-                <div class="movie_title">
-                    해리포터와 마법사의 돌
-                </div>
+  <main id="page_container">
+
+    <div class="trailer_box">
+      <video src="https://www.kmdb.or.kr/trailer/play/MK060920_P02.mp4" autoplay muted loop></video>
+    </div>
+
+    <div id="movie_info_container">
+      <section class="poster_container">
+        <article class="poster_box"></article>
+        
+        <div class="rating_box">
+          <div class="rating">
+            <i class="rating__star far fa-star"></i>
+            <i class="rating__star far fa-star"></i>
+            <i class="rating__star far fa-star"></i>
+            <i class="rating__star far fa-star"></i>
+            <i class="rating__star far fa-star"></i>
+          </div>
+        </div>
+      </section>
+  
+      <section class="info_container">
+        <article class="sub_info_box">
+          <div class="detail_info_box">
+            <div class="movie_title">
+              <p class="contents_title">
+              </p>
             </div>
-            <img src="/public/img/poster.jpg" alt="해리포터와 마법사의 돌">
-        </section>
+  
+            <div class="sub_detail_box">
+              <div class="detail_box">
+                <p class="contents_title">
+                  Details
+                </p>
+  
+                <ul class="detail_info_list">
+                  <li>
+                    Director: <span class="director"></span>
+                  </li>
+                  <li>
+                    Genre: <span class="genre"></span>
+                  </li>
+                  <li>
+                    Release Date: <span class="release_date"></span>
+                  </li>
+                </ul>
+              </div>
+              <div class="cast_box">
+                <p class="contents_title">Cast</p>
+                <ul class="cast_list">
+                </ul>
+              </div>
+            </div>
+          </div>
+  
 
-        <section id="movie_info_sub_container">
-            <article class="movie_info_01">
-                <div class="movie_description movie_common">
-                    <p class="info_sub_title">
-                        줄거리
-                    </p>
-                    <p class="info_sub_content">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorum excepturi quos, repellendus nobis quidem quibusdam.
-                    </p>
-                </div>
+        </article>
+        <article class="story_box">
+          <p class="contents_title">Storyline</p>
+          <p class="content_text"></p>
+        </article>
+      </section>
+    </div>
 
-                <div class="movie_cast movie_common">
-                    <p class="info_sub_title">
-                        출연자
-                    </p>
-                    <ul class="cast_list">
-                        <li>홍길동</li>
-                        <li>장발장</li>
-                        <li>이길동</li>
-                        <li>정발장</li>
-                        <li>고길동</li>
-                        <li>박발장</li>
-                    </ul>
-                </div>
+    <section id="review_container">
+      <button onclick="postReview();">리뷰 작성 버튼</button>
+      <div class="movie_review_modal_bg hidden">
+        <div class="movie_review_modal">
+            <form action="" name="review_post">
+                <textarea name="review_post" id="" cols="50" rows="20"></textarea>
+                <button type="submit">제출</button>
+                <button type="button" class="button_close" onclick="closeModal()">X</button>
+            </form>
+        </div>
+    </div>
 
-                <div class="movie_review movie_common">
-                    <div class="info_sub_box">
-                        <span class="info_sub_title">영화 리뷰</span>
-                        <button type="button" class="button_open" onclick="postReview()">
-                            + add your review 
-                        </button>
-                    </div>
-                    <div class="movie_review_modal_bg hidden">
-                        <div class="movie_review_modal">
-                            <form action="" name="review_post">
-                                <textarea name="review_post" id="" cols="50" rows="20"></textarea>
-                                <button type="submit">제출</button>
-                                <button type="button" class="button_close" onclick="closeModal()">X</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="swiper">
-                        <div class="review_post_container swiper-wrapper">
-                            <div class="swiper-slide">
-                                <p>유저 닉네임1</p>
-                                <p>리뷰 내용1</p>
-                            </div>
-                            <div class="swiper-slide">
-                                <p>유저 닉네임2</p>
-                                <p>리뷰 내용2</p>
-                            </div>
-                            <div class="swiper-slide">
-                                <p>유저 닉네임3</p>
-                                <p>리뷰 내용3</p>
-                            </div>
-                        </div>
-                        <div class="swiper-pagination"></div>
-      
-                        <!-- If we need navigation buttons -->
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
-                </div>
-            </article>
+      <div class="review_box">
+        <span>유저 이름</span>
+        <span>별점 공간</span>
+        <span>좋아요 or 수정</span>
+        <p>
+          리뷰 내용 블라 블라
+        </p>
+        <p>
+          <span>날짜</span>
+          <button type="button">신고버튼</button>
+        </p>
+      </div>
 
+      <div class="review_box">
+        <span>유저 이름</span>
+        <span>별점 공간</span>
+        <span>좋아요 or 수정</span>
+        <p>
+          리뷰 내용 블라 블라
+        </p>
+        <p>
+          <span>날짜</span>
+          <button type="button">신고버튼</button>
+        </p>
+      </div>
 
+      <div class="review_box">
+        <span>유저 이름</span>
+        <span>별점 공간</span>
+        <span>좋아요 or 수정</span>
+        <p>
+          리뷰 내용 블라 블라
+        </p>
+        <p>
+          <span>날짜</span>
+          <button type="button">신고버튼</button>
+        </p>
+      </div>
 
-            <article class="movie_info_02">
-                <div class="movie_release movie_common">
-                    <p class="info_sub_title">
-                        개봉일
-                    </p>
-                    <p>
-                        2222.02.22
-                    </p>
-                </div>
-
-                <div class="moive_rating movie_common">
-                    <p class="info_sub_title">
-                        별점
-                    </p>
-                    <p>
-                        별점 매길 곳
-                    </p>
-                </div>
-
-                <div class="movie_genre movie_common">
-                    <p class="info_sub_title">
-                        영화 장르
-                    </p>
-                    <ul class="genre_list">
-                        <li>호러</li>
-                        <li>로맨스</li>
-                        <li>코미디</li>
-                    </ul>
-                </div>
-                <div class="movie_director movie_common">
-                    <p class="info_sub_title">
-                        영화 감독
-                    </p>
-                    <span class="director_name">
-                        장발장
-                    </span>
-                </div>
-            </article>
-        </section>
-    </main>
-
+      <div class="review_box">
+        <span>유저 이름</span>
+        <span>별점 공간</span>
+        <span>좋아요 or 수정</span>
+        <p>
+          리뷰 내용 블라 블라
+        </p>
+        <p>
+          <span>날짜</span>
+          <button type="button">신고버튼</button>
+        </p>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

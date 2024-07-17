@@ -44,6 +44,12 @@ app.get("/", (req, res) => {
   res.render("main");
 });
 
+// review render
+
+app.get("/review", (req, res) => {
+  res.render("review");
+});
+
 routerMiddleware(app);
 
 // 404

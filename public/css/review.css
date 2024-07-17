@@ -1,10 +1,9 @@
-*{
-    box-sizing: border-box;
-    color: #fff;
-}
-
 body{
     background-color: #141414;
+    /* height: 100vh;
+    display: grid; */
+    /* place-items: center;
+    overflow: hidden; */
 }
 
 ul{
@@ -16,181 +15,120 @@ li{
 }
 
 
-.swiper {
-    width: 100%;
-    height: 500px;
-  }
-
-/* 모든것을 담고 있는 컨테이너*/
-#movie_info_container{
+#page_container{
     width: 80%;
-    max-width: 1600px;
+    max-width: 1300px;
     margin: 0 auto;
 }
 
+#movie_info_container{
+    display: flex;
+    justify-content: space-between;
+}
 
 
-/* 영화 포스터 이미지 섹션 */
-#movie_poster{
-    position: relative;
-    width: 100%;
-    max-width: inherit;
-    text-align: center;
-    margin-bottom: 100px;
+
+.poster_container{
+    width: 18%;
+    max-width: 205px;
 }
-.poster_box{
-    position: absolute;
+
+.poster_box img{
     width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.3);
 }
+
+
+.info_container{
+    width: 80%;
+    max-width: 980px;
+}
+
+.sub_info_box{
+
+}
+.story_box{
+    border-top: 1px solid #aaa;
+}
+
+
+.detail_info_box{
+    width: 100%;
+}
+
+
+.trailer_box{
+    margin: 0 auto;
+    max-width: 80%;
+}
+.trailer_box video{
+    width: 100%;
+}
+
+
 .movie_title{
-    position: absolute;
-    bottom: 12%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 40px;
+    width: 100%;
+    border-bottom: 1px solid #aaa;
 }
-
-
-
-
-/* 영화 정보 섹션 */
-#movie_info_sub_container{
+.sub_detail_box{
     display: flex;
-    justify-content: space-between;
-    width: 100%;
 }
 
 
 
-/* 영화 정보 섹션 안에서 .movie_info_01, 02 2개의 영역으로 나뉨 */
-.movie_info_01{
-    width: 65%;
-    max-width: 1050px;
-    /* background: beige; */
+
+.detail_box{
+    width: 55%;
 }
 
-.movie_info_02{
-    width: 32%;
-    max-width: 520px;
+.detail_info_list{
+
 }
 
-
-
-/* 영화정보 내에서 공통으로 쓰이는 클래스 */
-.movie_common{
-    /*  각 영화 정보들의 외형적으로 공통인 것들 */
-    width: 100%;
+.detail_info_list li{
     margin-bottom: 20px;
-    padding: 50px;
-    border-radius: 12px;
-    border: 1px solid #262626;
-    background-color: #1A1A1A;
-}
-.info_sub_title{
-    /* 각 정보 제목들 */
-    color: #999;
-}
-.info_sub_content{
-    /* 각 정보 내용들 */
-    margin-top: 30px;
+    color: #ccc;
 }
 
-
-
-.movie_description{
-
-}
-
-
-
-.movie_cast{
-}
-.cast_list{
-    display: flex;
-    margin-top: 30px;
-}
-.cast_list li{
-    margin-right: 20px;
-    padding: 8px 14px;
-    border: 1px solid #262626;
-    border-radius: 8px;
-    background-color: #141414;
-}
-
-/* 영화 리뷰 */
-.movie_review{
-
-}
-
-.info_sub_box{
-    display: flex;
-    justify-content: space-between;
-}
-
-.button_open{
-    cursor: pointer;
-    padding: 15px;
-    border-radius: 8px;
-    text-transform: uppercase;
+.director, .release_dat, .genre{
     color: #fff;
-    background-color: #B20710;
 }
 
-.review_post_container{
+.cast_box{
+    width: 40%;
+    margin-left: 30px;
+}
+
+.cast_list li{
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+
+
+
+
+/* 리뷰 섹션 */
+
+#review_container{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
-.review_post_container li{
-    width: 48%;
-    padding: 8px 14px;
-    border: 1px solid #262626;
-    border-radius: 8px;
-    background-color: #141414;
+
+.review_box{
+    width: 23%;
+    background: #eee;
 }
 
 
 
 
 
-/* 개봉일 정보 */
-.movie_release{
-    width: 100%;
-    margin-bottom: 30px;
-}
 
 
-/* 영화 장르 정보 */
-.movie_genre{
-    width: 100%;
-    margin-bottom: 30px;
-}
-.genre_list{
-    display: flex;
-   
-}
-.genre_list li{
-    margin-right: 20px;
-    padding: 8px 14px;
-    border: 1px solid #262626;
-    border-radius: 8px;
-    background-color: #141414;
-}
 
 
-/* 영화 감독 정보 */
-.movie_director{
-    width: 100%;
-    margin-bottom: 30px;
-}
-.director_name{
-    display: inline-block;
-    padding: 8px 14px;
-    border: 1px solid #262626;
-    border-radius: 8px;
-    background-color: #141414;
-}
+
+/* 리뷰작성 모달창 */
 
 
 /* 리뷰 작성 모달 창 */
@@ -232,3 +170,73 @@ li{
     visibility: hidden;
     background-color: white;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 별점 주기 */
+.rating {
+    position: relative;
+    width: 180px;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .3em;
+    padding: 5px;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 0 2px #b3acac;
+ }
+ 
+ .rating__result {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-10px) translateX(-5px);
+    z-index: -9;
+    font-size: 3em;
+    color: #ebebeb8e;
+    pointer-events: none;
+ }
+ 
+ .rating__star {
+    font-size: 1.3em;
+    cursor: pointer;
+    color: #dabd18b2;
+    transition: filter linear .3s;
+ }
+ 
+ .rating__star:hover {
+    filter: drop-shadow(1px 1px 4px gold);
+ }
+
+
+
+
+/* 폰트 */
+
+.contents_title{
+    font-size: 30px;
+    color: #fff;
+}
+
+.content_text{
+    font-size: 16px;
+    color: #fff;
+}
+
+
