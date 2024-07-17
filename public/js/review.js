@@ -29,7 +29,22 @@ async function movieInfo(){
   try{
       const movie = await axios.get(movieUrl);
     
-      console.log("영화 데이터 전체", movie);
+      // console.log("영화 데이터 전체", movie);
+
+      // 데이터 공통 경로 변수에 담기
+      const movieShort = movie.data.Data[0].Result[0];
+
+      // * 영화 포스터 가져오기 *
+      const urlString = movie.data.Data[0].Result[0].posters;
+
+      // 1. URL을 '|'로 분리하여 배열로 만듭니다.
+      const posterUrls = urlString.split('|');
+      
+      // 2. 첫 번째 URL을 가져옵니다.
+      const firstUrl = posterUrls[0];
+      
+      // 3. img 태그에 이미지 넣기
+      moviePoster.innerHTML = `<img src="${firstUrl}" alt="${movieShort.title}">`;
 
       
   }catch(error){
