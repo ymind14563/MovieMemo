@@ -26,20 +26,43 @@ const modal = document.querySelector(".loginModal");
 const closeBtn = document.querySelector(".close");
 const overlay = document.querySelector(".overlay");
 
-loginBtn.addEventListener("click", function () {
+function handleSuccessfulLogin() {
+  localStorage.setItem('isLoggedIn', 'true');
+  updateUIForLoggedInUser();
+}
+
+function updateUIForLoggedInUser() {
+  if (loginBtn) {
+    loginBtn.textContent = "로그아웃";
+    loginBtn.removeEventListener("click", toggleModal);
+    loginBtn.addEventListener("click", logoutUser);
+  }
+}
+
+function toggleModal(){
   modal.classList.toggle("hidden");
   overlay.classList.toggle("hidden");
+}
+
+function logoutUser(){
+  localStorage.removeItem("isLoggedIn");
+  window.location.reload();
+} 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  if (isLoggedIn === "true") {
+    updateUIForLoggedInUser();
+  }
 });
 
-closeBtn.addEventListener("click", function () {
-  modal.classList.toggle("hidden");
-  overlay.classList.toggle("hidden");
-});
+loginBtn.addEventListener("click", toggleModal);
+
+closeBtn.addEventListener("click", toggleModal);
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    modal.classList.toggle("hidden");
-    overlay.classList.toggle("hidden");
+    toggleModal();
   }
 });
 
@@ -59,7 +82,11 @@ document
     try {
       const response = await axios.post("/login", data);
       console.log(response);
-      window.location.href = '/' //main page when successed
+      if(response.status === 200){
+        handleSuccessfulLogin();
+        window.location.href = '/' //main page when successed
+      }
+      
     } catch (error) {
       if(error.response && error.response.status === 400){
         const errors = error.response.data.errors;
