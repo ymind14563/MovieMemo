@@ -146,7 +146,7 @@ async function createSection() {
     section.appendChild(h3);
 
     // Fetch movies by genre and populate swiper slides
-    const moviesWithPosters = await fetchDataByGenre(genre);
+    const moviesWithPosters = await fetchMoviesByGenre(genre);
 
     const swiperWrapper = document.createElement('div');
     swiperWrapper.classList.add('swiper-wrapper');
@@ -185,22 +185,16 @@ async function createSection() {
 
 createSection()
 
-
-async function fetchDataByGenre(genre) {
-  const apiKey = 'BNUTWI8LOC2C99593QD4';
-  const listCount = 20;
-  const apiUrl = `http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&genre=${genre}&sort=prodYear,1&listCount=${listCount}&ServiceKey=${apiKey}`;
-
+async function fetchMoviesByGenre(genre){
   try {
-    const response = await axios.get(apiUrl);
-    const movies = response.data.Data[0].Result;
-    const moviesWithPosters = movies.filter(movie => movie.posters !== "");
-    return moviesWithPosters;
-  } catch (error) {
-    console.error(error);
-    return []; // Return an empty array or handle error as needed
+    const response = await axios.get(`/movie/genreList/${encodeURIComponent(genre)}`)
+    return response.data.movies;
+  }catch(error){
+    console.error(error)
+    throw error
   }
 }
+
 
 
 function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
@@ -233,25 +227,3 @@ function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
 }
 
 
-
-
-async function getApiGenres() {
-  const apiKey = 'BNUTWI8LOC2C99593QD4';
-  const apiUrl = `http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&genre=&sort=prodYear,1&listCount=1&ServiceKey=${apiKey}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    console.log('API Response:', response.data);
-
-    // Check if the response contains a genres field
-    if (response.data.genres) {
-      console.log('Genres:', response.data.genres);
-    } else {
-      console.log('Full API response structure:', JSON.stringify(response.data, null, 2));
-    }
-  } catch (error) {
-    console.error('Error fetching genres:', error);
-  }
-}
-
-getApiGenres();
