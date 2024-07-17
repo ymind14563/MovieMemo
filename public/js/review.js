@@ -108,6 +108,13 @@ async function movieInfo(){
 
       // 영화 장르 가져오기
       movieGenre.textContent = movieShort.genre;
+
+      // 출연 배우 목록 가져오기
+      for(i = 0; i < 5; i++){
+        const actorLi = document.createElement('li');
+        actorLi.textContent = `${movieShort.actors.actor[i].actorNm}`;
+        actors.appendChild(actorLi);
+      }
       
   }catch(error){
     console.log(error);
