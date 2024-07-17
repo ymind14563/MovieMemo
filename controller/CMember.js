@@ -2,7 +2,7 @@ const encUtil = require("../utils/encrypt");
 const jwt = require("jsonwebtoken");
 const { Member } = require("../model");
 const { validationResult } = require("express-validator");
-
+ 
 //로그인
 exports.loginMember = async (req, res) => {
   try {
