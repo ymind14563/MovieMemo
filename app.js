@@ -45,9 +45,13 @@ app.get("/", (req, res) => {
 });
 
 // review render
-
 app.get("/review", (req, res) => {
   res.render("review");
+});
+
+// 회원가입 경로
+app.get("/register", (req, res) => {
+  res.render("signup");
 });
 
 routerMiddleware(app);
