@@ -89,6 +89,9 @@ async function movieInfo(){
 
       //영화 제목 가져오기
       movieTitle.textContent = movie.data.KMAQuery;
+
+      // 영화 줄거리 가져오기
+        moviePlot.textContent = `${movieShort.plots.plot[0].plotText}`
       
   }catch(error){
     console.log(error);
