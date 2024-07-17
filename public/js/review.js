@@ -106,7 +106,8 @@ async function movieInfo(){
       
       formatDate(date1);
 
-
+      // 영화 장르 가져오기
+      movieGenre.textContent = movieShort.genre;
       
   }catch(error){
     console.log(error);
