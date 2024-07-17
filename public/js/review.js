@@ -87,6 +87,8 @@ async function movieInfo(){
 
       trailerMovie.innerHTML = `<video src="${newUrl}" autoplay muted loop></video>`;
 
+      //영화 제목 가져오기
+      movieTitle.textContent = movie.data.KMAQuery;
       
   }catch(error){
     console.log(error);
