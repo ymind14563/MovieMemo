@@ -94,7 +94,6 @@ const pagingMovie = (movies) => {
     let page = [];  
     let nowIndex = i * moviesInPage;
     
-    // 여기서 수정이 필요합니다
     for (let j = nowIndex; j < Math.min(nowIndex + moviesInPage, totalMovie); j++) {
       page.push(movies[j]);
     }
@@ -102,27 +101,6 @@ const pagingMovie = (movies) => {
   }
   return book;
 }
-
-// const pagingMovie = (movies) => {
-//   const totalMovie = movies.length; // 객체의 총 길이
-//   const moviesPerPage = 10; // 한 페이지당 저장될 객체의 데이터 수
-//   const result = {};
-
-//   for (let i = 0; i < Math.ceil(totalMovie / moviesPerPage); i++) {
-//     let page = [];
-    
-//     let startIndex = i * moviesPerPage;
-//     let endIndex = Math.min(startIndex + moviesPerPage, totalMovie);
-    
-//     for (let j = startIndex; j < endIndex; j++) {
-//       page.push(movies[j]);
-//     }
-    
-//     result[`page${i + 1}`] = page;
-//   }
-
-//   return result;
-// };
 
 /**
  *  검색을 통한 영화 목록 조회를 통합
@@ -143,6 +121,8 @@ const pagingMovie = (movies) => {
 exports.getMovieBySearch = async (req, res) => {
   const urlParts = req.url.split('/'); 
   const searchType = urlParts[1]; // searchT 또는 searchA 가 담길 예정
+  let reqPage = parseInt(req.query.nowPage) || 0;
+  console.log('reqpage>>>>>>>>>>>>',reqPage);
   console.time('getMovieList'); // 함수의 성능 측정을 위한 타이머
   try {
     const searchWord = searchType==='searchA'? req.params.movieActor: req.params.movieTitle;
@@ -202,7 +182,7 @@ exports.getMovieBySearch = async (req, res) => {
 
         // 트랜잭션 종료 DB 입력, 수정, 삭제 하는 작업은 모두 종료되었음
         await t.commit();
-        console.log(`%${searchWord}%`);
+        
         // 저장된 영화 정보 다시 조회, 함수의 응답 형식을 일정하게 하기 위해서, DB 에서 재검색 후 반환할 것
         movies = searchType ==='searchA'
         ? await db.Movie.findAll({
@@ -231,14 +211,23 @@ exports.getMovieBySearch = async (req, res) => {
     }
     let book = pagingMovie(movies);
 
-    console.log(book);
+    // console.log(book);
     console.timeEnd('getMovieList');// 여기까지 도달했으면 함수는 성공적으로 작동한 것, 의도하지 않은 작동의 확인 위해 다양한 검색을 시도해 볼것
-    res.status(200).render('searchResult',{  // 상태코드 200 ! 성공적! 나의 작고 소중한 movies 객체를 반환한다.
-      message: '영화 목록을 성공적으로 조회했습니다.',
-      totalCount : movies.length,
-      data: book
-    });
-
+    reqPage === 0 
+    ? res.status(200).render('searchResult',{  // 상태코드 200 ! 성공적! 나의 작고 소중한 movies 객체를 반환한다.
+        message: '1 영화 목록을 성공적으로 조회했습니다.',
+        totalCount : movies.length,
+        searchType,
+        searchWord,
+        data: book[`page${reqPage+1}`]
+      })
+    : res.status(200).send({
+        message: '2 영화 목록을 성공적으로 조회했습니다.',
+        totalCount : movies.length,
+        searchType,
+        searchWord,
+        data: book[`page${reqPage+1}`]
+      });
   } catch (err) {
     console.timeEnd('getMovieList');
     return errorHandler(500, res, err);
@@ -268,15 +257,6 @@ exports.getMovieInfo = async (req,res) => {
     errorHandler(500, res, err);
   }
 }
-
-// 영화에 리스트 요청하기추후 박스오피스 기능에 사용할듯
-// exports.getMovieList= async(req,res)=>{
-//   try{
-//   }catch(err){
-//     console.log(err);
-//     res.status(500).send('이거 만든놈이 몬가 잘못했음(양태완이 만듬ㅇㅇ..)');
-//   }
-// };
 
 /**
  *  특정 장르로 영화 리스트 불러오기
@@ -308,7 +288,7 @@ exports.getMovieType = async (req, res) => {
 
     res.status(200).json({
       message: '영화 리스트를 성공적으로 불러왔습니다.',
-      movies: movies
+      data: movies
     });
 
   } catch (err) {

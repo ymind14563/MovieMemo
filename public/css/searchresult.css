@@ -1,33 +1,27 @@
 * {
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+    font-size: 1 rem;
 
 }
 
 body {
-  background: #050C0A;
+    background: #050C0A;
+    min-height: 100vh;
+    position: relative;
 }
 
 span {
-  color: white;
+    color: white;
 }
-
 
 h3 {
     color: white;
     margin-left: 30px;
     margin-bottom: 20px;
-
-}
-
-
-
-/* footer */
-.footer {
-    background-color: #050C0A;
-    height: 100px;
 }
 
 /* modal */
@@ -35,7 +29,6 @@ h3 {
 .hidden {
     display: none;
 }
-
 
 .loginModal {
     position: fixed;
@@ -45,7 +38,6 @@ h3 {
     width: 100%;
     height: 100%;
     overflow: auto;
-
 }
 
 .modal-content {
@@ -69,7 +61,6 @@ form input {
     background: #e4e4e4;
 }
 
-
 .close {
     color: #aaa;
     font-size: 28px;
@@ -78,7 +69,6 @@ form input {
     top: 10px;
     right: 20px;
     cursor: pointer;
-
 }
 
 .close:hover,
@@ -94,7 +84,6 @@ form input {
     padding: 10px;
     width: 90px;
     margin-top: 10px;
-
 }
 
 .overlay {
@@ -117,5 +106,47 @@ form input {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
+
+/* searchResult page/ 결과 출력 박스들 디자인 css */
+.search-result-section{
+    position: absolute;
+    max-width:  768px;
+    min-width:  768px;
+    left: calc(50% - 384px);
+}
+.search-result-wrapper{
+    /* 기본 스타일을 위해서 */
+    margin: 5px;
+    border-radius: 5px;
+    background: #3a3a3a5b;
+    /* 컨텐츠의 배치를 위해서 */
+    position: relative;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.search-result-image img{
+    width: 100px;
+    height: 150px;
+}
+.search-result-content{
+    display: block;
+}
+.show-next-page-btn {
+    width: 100px; 
+    margin: 20px auto 0; 
+    padding: 10px 0;    
+    background-color: #B20710;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.show-next-page-btn:hover {
+    background-color: #6d050c; /* 호버 시 색상 변경 */
+}
+
