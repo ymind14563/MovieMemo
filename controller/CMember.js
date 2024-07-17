@@ -49,7 +49,7 @@ exports.loginMember = async (req, res) => {
     res.json({ message: member, token });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "로그인 실패" });
   }
 };
 
@@ -79,7 +79,7 @@ exports.postMember = async (req, res) => {
     res.status(201).json(newMember);
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "회원가입 실패" });
   }
 };
 
@@ -106,7 +106,7 @@ exports.patchMember = async (req, res) => {
     res.status(200).json({ message: "비밀번호가 변경되었습니다." });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "비밀번호 변경 실패" });
   }
 };
 
@@ -116,10 +116,11 @@ exports.deleteMember = async (req, res) => {
   const isAdmin = req.isAdmin;
 
   const member = await Member.findOne({
-    where: { memberId }
-})
+    where: { memberId },
+  });
 
-if (!member) return res.status(404).json({ message: `회원을 찾을 수 없습니다.`})
+  if (!member)
+    return res.status(404).json({ message: `회원을 찾을 수 없습니다.` });
 
   // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
   if (member.memberId !== memberId && !isAdmin) {
@@ -136,7 +137,7 @@ if (!member) return res.status(404).json({ message: `회원을 찾을 수 없습
       res.status(200).json({ message: "회원 탈퇴가 완료되었습니다." });
     });
   } catch (error) {
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "회원 탈퇴 실패" });
   }
 };
 
@@ -148,9 +149,9 @@ exports.logoutMember = async (req, res) => {
         return res.status(500).json({ message: "로그아웃 실패" });
       }
       res.status(200).json({ message: "로그아웃 되었습니다." });
-      req.headers.authorization = '';
+      req.headers.authorization = "";
     });
   } catch (error) {
-    res.status(500).json({ message: "서버 오류" });
+    res.status(500).json({ message: "로그아웃 실패" });
   }
 };
