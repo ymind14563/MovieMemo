@@ -93,6 +93,21 @@ async function movieInfo(){
       // 영화 줄거리 가져오기
         moviePlot.textContent = `${movieShort.plots.plot[0].plotText}`
       
+      // 영화 개봉일 가져오기
+      const date1 = movieShort.repRlsDate;
+  
+      function formatDate(dateStr) {
+        const year = dateStr.substring(0, 4);
+        const month = dateStr.substring(4, 6);
+        const day = dateStr.substring(6, 8);
+
+        return releaseDate.textContent = `${year}-${month}-${day}`;
+      }
+      
+      formatDate(date1);
+
+
+      
   }catch(error){
     console.log(error);
   }
