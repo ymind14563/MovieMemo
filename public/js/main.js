@@ -146,15 +146,14 @@ async function createSection() {
     section.appendChild(h3);
 
     // Fetch movies by genre and populate swiper slides
-    const moviesWithPosters = await fetchMoviesByGenre(genre);
+    const moviesFromBackend = await fetchMoviesByGenre(genre);
 
     const swiperWrapper = document.createElement('div');
     swiperWrapper.classList.add('swiper-wrapper');
 
-    moviesWithPosters.forEach((movie) => {
-      const posterUrls = movie.posters.split("|").map((url) => url.trim());
-      const firstPosterUrl = posterUrls.length > 0 ? posterUrls[0] : null;
-      dynamicSlides(firstPosterUrl, sectionClass, movie, swiperWrapper);
+    moviesFromBackend.forEach((movie) => {
+      const posterUrls = movie.posterUrl
+      dynamicSlides(posterUrls, sectionClass, movie, swiperWrapper);
     });
 
     section.appendChild(swiperWrapper);
@@ -182,8 +181,6 @@ async function createSection() {
 
   
 }
-
-createSection()
 
 async function fetchMoviesByGenre(genre){
   try {
@@ -240,4 +237,4 @@ function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
 
 }
 
-
+createSection();
