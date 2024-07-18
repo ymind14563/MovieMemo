@@ -122,3 +122,44 @@ async function movieInfo(){
 }
 
 movieInfo();
+
+
+
+// 좋아요 버튼 누를 시 요청
+
+const likeBtn = document.querySelector('.like_btn');
+
+likeBtn.addEventListener('click', async () => {
+  const reviewId = likeButton.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
+  const memberId = 'YOUR_MEMBER_ID'; // 실제 memberId를 설정하세요
+
+  try {
+      const response = await axios.post('/like', { reviewId }, {
+          headers: {
+              'Authorization': `Bearer ${memberId}` // 필요한 경우 인증 헤더 추가
+          }
+      });
+
+      // 성공적인 응답 처리
+      alert(response.data.message);
+      updateLikeCount(response.data.review.likeCount); // UI 업데이트 함수 호출
+  } catch (error) {
+      // 오류 처리
+      if (error.response) {
+          alert(error.response.data.message); // 서버에서 보낸 오류 메시지
+      } else {
+          console.error('Error:', error.message);
+          alert('좋아요를 처리하는 중 오류가 발생했습니다.');
+      }
+  }
+});
+
+// UI 업데이트를 위한 함수
+function updateLikeCount(likeCount) {
+  const likeCountDisplay = document.querySelector('.likeCount');
+  likeCountDisplay.textContent = likeCount; // 좋아요 수 업데이트
+}
+
+
+
+
