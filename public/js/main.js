@@ -195,6 +195,16 @@ async function fetchMoviesByGenre(genre){
   }
 }
 
+async function sendMovieIdToBackend(movieId) {
+  try {
+    const response = await axios.get(
+      `/movie/movieInfo/${encodeURIComponent(movieId)}`
+    );
+    console.log("Movie ID sent to backend successfully", response.data);
+  } catch (error) {
+    console.error("Error sending movie ID to backend", error);
+  }
+}
 
 
 function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
@@ -216,14 +226,18 @@ function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
   swiperSlide.appendChild(cardContainer);
   swiperWrapper.appendChild(swiperSlide);
 
-  image.addEventListener('click', () => {
-    const movieId = movieData.DOCID;
+  image.addEventListener("click", () => {
+    const movieId = movieData.movieId;
     if (movieId) {
-      window.location.href = `reviewpage.html?id=${encodeURIComponent(movieId)}`;
+      sendMovieIdToBackend(movieId); // Send movie ID to backend
+      window.location.href = `reviewpage.html?id=${encodeURIComponent(
+        movieId
+      )}`;
     } else {
-      console.error('No DOCID for this movie', movieData);
+      console.error("No movieId for this movie", movieData);
     }
   });
+
 }
 
 
