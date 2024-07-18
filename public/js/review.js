@@ -6,17 +6,20 @@
 
 
 // 리뷰 모달 버튼
+const createReview = document.querySelector('.createReviewBtn');
+const buttonClose = document.querySelector('.buttonClose');
 const modal = document.querySelector('.movie_review_modal_bg');
 
-const postReview = () => {
-   modal.classList.remove('hidden');
-   modal.classList.add('visible');
-};
+createReview.addEventListener('click', () => {
+  modal.classList.remove('hidden');
+  modal.classList.add('visible');
+})
 
-const closeModal = () => {
-   modal.classList.add('hidden');
-   modal.classList.remove('visible');
-};
+buttonClose.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  modal.classList.remove('visible');
+})
+
 
 
 
@@ -127,10 +130,10 @@ movieInfo();
 
 // 좋아요 버튼 누를 시 요청
 
-const likeBtn = document.querySelector('.like_btn');
+const likeBtn = document.querySelector('.likeBtn');
 
 likeBtn.addEventListener('click', async () => {
-  const reviewId = likeButton.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
+  const reviewId = likeBtn.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
   const memberId = 'YOUR_MEMBER_ID'; // 실제 memberId를 설정하세요
 
   try {
@@ -163,3 +166,79 @@ function updateLikeCount(likeCount) {
 
 
 
+// 리뷰 작성 버튼
+
+async function getUserNickname() {
+  try {
+    const response = await axios.get('/user/nickname', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+      });
+      return response.data.nickname;
+  } catch (error) {
+      console.error('사용자 닉네임을 가져오는 중 오류 발생:', error);
+      return null;
+  }
+}
+
+document.querySelector('.reviewSubBtn').addEventListener('click', async function(e) {
+  e.preventDefault();
+
+  const rating = document.getElementById('rating').value;
+  const reviewPost = document.getElementById('reviewPost').value;
+
+  const nickname = await getUserNickname();
+
+  if (!nickname) {
+      document.getElementById('responseMessage').innerText = '닉네임을 가져오는 데 실패했습니다.';
+      return;
+  }
+
+  try {
+      const response = await axios.post('/review', {
+          reviewMovieRating: rating,
+          reviewPost,
+          nickname
+      }, {
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+      });
+
+        document.getElementById('responseMessage').innerText = response.data.message;
+        addReviewToList({ rating, reviewPost, nickname });
+        document.getElementById('reviewForm').reset();
+    } catch (error) {
+        if (error.response) {
+            document.getElementById('responseMessage').innerText = error.response.data.message;
+        } else {
+            document.getElementById('responseMessage').innerText = '서버에 요청 중 오류가 발생했습니다.';
+        }
+      }
+  });
+
+function addReviewToList(review) {
+  const reviewList = document.getElementById('review_container');
+  const reviewItem = document.createElement('div');
+
+  // 현재 날짜 포맷
+  const currentDate = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+  reviewItem.innerHTML = `
+    <span>${review.nickname}</span>
+    <span>${review.rating}</span>
+    <button type="button" class="likeBtn">좋아요</button>
+    <button type="button" class="editBtn">수정버튼</button>
+    <p class="likeCount"></p>
+    <p>
+    ${review.reviewPost}
+    </p>
+    <p>
+      <span>${currentDate}</span>
+      <button type="button" class="deleteBtn" data-review-id="123">삭제</button>
+      <button type="button" class="warningBtn">신고버튼</button>
+    </p>
+  `;
+  reviewList.appendChild(reviewItem);
+}

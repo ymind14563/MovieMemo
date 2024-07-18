@@ -74,22 +74,24 @@
     </div>
 
     <section id="review_container">
-      <button onclick="postReview();">리뷰 작성 버튼</button>
+      <button class="createReviewBtn">리뷰 작성 버튼</button>
       <div class="movie_review_modal_bg hidden">
         <div class="movie_review_modal">
-            <form action="" name="review-form">
-                <textarea name="review_post" id="review_post" cols="50" rows="20"></textarea>
-                <button type="submit" class="reviewSubBtn" onclick="reviewSubmit()">제출</button>
-                <button type="button" class="button_close" onclick="closeModal()">X</button>
+            <form action="" name="reviewForm" id="reviewForm">
+                <label for="rating">평점:</label>
+                <input type="number" id="rating" name="reviewMovieRating" min="1" max="5" required><br>
+                <textarea name="reviewPost" id="reviewPost" cols="50" rows="20"></textarea>
+                <button type="submit" class="reviewSubBtn">제출</button>
+                <button type="button" class="buttonClose">X</button>
             </form>
         </div>
     </div>
 
-      <div class="review_box">
+      <div class="reviewBox">
         <span>유저 이름</span>
         <span>별점 공간</span>
-        <button type="button" class="like_btn">좋아요</button>
-        <button type="button" class="edit_btn">수정버튼</button>
+        <button type="button" class="likeBtn">좋아요</button>
+        <button type="button" class="editBtn">수정버튼</button>
         <p class="likeCount"></p>
         <p>
           리뷰 내용 블라 블라
@@ -97,7 +99,7 @@
         <p>
           <span>날짜</span>
           <button type="button" class="deleteBtn" data-review-id="123">삭제</button>
-          <button type="button" class="warning_btn" onclick="waringBtn()">신고버튼</button>
+          <button type="button" class="warningBtn">신고버튼</button>
         </p>
       </div>
 
