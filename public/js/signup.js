@@ -13,7 +13,7 @@ form.addEventListener('submit',async function(e) {
   })
 
   try {
-    const response = await axios.post("/register", data);
+    const response = await axios.post("/member/register", data);
     console.log(response);
     window.location.href = '/' //main page when successed
   } catch (error) {
