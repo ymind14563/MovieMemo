@@ -1,4 +1,3 @@
-console.log('1');
 let nowPage = 0;
 let isLoading = false;
 const moreBtn = document.querySelector('.show-next-page-btn');
@@ -8,7 +7,7 @@ function seemore() {
   isLoading = true; // 로딩 시작
   const searchT = document.querySelector('.searchType').textContent;
   const searchW = document.querySelector('.searchWord').textContent;
-  console.log(searchT);
+  
   nowPage = nowPage + 1;
   axios({
     method: 'get',
@@ -66,13 +65,13 @@ const observer = new IntersectionObserver(handleIntersection, options);
 
 observer.observe(moreBtn);
 
-function updateMovieInfo(data) {
-  document.querySelector('.movie_title .contents_title').textContent = data.data.movieTitle;
-  document.querySelector('.director').textContent = data.data.directorNm;
-  document.querySelector('.genre').textContent = data.data.genre;
-  document.querySelector('.release_date').textContent = data.data.releaseDate;
-  document.querySelector('.story_box .content_text').textContent = data.data.plotText;
-}
+// function updateMovieInfo(data) {
+//   document.querySelector('.movie_title .contents_title').textContent = data.data.movieTitle;
+//   document.querySelector('.director').textContent = data.data.directorNm;
+//   document.querySelector('.genre').textContent = data.data.genre;
+//   document.querySelector('.release_date').textContent = data.data.releaseDate;
+//   document.querySelector('.story_box .content_text').textContent = data.data.plotText;
+// }
 
 document.querySelectorAll('.search-result-wrapper').forEach(function(wrapper) {
   wrapper.addEventListener('click', function(e) {
@@ -83,13 +82,7 @@ document.querySelectorAll('.search-result-wrapper').forEach(function(wrapper) {
           reqId= targetE.id.replace('result','');
       }
       if (targetE) {
-          console.log('요소 선택됨>>>>>>>>>>>', reqId);
-          axios({
-            method: 'GET',
-            url : `/movie/movieInfo/${reqId}`
-          }).then((res)=>{
-            console.log(res.data);
-          })
-        }
+        window.location.href = `/movie/movieInfo/${reqId}`
+      }  
   });
 });

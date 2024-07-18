@@ -249,10 +249,11 @@ exports.getMovieInfo = async (req, res) => {
     if (!result) {    
       return errorHandler(404, res, '삭제되거나 존재하지 않는 영화 데이터 입니다.');
     }
-
+    console.log('getmovieInfo>>>>>>>>>>>>>> 요청받음');
     // JSON 응답 보내기
-    res.status(200).json({
+    res.status(200).render('review',{
       message: '영화 정보를 성공적으로 조회했습니다.',
+      // redirect: `/movie/movieInfo/${movieId}`,
       data: result
     });
   } catch (err) {
