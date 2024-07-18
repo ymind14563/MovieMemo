@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="/css/review.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script defer src="/js/review.js"></script>
 </head>
 <body>
   <main id="page_container">
 
     <div class="trailer_box">
-      <video src="https://www.kmdb.or.kr/trailer/play/MK060920_P02.mp4" autoplay muted loop></video>
     </div>
 
     <div id="movie_info_container">
@@ -77,9 +77,9 @@
       <button onclick="postReview();">리뷰 작성 버튼</button>
       <div class="movie_review_modal_bg hidden">
         <div class="movie_review_modal">
-            <form action="" name="review_post">
-                <textarea name="review_post" id="" cols="50" rows="20"></textarea>
-                <button type="submit">제출</button>
+            <form action="" name="review-form">
+                <textarea name="review_post" id="review_post" cols="50" rows="20"></textarea>
+                <button type="submit" class="reviewSubBtn" onclick="reviewSubmit()">제출</button>
                 <button type="button" class="button_close" onclick="closeModal()">X</button>
             </form>
         </div>
@@ -88,54 +88,19 @@
       <div class="review_box">
         <span>유저 이름</span>
         <span>별점 공간</span>
-        <span>좋아요 or 수정</span>
+        <button type="button" class="like_btn">좋아요</button>
+        <button type="button" class="edit_btn">수정버튼</button>
+        <p class="likeCount"></p>
         <p>
           리뷰 내용 블라 블라
         </p>
         <p>
           <span>날짜</span>
-          <button type="button">신고버튼</button>
+          <button type="button" class="deleteBtn" data-review-id="123">삭제</button>
+          <button type="button" class="warning_btn" onclick="waringBtn()">신고버튼</button>
         </p>
       </div>
 
-      <div class="review_box">
-        <span>유저 이름</span>
-        <span>별점 공간</span>
-        <span>좋아요 or 수정</span>
-        <p>
-          리뷰 내용 블라 블라
-        </p>
-        <p>
-          <span>날짜</span>
-          <button type="button">신고버튼</button>
-        </p>
-      </div>
-
-      <div class="review_box">
-        <span>유저 이름</span>
-        <span>별점 공간</span>
-        <span>좋아요 or 수정</span>
-        <p>
-          리뷰 내용 블라 블라
-        </p>
-        <p>
-          <span>날짜</span>
-          <button type="button">신고버튼</button>
-        </p>
-      </div>
-
-      <div class="review_box">
-        <span>유저 이름</span>
-        <span>별점 공간</span>
-        <span>좋아요 or 수정</span>
-        <p>
-          리뷰 내용 블라 블라
-        </p>
-        <p>
-          <span>날짜</span>
-          <button type="button">신고버튼</button>
-        </p>
-      </div>
     </section>
   </main>
 </body>
