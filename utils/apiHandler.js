@@ -49,8 +49,8 @@ exports.manufactureAPI = (method, movieDataList) => {
       reviewMovieRating: 0,
       genre: movieData.genre || '',
       directorNm: movieData.directors?.director?.map(dir => dir.directorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '',
-      movieTitle: method === 'searchT' ? movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '' : movieData.title ? movieData.title.trim() : '',
-      movieCast: method === 'searchA' ? movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || '' : movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').trim() || ''
+      movieTitle: movieData.title ? movieData.title.replace(/!HS|!HE/g, '').trim() : '' ,
+      movieCast: movieData.actors?.actor?.slice(0, 10).map(actor => actor.actorNm).join(', ').replace(/!HS|!HE/g, '').trim() || ''
     };
   });
   return processedMovies;
