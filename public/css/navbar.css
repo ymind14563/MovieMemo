@@ -34,3 +34,22 @@ button a {
   font-weight: bold;
   font-size: 15px;
 }
+.search-box-wrapper{
+  font-size: 2rem;
+  display: flex;
+  border-bottom: 2px solid white;
+}
+.search-box-word{
+  width: 100%;
+  padding-bottom: 0px;
+  text-align: right;
+  background:none;
+  border:none;
+  outline: none;
+}
+.search-box-btn{
+  background: none;
+}
+.search-box-Smethod{
+  cursor: pointer;
+}
