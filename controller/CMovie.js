@@ -238,18 +238,20 @@ exports.getMovieBySearch = async (req, res) => {
 /**
  * id 를 통해서 특정영화 한가지 불러오기 // url parameter 로 한가지 영화를 검색! 쉬움!
  */
-exports.getMovieInfo = async (req,res) => {
+exports.getMovieInfo = async (req, res) => {
   try {
-    const {movieId} = req.params;
+    const { movieId } = req.params;
     
     const result = await db.Movie.findOne({
-      where: { movieId : movieId }
+      where: { movieId: movieId }
     });
-    // 영화 정보가 DB 에서 삭제되어 DB 에 존재하지 않는경우 404 페이지 반환
+
     if (!result) {    
       return errorHandler(404, res, '삭제되거나 존재하지 않는 영화 데이터 입니다.');
     }
-    res.status(200).render('review',{
+
+    // JSON 응답 보내기
+    res.status(200).json({
       message: '영화 정보를 성공적으로 조회했습니다.',
       data: result
     });

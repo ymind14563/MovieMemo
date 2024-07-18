@@ -19,6 +19,7 @@ function seemore() {
   }).then((res) => {
     if (res.data.data.length < 10) { moreBtn.style.display = 'none'; }
     res.data.data.forEach(movie => {
+      console.log(movie.directorNm);
       const movieHtml = `
         <div class="search-result-wrapper" id="result${movie.movieId}">
           <div class="search-result-image">
@@ -29,7 +30,7 @@ function seemore() {
               제목 : ${movie.movieTitle}
             </span>
             <span class="search-result-content search-result-content-dir">
-              감독 : ${movie.directorName}
+              감독 : ${movie.directorNm}
             </span>
             <span class="search-result-content search-result-content-star">
               평점 : ${movie.reviewMovieRating}
@@ -38,8 +39,7 @@ function seemore() {
               배우 : ${movie.movieCast}
             </span>
           </div>
-        </div>
-      `;
+        </div>`;
       moreBtn.insertAdjacentHTML('beforebegin', movieHtml);
     });
     isLoading = false; // 로딩 완료
@@ -65,3 +65,31 @@ const options = {
 const observer = new IntersectionObserver(handleIntersection, options);
 
 observer.observe(moreBtn);
+
+function updateMovieInfo(data) {
+  document.querySelector('.movie_title .contents_title').textContent = data.data.movieTitle;
+  document.querySelector('.director').textContent = data.data.directorNm;
+  document.querySelector('.genre').textContent = data.data.genre;
+  document.querySelector('.release_date').textContent = data.data.releaseDate;
+  document.querySelector('.story_box .content_text').textContent = data.data.plotText;
+}
+
+document.querySelectorAll('.search-result-wrapper').forEach(function(wrapper) {
+  wrapper.addEventListener('click', function(e) {
+      let targetE = e.target;
+      let reqId = '';
+      while (targetE && !targetE.classList.contains('search-result-wrapper')) {
+          targetE = targetE.parentElement;
+          reqId= targetE.id.replace('result','');
+      }
+      if (targetE) {
+          console.log('요소 선택됨>>>>>>>>>>>', reqId);
+          axios({
+            method: 'GET',
+            url : `/movie/movieInfo/${reqId}`
+          }).then((res)=>{
+            console.log(res.data);
+          })
+        }
+  });
+});
