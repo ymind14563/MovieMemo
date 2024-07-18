@@ -19,7 +19,7 @@
             제목 : <%= data[i].dataValues.movieTitle  %>
           </span>
           <span class="search-result-content search-result-content-dir">
-            감독 : <%= data[i].dataValues.directorName  %>
+            감독 : <%= data[i].dataValues.directorNm  %>
           </span>
           <span class="search-result-content search-result-content-star">
             평점 : <%= data[i].dataValues.reviewMovieRating  %>
@@ -30,15 +30,12 @@
         </div>
       </div>
     <% }%>
-    <div class="show-next-page-btn">+</div>
+    <div class="show-next-page-btn"> </div>
     </div>
   </div>
   <footer class="footer"></footer>
 </body>
 <script>
-  // 서버에서 전달받은 데이터를 전역 변수로 설정
-  // window.searchResultData = {"key": "value", "array": [1, 2, 3]};
-  // console.log(searchResultData);
 </script>
 <%- include('partials/tail.ejs') %>
 
