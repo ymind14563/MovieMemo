@@ -120,40 +120,42 @@ exports.getTopReviews = async (req, res) => {
 
 // 회원이 작성한 리뷰 목록
 exports.getMemberReviewList = async (req, res) => {
-    const { memberId } = req.params;
-    const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
+    const memberId = req.memberId;
+    const { sortBy = 'popular', page = 1, pageSize = 8 } = req.query;
 
     const order = sort(sortBy); // 정렬
-        
     const { limit, offset } = paginate(page, pageSize); // pagination
-
 
     try {
         const { count, rows } = await Review.findAndCountAll({
             where: { memberId },
-
-            // SET: Member에서 nick, Movie에서 title
-            include: [{
-                model: Member,
-                attributes: [`nick`]
-            },
-            {
-                model: Movie,
-                attributes: [`movieTitle`]
-            }],
-
-            order, // order : order
+            include: [
+                {
+                    model: Member,
+                    attributes: ['nick']
+                },
+                {
+                    model: Movie,
+                    attributes: ['movieTitle']
+                }
+            ],
+            order,
             offset,
             limit
         });
 
-        if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+        // if (!rows.length) {
+        //     if (!res.headersSent) { // 이미 헤더가 전송된 경우를 체크
+        //         return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
+        //     }
+        // }
 
-        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews')); // pagination적용 response
-
+        return paginateResponse(rows, count, page, limit, 'reviews');
     } catch (error) {
         console.log(`Error : ${error.message}`);
-        return res.status(500).json({ message: `리뷰 조회 중 오류가 발생했습니다.` });
+        if (!res.headersSent) { // 이미 헤더가 전송된 경우를 체크
+            return res.status(500).json({ message: '리뷰 조회 중 오류가 발생했습니다.' });
+        }
     }
 }
 
