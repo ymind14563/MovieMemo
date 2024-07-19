@@ -3,34 +3,33 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
-}
-
-body {
-    background: #050C0A;
-}
-
-.navbar {
-    background: #050C0A;
+  }
+  
+  body {
+    background: #050c0a;
+  }
+  
+  .navbar {
+    background: #050c0a;
     padding: 0 15px;
     margin-bottom: 100px;
     margin-top: 10px;
-}
-
-.navdiv {
+  }
+  
+  .navdiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.logo a {
+  }
+  
+  .logo a {
     font-size: 35px;
     font-weight: 600;
     color: white;
-}
-
-button {
-    background-color: #B20710;
+  }
+  
+  button {
+    background-color: #b20710;
     margin-left: 10px;
     border-radius: 10px;
     padding: 10px;
@@ -38,22 +37,22 @@ button {
     border: none;
     outline: none;
     color: white;
-}
-
-button a {
+  }
+  
+  button a {
     color: white;
     font-weight: bold;
     font-size: 15px;
-}
-
-.signup-box {
+  }
+  
+  .signup-box {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #e4e4e4;
-}
-
-.wrapper {
+  }
+  
+  .wrapper {
     width: 500px;
     padding: 32px 16px;
     margin: 50px auto;
@@ -64,15 +63,15 @@ button a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-h1 {
+  }
+  
+  h1 {
     font-size: 32px;
     color: #07001f;
     margin-bottom: 60px;
-}
-
-form input {
+  }
+  
+  form input {
     width: 80%;
     outline: none;
     border: 1px solid #fff;
@@ -80,9 +79,37 @@ form input {
     margin-bottom: 10px;
     border-radius: 20px;
     background: #e4e4e4;
-}
-
-.signup-btn {
+  }
+  
+  form .radio-group {
+    margin-bottom: 20px; /* Adjust spacing between radio groups */
+  }
+  
+  form input[type="radio"] {
+    display: none; /* Hide the default radio button */
+  }
+  
+  form input[type="radio"] + label {
+    display: inline-block;
+    background-color: #e4e4e4;
+    border: 1px solid #fff;
+    padding: 12px 20px;
+    margin-right: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .gender,
+  .age {
+    margin-bottom: 20px;
+  }
+  
+  form input[type="radio"]:checked + label {
+    background-color: #b20710;
+    color: white;
+  }
+  
+  .signup-btn {
     font-size: 16px;
     margin-top: 28px;
     padding: 10px 0;
@@ -92,14 +119,15 @@ form input {
     width: 80%;
     color: #fff;
     cursor: pointer;
-    background-color: #B20710
-}
-
-.signup-btn:hover {
-    background-color: #8C0610;
+    background-color: #b20710;
+  }
+  
+  .signup-btn:hover {
+    background-color: #8c0610;
     /* Slightly darker shade */
-}
-
-input:focus {
-    border: 1px solid rgb(192, 192, 192)
-}
+  }
+  
+  input:focus {
+    border: 1px solid rgb(192, 192, 192);
+  }
+  
