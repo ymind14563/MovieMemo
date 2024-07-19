@@ -34,7 +34,7 @@ const movieTitle = document.querySelector('.movie_title > .contents_title');
 const moviePoster = document.querySelector('.poster_box');
 
 // 영화 줄거리
-const moviePlot = document.querySelector('.story_box > .content_text');
+const moviePlot = document.querySelector('.story_box > .story_text');
 
 // 출연 배우들
 const actors = document.querySelector('.cast_list');
