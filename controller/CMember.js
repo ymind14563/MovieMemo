@@ -58,6 +58,8 @@ exports.postMember = async (req, res) => {
   try {
     const { gender, age, name, nick, email, password } = req.body;
 
+    console.log(req.body)
+
     // 입력값 검증
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -65,17 +67,18 @@ exports.postMember = async (req, res) => {
     }
     // 비밀번호 해시화
     const hashedPassword = await encUtil.hashPw(password);
+    console.log(hashedPassword);
 
     // 회원 생성
     const newMember = await Member.create({
-      name,
+      name:req.body.name,
       nick,
       email,
       password: hashedPassword,
       gender,
       age,
     });
-
+  
     res.status(201).json(newMember);
   } catch (error) {
     console.log(error.message);
