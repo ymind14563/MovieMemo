@@ -17,9 +17,13 @@ const authenticateUser = (req, res, next) => {
     req.isAdmin = decoded.isAdmin;
     next();
   } catch (err) {
-    res.status(401).json({ message: "유효하지 않은 접근입니다." });
+    if (!res.headersSent) { // 이미 헤더가 전송된 경우를 체크
+      res.status(401).json({ message: "유효하지 않은 접근입니다." });
+    }
   }
 };
+
+
 
 //관리자 인증 미들웨어
 const authenticateAdmin = (req, res, next) => {
