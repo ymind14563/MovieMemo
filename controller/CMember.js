@@ -71,7 +71,7 @@ exports.postMember = async (req, res) => {
 
     // 회원 생성
     const newMember = await Member.create({
-      name:req.body.name,
+      name,
       nick,
       email,
       password: hashedPassword,
