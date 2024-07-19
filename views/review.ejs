@@ -6,6 +6,7 @@
   <title>new rendering</title>
   <link rel="stylesheet" href="/css/review.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script defer src="/js/review.js"></script>
 </head>
@@ -16,19 +17,7 @@
     </div>
 
     <div id="movie_info_container">
-      <section class="poster_container">
-        <article class="poster_box"></article>
-        
-        <div class="rating_box">
-          <div class="rating">
-            <i class="rating__star far fa-star"></i>
-            <i class="rating__star far fa-star"></i>
-            <i class="rating__star far fa-star"></i>
-            <i class="rating__star far fa-star"></i>
-            <i class="rating__star far fa-star"></i>
-          </div>
-        </div>
-      </section>
+
   
       <section class="info_container">
         <article class="sub_info_box">
@@ -39,70 +28,232 @@
             </div>
   
             <div class="sub_detail_box">
-              <div class="detail_box">
-                <p class="contents_title">
-                  Details
-                </p>
-  
-                <ul class="detail_info_list">
-                  <li>
-                    Director: <span class="director"></span>
-                  </li>
-                  <li>
-                    Genre: <span class="genre"></span>
-                  </li>
-                  <li>
-                    Release Date: <span class="release_date"></span>
-                  </li>
-                </ul>
+              <div class="poster_container">
+                <article class="poster_box"></article>
+
+                
+                <div class="rating_box">
+                  <div class="rating">
+                    <i class="rating__star far fa-star"></i>
+                    <span class="rating_num">8.5</span>
+                  </div>
+                </div>
+
+                <div class="releaseBox">
+                  <p class="commonTitle">Release Date</p>
+                  <p class="release_date commonText"></p>
+                </div>
               </div>
-              <div class="cast_box">
-                <p class="contents_title">Cast</p>
-                <ul class="cast_list">
-                </ul>
+
+              <div class="detailNcastBox">
+                <div class="detail_box">
+                  <p class="contents_title">
+                    Details
+                  </p>
+  
+                  <div class="detail_info_list">
+                    <div class="directorBox">
+                      <p class="commonTitle">Director</p>
+                      <p class="director commonText">엄복동</p>
+                    </div>
+  
+                    <div class="genreBox">
+                      <p class="commonTitle">Genre</p>
+                      <p class="genre commonText"></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="cast_box">
+                  <p class="contents_title">Cast</p>
+  
+                  <ul class="cast_list">
+                  </ul>
+                </div>
+
+                <div class="story_box">
+                  <p class="contents_title">Storyline</p>
+                  <p class="story_text"></p>
+                </div>
               </div>
             </div>
           </div>
   
 
         </article>
-        <article class="story_box">
-          <p class="contents_title">Storyline</p>
-          <p class="content_text"></p>
-        </article>
+
       </section>
     </div>
 
     <section id="review_container">
-      <button class="createReviewBtn">리뷰 작성 버튼</button>
-      <div class="movie_review_modal_bg hidden">
-        <div class="movie_review_modal">
-            <form action="" name="reviewForm" id="reviewForm">
-                <label for="rating">평점:</label>
-                <input type="number" id="rating" name="reviewMovieRating" min="1" max="5" required><br>
-                <textarea name="reviewPost" id="reviewPost" cols="50" rows="20"></textarea>
-                <button type="submit" class="reviewSubBtn">제출</button>
-                <button type="button" class="buttonClose">X</button>
-            </form>
+      <div class="review_btn_box">
+        <p class="contents_title">
+          Reviews
+        </p>
+        <button class="createReviewBtn">
+          <span class="material-symbols-rounded">rate_review</span>
+          리뷰 작성
+        </button>
+        
+        <div class="movie_review_modal_bg hidden">
+          <div class="movie_review_modal">
+              <form action="" name="reviewForm" id="reviewForm">
+                  <label for="rating">평점:</label>
+                  <input type="number" id="rating" name="reviewMovieRating" min="1" max="5" required><br>
+                  <textarea name="reviewPost" id="reviewPost" cols="40" rows="20" placeholder="리뷰를 작성해 주세요"></textarea>
+                  <p class="form_btn_section">
+                    <button type="button" class="buttonClose">취소</button>
+                    <button type="submit" class="reviewSubBtn">제출</button>
+                  </p>
+              </form>
+          </div>
         </div>
-    </div>
-
-      <div class="reviewBox">
-        <span>유저 이름</span>
-        <span>별점 공간</span>
-        <button type="button" class="likeBtn">좋아요</button>
-        <button type="button" class="editBtn">수정버튼</button>
-        <p class="likeCount"></p>
-        <p>
-          리뷰 내용 블라 블라
-        </p>
-        <p>
-          <span>날짜</span>
-          <button type="button" class="deleteBtn" data-review-id="123">삭제</button>
-          <button type="button" class="warningBtn">신고버튼</button>
-        </p>
       </div>
 
+      <div class="review_section">
+
+        <div class="review_box">
+          <div class="review_user">
+            <div class="user_rating">
+              <span class="user_nickname">오늘만 산다</span>
+              <span>별점 5개</span>
+            </div>
+            <div class="likeBox">
+              <button type="button" class="likeBtn">
+                <span class="material-symbols-rounded">
+                  favorite
+                </span>
+              </button>
+              <p class="likeCount">4</p>
+            </div>
+            <button type="button" class="editBtn">
+              <span class="material-symbols-rounded">
+                edit
+              </span>
+            </button>
+          </div>
+          <div class="review_content">
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
+              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
+              dicta itaque?
+            </p>
+          </div>
+          <div class="review_date">
+            <span class="write_date">2024-07-11</span>
+
+            <p class="review_btns_box">
+              <button type="button" class="deleteBtn" data-review-id="123">
+                <span class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+              <button type="button" class="warningBtn">
+                <span class="material-symbols-rounded">
+                  dangerous
+                </span>
+              </button>
+            </p>
+          </div>
+        </div>
+
+        <div class="review_box">
+          <div class="review_user">
+            <div class="user_rating">
+              <span class="user_nickname">오늘만 산다</span>
+              <span>별점 5개</span>
+            </div>
+            <div class="likeBox">
+              <button type="button" class="likeBtn">
+                <span class="material-symbols-rounded">
+                  favorite
+                </span>
+              </button>
+              <p class="likeCount">4</p>
+            </div>
+            <button type="button" class="editBtn">
+              <span class="material-symbols-rounded">
+                edit
+              </span>
+            </button>
+          </div>
+          <div class="review_content">
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
+              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
+              dicta itaque?
+            </p>
+          </div>
+          <div class="review_date">
+            <span class="write_date">2024-07-11</span>
+
+            <p class="review_btns_box">
+              <button type="button" class="deleteBtn" data-review-id="123">
+                <span class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+              <button type="button" class="warningBtn">
+                <span class="material-symbols-rounded">
+                  dangerous
+                </span>
+              </button>
+            </p>
+          </div>
+        </div>
+
+        <div class="review_box">
+          <div class="review_user">
+            <div class="user_rating">
+              <span class="user_nickname">오늘만 산다</span>
+              <span>별점 5개</span>
+            </div>
+            <div class="likeBox">
+              <button type="button" class="likeBtn">
+                <span class="material-symbols-rounded">
+                  favorite
+                </span>
+              </button>
+              <p class="likeCount">4</p>
+            </div>
+            <button type="button" class="editBtn">
+              <span class="material-symbols-rounded">
+                edit
+              </span>
+            </button>
+          </div>
+          <div class="review_content">
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
+              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
+              dicta itaque?
+            </p>
+          </div>
+          <div class="review_date">
+            <span class="write_date">2024-07-11</span>
+
+            <p class="review_btns_box">
+              <button type="button" class="deleteBtn" data-review-id="123">
+                <span class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+              <button type="button" class="warningBtn">
+                <span class="material-symbols-rounded">
+                  dangerous
+                </span>
+              </button>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="load_more">더 보기</button>
+
+      
     </section>
   </main>
 </body>

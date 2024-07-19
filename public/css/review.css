@@ -1,18 +1,41 @@
 body{
-    background-color: #141414;
-    /* height: 100vh;
-    display: grid; */
-    /* place-items: center;
-    overflow: hidden; */
+    background-color: #050C0A;
 }
 
 ul{
     padding-inline-start: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
 }
 
 li{
     list-style: none;
 }
+
+p{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+
+/* 15 픽셀 = 0.9375rem */
+/* 18 픽셀 = 1.125rem */
+/* 20 픽셀 = 1.25rem */
+/* 30 픽셀 = 1.875rem */
+/* 40 픽셀 = 2.5rem */
+/* 50 픽셀 = 3.125rem */
+
+
+
 
 
 #page_container{
@@ -22,32 +45,38 @@ li{
 }
 
 #movie_info_container{
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    margin-top: 50px;
 }
 
 
 
 .poster_container{
-    width: 18%;
-    max-width: 205px;
+    width: 20%;
+    max-width: 220px;
 }
 
 .poster_box img{
     width: 100%;
 }
+.releaseBox{
+    margin-top: 1.87rem;
+    text-align: center;
+}
+
 
 
 .info_container{
-    width: 80%;
-    max-width: 980px;
+    width: 100%;
 }
 
 .sub_info_box{
 
 }
 .story_box{
-    border-top: 1px solid #aaa;
+    width: 100%;
+    /* padding-top: 50px; */
+    padding-top: 3.125rem;
 }
 
 
@@ -57,8 +86,7 @@ li{
 
 
 .trailer_box{
-    margin: 0 auto;
-    max-width: 80%;
+    max-width: 100%;
 }
 .trailer_box video{
     width: 100%;
@@ -67,41 +95,114 @@ li{
 
 .movie_title{
     width: 100%;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #262626;
 }
+.movie_title > .contents_title{
+    margin-bottom: 30px;
+}
+
 .sub_detail_box{
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3.125rem 0;
 }
 
-
+.detailNcastBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+}
 
 
 .detail_box{
-    width: 55%;
+    width: 50%;
 }
 
 .detail_info_list{
-
+    display: flex;
+    margin-top: 1.875rem;
+    padding: 1.875rem;
+    border-radius: 8px;
+    border: 1px solid #262626;
 }
 
-.detail_info_list li{
-    margin-bottom: 20px;
-    color: #ccc;
+
+
+.directorBox{
+    width: 50%;
 }
 
-.director, .release_dat, .genre{
-    color: #fff;
+.genreBox{
+    width: 50%;
+    
 }
+
 
 .cast_box{
-    width: 40%;
-    margin-left: 30px;
+    width: 45%;
+}
+
+.cast_list{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 1.875rem;
+    padding: 2.5rem 1.875rem;
+    border-radius: 8px;
+    border: 1px solid #262626;
 }
 
 .cast_list li{
-    margin-bottom: 20px;
+    display: inline-block;
+    padding: 0.5rem 0.937rem;
+    color: #fff;
+
+}
+
+
+
+
+
+
+
+/* 스토리 라인 */
+
+.story_text{
+    margin-top: 1.875rem;
+    padding: 1.875rem;
+    color: #fff;
+    border-radius: 8px;
+    border: 1px solid #262626;
+}
+
+
+
+
+/* 공통 클래스 */
+
+.commonBox{
+    margin-top: 1.875rem;
+    padding: 1.875rem;
+    border-radius: 8px;
+    border: 1px solid #262626;
+}
+
+
+.commonTitle{
+    font-size: 1.125rem;
+    color: #999;
+}
+
+.commonText{
+    display: inline-block;
+    margin-top: 0.937rem;
     color: #fff;
 }
+
+
+
 
 
 
@@ -110,37 +211,95 @@ li{
 /* 리뷰 섹션 */
 
 #review_container{
-    display: flex;
-    justify-content: space-around;
+    border-top: 1px solid #262626;
+    padding: 3.125rem 0;
 }
+
+.review_btn_box{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.review_section{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 3.125rem ;
+}
+
 
 .review_box{
-    width: 23%;
-    background: #eee;
+    width: 30%;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    /* color: #eee; */
+    /* border: 1px solid #262626; */
+}
+
+.createReviewBtn{
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: #B20710;
+    transition: all 600ms;
+}
+
+.createReviewBtn:hover{
+    border: 1px solid #B20710;
+    color: #B20710;
+    background-color: #050C0A;
+}
+
+.likeBox{
+    display: flex;
+    align-items: center;
+}
+
+
+.review_user{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.user_rating{
+    width: 60%;
+}
+
+.review_content{
+    height: 150px;
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.review_date{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
 
 
 
 
-
-
-
-
-
-/* 리뷰작성 모달창 */
 
 
 /* 리뷰 작성 모달 창 */
 .movie_review_modal_bg {
     /*팝업 배경*/
-    position: absolute;
+    position: fixed;
     top:0;
     left: 0;
     width: 100%;
-    min-height: 100%;
+    height: 100vh;
     /* overflow: hidden; */
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
 }
 .movie_review_modal {
     /*팝업*/
@@ -150,8 +309,18 @@ li{
     transform: translate(-50%, -50%);
     padding: 20px;
     background: #ffffff;
-    border-radius: 20px;
+    border-radius: 10px;
 }
+.form_btn_section{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1.25rem;
+}
+
+#reviewPost{
+    margin-top: 1.25rem;
+}
+
 .buttonClose {
     display: block;
     padding: 10px 20px;
@@ -162,6 +331,17 @@ li{
     cursor: pointer;
     transition: box-shadow 0.2s;
 }
+.reviewSubBtn{
+    display: block;
+    padding: 10px 20px;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
 .visible {
     visibility: visible;
 }
@@ -171,11 +351,16 @@ li{
     background-color: white;
 }
 
-
-
-
-
-
+.load_more{
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+    padding: 12px 25px;
+    text-align: center;
+    color: #eee;
+    font-size: 18px;
+    border: 1px solid #eee;
+}
 
 
 
@@ -189,19 +374,23 @@ li{
 
 /* 별점 주기 */
 .rating {
-    position: relative;
-    width: 180px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 205px;
     background: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: .3em;
     padding: 5px;
-    overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 0 0 2px #b3acac;
+    /* border-radius: 10px; */
+    /* box-shadow: 0 0 2px #b3acac; */
  }
- 
+.rating_num{
+    color: #eee;    
+}
+
+
  .rating__result {
     position: absolute;
     top: 0;
@@ -238,5 +427,3 @@ li{
     font-size: 16px;
     color: #fff;
 }
-
-
