@@ -37,12 +37,20 @@ function updateUIForLoggedInUser() {
     loginBtn.removeEventListener("click", toggleModal);
     loginBtn.addEventListener("click", logoutUser);
   }
+  updateNavBarForLoggedInUser();
 }
 
-function toggleModal(){
-  modal.classList.toggle("hidden");
-  overlay.classList.toggle("hidden");
+function updateNavBarForLoggedInUser() {
+  const navList = document.querySelector("nav ul");
+  const myPageButton = document.createElement("button");
+  myPageButton.innerHTML = '<a href="/mypage">마이페이지</a>';
+  const existingMyPageButton = document.querySelector('#myPageButton');
+  if (!existingMyPageButton) {
+    myPageButton.id = 'myPageButton'; 
+    navList.appendChild(myPageButton);
+  }
 }
+
 
 function logoutUser(){
   localStorage.removeItem("isLoggedIn");
@@ -56,56 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-loginBtn.addEventListener("click", toggleModal);
 
-closeBtn.addEventListener("click", toggleModal);
-
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    toggleModal();
-  }
-});
-
-document
-  .getElementById("login-form")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const form = document.getElementById("login-form");
-    const formData = new FormData(form);
-    const data = {};
-
-    formData.forEach((value,key) => {
-      data[key] = value; //add key and value in data object
-    })
-
-    //send post request
-    try {
-      const response = await axios.post("/login", data);
-      console.log(response);
-      if(response.status === 200){
-        handleSuccessfulLogin();
-        window.location.href = '/' //main page when successed
-      }
-      
-    } catch (error) {
-      if(error.response && error.response.status === 400){
-        const errors = error.response.data.errors;
-        displayErrors(errors)
-      } else {
-        console.log(error);
-      }
-      
-    }
-  });
-
-  function displayErrors(errors){
-    const errorContainer = document.getElementById('error-container')
-    errorContainer.innerHTML = '';
-
-    errors.forEach((error) => {
-     errorContainer.innerHTML +=`<p>${error.msg}</p>` 
-    })
-  }
 
 
  // main posters api 
