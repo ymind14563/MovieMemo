@@ -91,6 +91,33 @@ exports.getReview = async (req, res) => {
     }
 }
 
+// 좋아요 높은 리뷰 3개
+exports.getTopReviews = async (req, res) => {
+    // const { limit } = req.params;
+    const limit = parseInt(req.params.limit, 10);
+    try {
+        const reviews = await Review.findAll({
+            order: sort('popular'),
+            limit, 
+            include: [
+                {
+                    model: Member,
+                    attributes: ['nick']
+                }
+            ]
+        });
+        console.log(reviews);
+        if (reviews.length === 0) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.` });
+
+        return res.status(200).json(reviews);
+
+    } catch (error) {
+        console.log(`Error : ${error.message}`);
+        return res.status(500).json({ message: `리뷰 조회 중 오류가 발생했습니다.` });
+    }
+}
+
+
 // 회원이 작성한 리뷰 목록
 exports.getMemberReviewList = async (req, res) => {
     const { memberId } = req.params;
