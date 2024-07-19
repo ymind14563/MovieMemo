@@ -1,5 +1,5 @@
 const express = require("express");
-const { check } = require("express-validator");
+const { check, validationResult } = require("express-validator");
 const router = express.Router();
 const controller = require("../controller/CMember");
 const { authenticateUser, authenticateAdmin } = require("../middleware/auth");
@@ -25,6 +25,43 @@ router.post(
   ],
   controller.loginMember
 );
+
+// Middleware for field-specific validation
+const fieldValidations = (field) => {
+  switch (field) {
+    case 'name':
+      return check('name').notEmpty().withMessage("이름을 입력해주세요.");
+    case 'nick':
+      return check('nick').notEmpty().withMessage("닉네임을 입력해주세요.");
+    case 'password':
+      return [
+        check('password')
+          .isLength({ min: 8 }).withMessage("비밀번호는 최소 8자 이상이어야 합니다.")
+          .matches(/[0-9]/).withMessage("비밀번호는 숫자를 포함해야 합니다.")
+          .matches(/[a-z]/).withMessage("비밀번호는 소문자를 포함해야 합니다.")
+          .matches(/[A-Z]/).withMessage("비밀번호는 대문자를 포함해야 합니다.")
+          .matches(/[\W]/).withMessage("비밀번호는 특수문자를 포함해야 합니다.")
+      ];
+    default:
+      return [];
+  }
+};
+
+// Route for field-specific validation
+router.post('/validate/:field', (req, res) => {
+  const field = req.params.field;
+  const validations = fieldValidations(field);
+
+  validations.forEach(validation => validation.run(req));
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.json({ errors: errors.array() });
+  }
+
+  res.json({ errors: [] });
+});
+
 
 // 회원가입
 router.post(

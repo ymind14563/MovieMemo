@@ -1,6 +1,51 @@
-
 const form = document.querySelector("form");
 const errorMessageElement = document.querySelector(".error-message");
+
+// Function to display errors
+function showErrors(errors) {
+  let errorMessageHTML = '';
+  errors.forEach((error) => {
+    errorMessageHTML += `<p>${error.msg}</p>`;
+  });
+  errorMessageElement.innerHTML = errorMessageHTML;
+  errorMessageElement.style.display = 'block';
+}
+
+// Function to clear errors
+function clearErrors() {
+  errorMessageElement.innerHTML = '';
+  errorMessageElement.style.display = 'none';
+}
+
+// Function to validate a single field
+async function validateField(field) {
+  const data = new FormData();
+  data.append(field.name, field.value);
+
+  try {
+    if (field.value.trim() === '') {
+      // Handle empty field client-side
+      showErrors([{ msg: `${field.placeholder}을(를) 입력해주세요.` }]);
+    } else {
+      const response = await axios.post(`/member/validate/${field.name}`, data);
+      if (response.data.errors.length > 0) {
+        showErrors(response.data.errors);
+      } else {
+        clearErrors();
+      }
+    }
+  } catch (error) {
+    console.error('Validation error:', error);
+    clearErrors();
+  }
+}
+
+// Handle blur event on inputs
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('blur', (e) => {
+    validateField(e.target);
+  });
+});
 
 form.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -15,111 +60,18 @@ form.addEventListener('submit', async function(e) {
     age: document.querySelector('input[name="age"]:checked')?.value,
   };
 
-  console.log(data);
-
   try {
     const response = await axios.post("/member/register", data);
-    console.log(response);
-    // Redirect to main page on success
+    console.log('Registration successful:', response);
     window.location.href = '/';
   } catch (error) {
+    console.error('Registration error:', error);
     if (error.response && error.response.status === 400) {
-      const errorArrays = error.response.data.errors; // array
-      let errorMessageHTML = '';
-      errorArrays.forEach((error) => {
-        console.log(error.msg);
-        errorMessageHTML += `<p>${error.msg}</p>`;
-      });
-      
-      // Update the error message element's content
-      errorMessageElement.innerHTML = errorMessageHTML;
-      // Make sure the error message element is visible
-      errorMessageElement.style.display = 'block';
+      const errorArrays = error.response.data.errors;
+      showErrors(errorArrays);
     } else {
-      console.log(error);
-      // Display a generic error message for other types of errors
-      errorMessageElement.innerHTML = '<p>An error occurred. Please try again later.</p>';
+      errorMessageElement.innerHTML = '<p>에러가 발생했습니다</p>';
       errorMessageElement.style.display = 'block';
     }
   }
 });
-
-
-// const form = document.querySelector("form");
-// const errorMessage = document.querySelector(".error-message")
-
-
-// form.addEventListener('submit',async function(e) {
-//   e.preventDefault();
-  
-
-//   const data = {
-//     name: document.getElementById('user-id').value, 
-//     password: document.getElementById('password').value,
-//     confirmPassword: document.getElementById('confirmPassword').value,
-//     nick: document.getElementById('username').value, 
-//     email: document.getElementById('email').value,
-//     gender: document.querySelector('input[name="gender"]:checked')?.value,
-//     age: document.querySelector('input[name="age"]:checked')?.value,
-//   };
-
-
-//   console.log(data)
-
-//   try {
-//     const response = await axios.post("/member/register", data);
-//     console.log(response);
-//     // window.location.href = '/' //main page when successed
-//   } catch (error) {
-//     if(error.response && error.response.status === 400){
-//       const errorArrays = error.response.data.errors; //array
-//       errorArrays.forEach((error) => {
-//         console.log(error.msg)
-//         let errorMessage = ''
-//         // const p = document.createElement('p');
-//         // p.textContent = error.msg; 
-//         // errorMessage.appendChild(p);
-//         errorMessage += `<p>${error.msg}</p>`
-//       })
-    
-//     } else {
-//       console.log(error);
-//     }
-    
-//   }
-// })
-// error.response.data.errors[0].msg
-// error.response.data.errors[1].msg
-// error.response.data.errors[2].msg
-// error.response.data.errors[3].msg
-// function displayErrors(errors){
-//   const nameError = document.getElementById('name-error')
-//   const passwordError = document.getElementById('password-error')
-//   const nickError = document.getElementById('nick-error')
-
-
-
-
-//   //clear the previous error messages
-//   nameError.textContent = '';
-//   nickError.textContent = '';
-//   passwordError.textContent = '';
-
-// // errors = 배열
-
-//   errors.forEach((error) => {
-//     switch(error.param){
-//       case 'name':
-//         nameError.textContent = error.msg;
-//         break;
-//       case 'nick':
-//         nickError.textContent = error.msg;
-//         break;
-//       case 'password':
-//         passwordError.textContent = error.msg;
-//         break;
-//       default:
-//           break;
-//     }
-//   })
-// }
