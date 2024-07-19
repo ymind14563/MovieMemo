@@ -37,12 +37,20 @@ function updateUIForLoggedInUser() {
     loginBtn.removeEventListener("click", toggleModal);
     loginBtn.addEventListener("click", logoutUser);
   }
+  updateNavBarForLoggedInUser();
 }
 
-function toggleModal(){
-  modal.classList.toggle("hidden");
-  overlay.classList.toggle("hidden");
+function updateNavBarForLoggedInUser() {
+  const navList = document.querySelector("nav ul");
+  const myPageButton = document.createElement("button");
+  myPageButton.innerHTML = '<a href="/mypage">마이페이지</a>';
+  const existingMyPageButton = document.querySelector('#myPageButton');
+  if (!existingMyPageButton) {
+    myPageButton.id = 'myPageButton'; 
+    navList.appendChild(myPageButton);
+  }
 }
+
 
 function logoutUser(){
   localStorage.removeItem("isLoggedIn");
@@ -56,62 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-loginBtn.addEventListener("click", toggleModal);
 
-closeBtn.addEventListener("click", toggleModal);
-
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-    toggleModal();
-  }
-});
-
-document
-  .getElementById("login-form")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const form = document.getElementById("login-form");
-    const formData = new FormData(form);
-    const data = {};
-
-    formData.forEach((value,key) => {
-      data[key] = value; //add key and value in data object
-    })
-
-    //send post request
-    try {
-      const response = await axios.post("/login", data);
-      console.log(response);
-      if(response.status === 200){
-        handleSuccessfulLogin();
-        window.location.href = '/' //main page when successed
-      }
-      
-    } catch (error) {
-      if(error.response && error.response.status === 400){
-        const errors = error.response.data.errors;
-        displayErrors(errors)
-      } else {
-        console.log(error);
-      }
-      
-    }
-  });
-
-  function displayErrors(errors){
-    const errorContainer = document.getElementById('error-container')
-    errorContainer.innerHTML = '';
-
-    errors.forEach((error) => {
-     errorContainer.innerHTML +=`<p>${error.msg}</p>` 
-    })
-  }
 
 
  // main posters api 
 
 
- function shuffleArraysInSync(arr1, arr2) {
+function shuffleArraysInSync(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     throw new Error('Arrays must have the same length');
   }
@@ -126,7 +85,7 @@ document
 
 // Function to create sections with shuffled genres and section classes
 async function createSection() {
-  const genres = ['액션', '코메디', '멜로드라마','드라마','판타지','SF','어드벤처'];
+  const genres = ['액션', '코메디', '멜로','드라마','판타지','SF','어드벤처'];
   const sectionClasses = ['action-section', 'comedy-section', 'romance-section','drama-section','fantasy-section', 'sf-section','adventure-section'];
 
   shuffleArraysInSync(genres, sectionClasses);
@@ -134,28 +93,30 @@ async function createSection() {
   const sections = document.querySelectorAll('.second-swiper');
 
 
-  sections.forEach(async (section, index) => {
+  sections.forEach(async(section, index) => {
     const genre = genres[index];
     const sectionClass = sectionClasses[index];
-
+    let moviesFromBackend;
     section.innerHTML = ''; // Clear existing content
 
     // Set the genre as the section title (h3 element)
     const h3 = document.createElement('h3');
     h3.textContent = genre;
     section.appendChild(h3);
-
     // Fetch movies by genre and populate swiper slides
-    const moviesFromBackend = await fetchMoviesByGenre(genre);
-
+    const result = await axios({
+      method : 'get',
+      url : `/movie/genreList/${genre}`,
+    }).then((res)=>{
+      moviesFromBackend = res.data.data;
+    })
     const swiperWrapper = document.createElement('div');
     swiperWrapper.classList.add('swiper-wrapper');
-
-    moviesFromBackend.forEach((movie) => {
+    await moviesFromBackend.forEach((movie) => {
       const posterUrls = movie.posterUrl
       dynamicSlides(posterUrls, sectionClass, movie, swiperWrapper);
-    });
-
+      });
+    
     section.appendChild(swiperWrapper);
 
     const prevButton = document.createElement('div');
@@ -184,20 +145,19 @@ async function createSection() {
 
 async function fetchMoviesByGenre(genre){
   try {
-    const response = await axios.get(`/movie/genreList/${encodeURIComponent(genre)}`)
+    const response = await axios.get(`/movie/genreList/${(genre)}`)
     return response.data.movies;
   }catch(error){
     console.error(error)
     throw error
   }
 }
-
 async function sendMovieIdToBackend(movieId) {
   try {
     const response = await axios.get(
-      `/movie/movieInfo/${encodeURIComponent(movieId)}`
+      `/movie/movieInfo/${(movieId)}`
     );
-    console.log("Movie ID sent to backend successfully", response.data);
+    // console.log("Movie ID sent to backend successfully", response.data);
   } catch (error) {
     console.error("Error sending movie ID to backend", error);
   }
@@ -217,19 +177,19 @@ function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
   const image = document.createElement('img');
   image.src = url;
   image.alt = 'poster';
-
+  image.id = movieData.movieId;
+  
   cardContent.appendChild(image);
   cardContainer.appendChild(cardContent);
   swiperSlide.appendChild(cardContainer);
   swiperWrapper.appendChild(swiperSlide);
 
-  image.addEventListener("click", () => {
-    const movieId = movieData.movieId;
+  image.addEventListener("click", (e) => {
+    let targetE =e.target;
+    const movieId = e.target.id;
     if (movieId) {
       sendMovieIdToBackend(movieId); // Send movie ID to backend
-      window.location.href = `reviewpage.html?id=${encodeURIComponent(
-        movieId
-      )}`;
+      window.location.href = `/movie/movieInfo/${(movieId)}`;
     } else {
       console.error("No movieId for this movie", movieData);
     }

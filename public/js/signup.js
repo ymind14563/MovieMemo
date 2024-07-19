@@ -4,14 +4,16 @@ const errorMessage = document.querySelector(".error-message")
 
 form.addEventListener('submit',async function(e) {
   e.preventDefault();
+  
 
   const data = {
-    userId: document.getElementById('userId').value,
+    name: document.getElementById('user-id').value, 
     password: document.getElementById('password').value,
     confirmPassword: document.getElementById('confirmPassword').value,
-    username: document.getElementById('username').value,
-    gender: document.getElementById('gender').value,
-    age: document.getElementById('age').value,
+    nick: document.getElementById('username').value, 
+    email: document.getElementById('email').value,
+    gender: document.querySelector('input[name="gender"]:checked')?.value,
+    age: document.querySelector('input[name="age"]:checked')?.value,
   };
 
 
@@ -24,10 +26,13 @@ form.addEventListener('submit',async function(e) {
   } catch (error) {
     if(error.response && error.response.status === 400){
       const errorArrays = error.response.data.errors; //array
-      let errorMessage = '';
       errorArrays.forEach((error) => {
         console.log(error.msg)
-        errorMessage+=`<p>${error.msg}<p>`
+        let errorMessage = ''
+        // const p = document.createElement('p');
+        // p.textContent = error.msg; 
+        // errorMessage.appendChild(p);
+        errorMessage += `<p>${error.msg}</p>`
       })
     
     } else {
