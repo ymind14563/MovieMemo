@@ -16,7 +16,7 @@
 
   <div class="wrapper">
     <h1>회원가입</h1>
-    <form action="/member/register" method="POST">
+    <form action="/member/register" method="POST" name="signup">
       <input
         type="text"
         id="user-id"
@@ -41,6 +41,13 @@
         name="nick"
         placeholder="닉네임"
       /><br />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="이메일"
+        required
+      /><br />
 
       <label for="gender">성별</label><br /><br />
       <input type="radio" id="male" name="gender" value="male" />
@@ -49,23 +56,18 @@
       <label for="female">여성</label><br /><br />
 
       <label for="age">연령대</label><br /><br />
-      <input type="radio" id="age10s" name="age" value="10s" />
+      <input type="radio" id="age10s" name="age" value="10" />
       <label for="age10s">10대</label>
-      <input type="radio" id="age20s" name="age" value="20s" />
+      <input type="radio" id="age20s" name="age" value="20" />
       <label for="age20s">20대</label>
-      <input type="radio" id="age30s" name="age" value="30s" />
+      <input type="radio" id="age30s" name="age" value="30" />
       <label for="age30s">30대</label>
-      <input type="radio" id="age40s" name="age" value="40s" />
-      <label for="age40s">40대이상</label><br /><br />
-
-      <div id="name-error" class="error-message"></div> <!-- Error message placeholder for name -->
-      <div id="password-error" class="error-message"></div> <!-- Error message placeholder for password -->
-      <!-- write error message for confirmPassowrd later(현재 벡엔드코드 없는걸로 보임)  -->
-      <div id="nick-error" class="error-message"></div> <!-- Error message placeholder for nick -->
-
-        <!-- write error message code for gender and age later-->             
-
+      <input type="radio" id="age40s" name="age" value="40" />
+      <label for="age40s">40대이상</label><br /><br />  
+      <div class="error-message"></div>  
       <button class="signup-btn" type="submit">가입하기</button>
+
+          
     </form>
   </div>
 
