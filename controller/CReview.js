@@ -91,7 +91,7 @@ exports.getReview = async (req, res) => {
     }
 }
 
-// 좋아요 높은 리뷰 3개
+// 좋아요 높은 리뷰 조회
 exports.getTopReviews = async (req, res) => {
     // const { limit } = req.params;
     const limit = parseInt(req.params.limit, 10);

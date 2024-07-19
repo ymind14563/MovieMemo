@@ -12,7 +12,7 @@ router.post(`/`, authenticateUser, controller.postReview);
 // 특정 리뷰 한개 조회
 router.get(`/:reviewId`, controller.getReview);
 
-// 좋아요 높은 리뷰 3개 조회
+// 좋아요 높은 리뷰 조회
 router.get(`/getTopReviews/:limit`, controller.getTopReviews);
 
 // 회원이 작성한 리뷰 목록
