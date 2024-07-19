@@ -274,6 +274,11 @@ exports.getMovieType = async (req, res) => {
     let genreTypeMF = searchWordFunc(genreType);
 
     const movies = await db.Movie.findAll({ 
+      where: {
+        posterUrl: {
+          [db.Sequelize.Op.ne]: '' 
+        }
+      },
       include: [{
         model: db.Genre,
         where: {
@@ -282,7 +287,10 @@ exports.getMovieType = async (req, res) => {
           }
         },
         through: { attributes: [] }
-      }]
+      }],
+      order: [
+        ['reviewMovieRating', 'DESC']
+      ]
     });
 
     if (movies.length === 0) {
