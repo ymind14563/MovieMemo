@@ -60,8 +60,21 @@ SmethodElement.addEventListener('click', () => {
 });
 
 const searchBtn = document.querySelector('.search-box-btn');
-searchBtn.addEventListener('click',()=>{
-  window.location.href = SmethodElement.textContent==='Title'
-  ? `/movie/searchT/${document.querySelector('.search-box-word').value}`
-  : `/movie/searchA/${document.querySelector('.search-box-word').value}`;
-})
+const searchInput = document.querySelector('.search-box-word');
+
+function performSearch() {
+  const searchTerm = searchInput.value;
+  const searchMethod = SmethodElement.textContent === 'Title' ? 'searchT' : 'searchA';
+  window.location.href = `/movie/${searchMethod}/${searchTerm}`;
+}
+
+// 버튼 클릭 이벤트
+searchBtn.addEventListener('click', performSearch);
+
+// 입력 필드에 대한 keydown 이벤트
+searchInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // 폼 제출 방지
+    performSearch();
+  }
+});

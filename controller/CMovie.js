@@ -270,21 +270,25 @@ exports.getMovieInfo = async (req, res) => {
 exports.getMovieType = async (req, res) => {
   try {
     const { genreType } = req.params;
-    
-    let genreTypeMF = searchWordFunc(genreType);
-
     const movies = await db.Movie.findAll({ 
+      where: {
+        posterUrl: {
+          [db.Sequelize.Op.ne]: '' 
+        }
+      },
       include: [{
         model: db.Genre,
         where: {
           genreType: {
-            [db.Sequelize.Op.like]: `${genreTypeMF}`
+            [db.Sequelize.Op.like]: `${genreType}`
           }
         },
         through: { attributes: [] }
-      }]
+      }],
+      order: [
+        ['reviewMovieRating', 'DESC']
+      ]
     });
-
     if (movies.length === 0) {
       return errorHandler(404, res, '검색 결과가 없습니다.');
     }
