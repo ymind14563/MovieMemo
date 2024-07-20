@@ -97,50 +97,98 @@ const firstSwiper = new Swiper(".first-swiper", {
 initializeSwiper()
 
 // modal
-
 const loginBtn = document.querySelector("#openLoginModal");
+const navList = document.querySelector("nav ul");
 const modal = document.querySelector(".loginModal");
-const closeBtn = document.querySelector(".close");
 const overlay = document.querySelector(".overlay");
 
-function handleSuccessfulLogin() {
-  localStorage.setItem('isLoggedIn', 'true');
-  updateUIForLoggedInUser();
+function openLoginModal() {
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
 }
+
 
 function updateUIForLoggedInUser() {
   if (loginBtn) {
     loginBtn.textContent = "로그아웃";
-    loginBtn.removeEventListener("click", toggleModal);
-    loginBtn.addEventListener("click", logoutUser);
+    loginBtn.removeEventListener("click", openLoginModal); // Remove login modal event listener
+    loginBtn.addEventListener("click", logoutUser); // Add logout event listener
   }
-  updateNavBarForLoggedInUser();
+  removeSignUpButton(); // Remove the sign-up button
+  updateNavBarForLoggedInUser(); // Add the "마이페이지" button
+}
+
+// Function to update UI for logged-out users
+function updateUIForLoggedOutUser() {
+  if (loginBtn) {
+    loginBtn.textContent = "로그인";
+    loginBtn.removeEventListener("click", logoutUser); // Remove logout event listener
+    loginBtn.addEventListener("click", openLoginModal); // Add login modal event listener
+  }
+  addSignUpButton(); // Re-add the sign-up button
+  removeMyPageButton(); // Remove "마이페이지" button 
 }
 
 function updateNavBarForLoggedInUser() {
-  const navList = document.querySelector("nav ul");
-  const myPageButton = document.createElement("button");
-  myPageButton.innerHTML = '<a href="/mypage">마이페이지</a>';
-  const existingMyPageButton = document.querySelector('#myPageButton');
+  const existingMyPageButton = document.querySelector("#myPageButton");
   if (!existingMyPageButton) {
-    myPageButton.id = 'myPageButton'; 
-    navList.appendChild(myPageButton);
+    const myPageButton = document.createElement("button");
+    myPageButton.id = "myPageButton";
+    myPageButton.innerHTML = '<a href="/mypage">마이페이지</a>';
+    
+    const navList = document.querySelector("nav ul");
+
+    const logoutButton = navList.querySelector("#openLoginModal");
+
+    if (logoutButton) {
+      navList.insertBefore(myPageButton, logoutButton);
+    } else {
+      navList.appendChild(myPageButton);
+    }
   }
 }
 
+// Function to handle user logout
+function logoutUser() {
+  localStorage.removeItem("token"); // Remove token from local storage
+  axios.defaults.headers.common["Authorization"] = ""; // Clear the Authorization header
+  updateUIForLoggedOutUser(); // Update UI
+  window.location.reload(); // Reload page to reset state
+}
 
-function logoutUser(){
-  localStorage.removeItem("isLoggedIn");
-  window.location.reload();
-} 
-
-document.addEventListener("DOMContentLoaded", () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if (isLoggedIn === "true") {
-    updateUIForLoggedInUser();
+// Function to remove the sign-up button
+function removeSignUpButton() {
+  const signUpButton = document.querySelector("nav ul button a[href='/register']");
+  if (signUpButton) {
+    signUpButton.parentElement.remove(); // Remove the button element
   }
-});
+}
 
+// Function to add back the sign-up button
+function addSignUpButton() {
+  const existingSignUpButton = document.querySelector("nav ul button a[href='/register']");
+  if (!existingSignUpButton) {
+    const signUpButton = document.createElement("button");
+    signUpButton.innerHTML = '<a href="/register">회원가입</a>';
+    navList.appendChild(signUpButton);
+  }
+}
+
+// Function to remove "마이페이지" button
+function removeMyPageButton() {
+  const myPageButton = document.querySelector("#myPageButton");
+  if (myPageButton) {
+    myPageButton.remove();
+  }
+}
+
+// Initialize UI based on login status
+const token = localStorage.getItem("token");
+if (token) {
+  updateUIForLoggedInUser();
+} else {
+  updateUIForLoggedOutUser();
+}
 //  main posters api 
 
 
