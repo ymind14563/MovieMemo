@@ -53,3 +53,47 @@ button a {
 .search-box-Smethod{
   cursor: pointer;
 }
+
+ .m-search-box-wrapper{
+  display: none;
+ }
+
+
+@media screen and (max-width: 500px) {
+
+  .navdiv {
+    flex-wrap: wrap;
+  }
+
+  .search-box-wrapper{
+    display: none;
+  }
+
+
+  .m-search-box-wrapper{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1.875rem;
+    padding: 1.125rem 0;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+   }
+
+   .m-search-box-Smethod{
+    width: 15%;
+  }
+
+  .m-search-box-word{
+    width: 40%;
+    padding-bottom: 0px;
+    text-align: right;
+    background:none;
+    border:none;
+    outline: none;
+  }
+
+  .m-search-box-btn{
+    background-color: #B20710;
+  }
+}

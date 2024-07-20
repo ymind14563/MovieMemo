@@ -158,3 +158,57 @@ form input {
     opacity: 0.7;
     cursor: pointer;
 }
+
+
+
+/* 모바일 화면에서 적용될 스타일 */
+@media screen and (max-width: 500px) {
+
+    h3{
+        margin-left: 0;
+        margin-bottom: 1.875rem;
+        padding: 0 3%;
+    }
+
+    .search-result-container{
+        width: 100%;
+        padding: 0 3%;
+    }
+
+    .search-result-section {
+      position: static; /* 기본 static 위치로 변경 */
+      max-width: 100%; /* 최대 너비를 화면에 꽉 차게 조정 */
+      min-width: auto; /* 최소 너비 설정 해제 */
+      left: 0; /* 좌우 여백 제거 */
+    }
+  
+    .search-result-wrapper {
+      margin: 10px 0; /* 검색 결과 박스들 사이의 간격 조정 */
+      background: #3a3a3a5b;
+      flex-direction: column; /* 세로 배치로 변경 */
+      align-items: center; /* 가운데 정렬 */
+      text-align: center; /* 텍스트 가운데 정렬 */
+      padding: 15px; /* 내부 여백 추가 */
+    }
+  
+    .search-result-image img {
+      width: 80%; /* 이미지 너비를 박스에 맞게 조정 */
+      height: auto; /* 비율 유지 */
+      margin-bottom: 10px; /* 아래 여백 추가 */
+    }
+  
+    .search-result-content-box {
+      height: auto; /* 컨텐츠 박스 높이 자동 설정 */
+
+      justify-content: center; /* 가운데 정렬 */
+      text-align: left;
+    }
+  
+    .show-next-page-btn {
+      width: 100%; /* 버튼 너비를 박스에 맞게 조정 */
+      margin: 20px 0 0; /* 상단 여백 추가 */
+      padding: 10px 0; /* 내부 여백 추가 */
+      font-size: 1.2rem; /* 폰트 크기 조정 */
+    }
+  }
+  
