@@ -15,6 +15,9 @@ const sort = (sortBy) => {
         case 'popular':
             order = [['likeCount', 'DESC'], ['createdAt', 'DESC']]; // 좋아요 순, 좋아요가 같다면 최신순
             break;
+        case 'report':
+            order = [['reportCount', 'DESC'], ['createdAt', 'DESC']]; // 신고 순, 같다면 최신순
+            break;
         default:
             order = [['createdAt', 'DESC']]; // 기본 정렬 기준, 최신순
             break;
