@@ -202,8 +202,17 @@ async function createSection() {
     section.appendChild(nextButton);
 
     new Swiper(section, {
-      slidesPerView: 6,
+      slidesPerView: 3,
       spaceBetween: 0,
+
+      // Responsive breakpoints
+      // 화면 크기가 500px 이상이면 아래처럼 설정된다.
+      breakpoints: {
+        500: {
+          slidesPerView: 6,
+          spaceBetween: 0,
+        }
+      },
       loop: true,
       navigation: {
         nextEl: section.querySelector('.swiper-button-next'),

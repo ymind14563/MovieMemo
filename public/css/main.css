@@ -280,12 +280,14 @@ form input {
       text-align: center; /* 슬라이드 내용 가운데 정렬 */
     }
   
-    .swiper-pagination,
+    /* .swiper-pagination,
     .swiper-button-prev,
     .swiper-button-next,
     .swiper-scrollbar {
-      display: none; /* 슬라이더 컨트롤 숨기기 */
-    }
+      display: none; 
+      
+    } */
+    /* 슬라이더 컨트롤 숨기기 */
   
     .loginModal {
       width: 90%; /* 로그인 모달 창 너비 조정 */
