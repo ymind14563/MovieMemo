@@ -110,4 +110,7 @@ router.delete("/", authenticateUser, controller.deleteMember);
 // 로그아웃
 router.delete("/logout", authenticateUser, controller.logoutMember);
 
+// 비밀번호 확인
+router.post('/verifyPassword', authenticateUser, controller.verifyPassword);
+
 module.exports = router;
