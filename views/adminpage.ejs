@@ -8,6 +8,8 @@
     <title>MovieMemo</title>
 </head>
 <body>
+
+
     <nav class="navbar">
         <div class="navdiv">
             <div class="logo">
@@ -17,89 +19,72 @@
     </nav>
 
     <div class="wrapper">
-        <h2>회원 검색</h2>
-        <form action="#" method="POST">
-            <div class="fields-container">
-                <div class="nick-field">
-                    
-        </form>
-    </div>
+      <input class="search-box-word" type="text" placeholder="영화 제목을 입력해주세요">
+      <button class="">검색</button>
 
-    <div class="wrapper">
-        <h2>작성한 리뷰 목록 
-            <select id="sortBy" name="sortBy" onchange="sortReviews(this.value)">
-                <option value="" >정렬 순서</option>
-                <option value="patch-latest">최신편집순</option>
-                <option value="latest">최신등록순</option>
-                <option value="oldest">과거등록순</option>
-                <option value="rating">평점순</option>
-                <option value="popular" selected>좋아요순</option>
-            </select>
-        </h2>
-        <div id="review-list">
-            <% if (reviews && reviews.length > 0) { %>
-                <% reviews.forEach(review => { %>
-                    <div class="review-title" data-review-id="<%= review.reviewId %>">
-                        <div class="review-title-row"><%= review.Movie.movieTitle %></div>
-                        <div class="review-content-row">
-                            <div class="review-content">
-                                <%= review.content %>
-                            </div>
-                            <span class="read-more">더보기</span>
-                            <div class="likes-count">
-                                <img class="like-img" src="/img/icon-heart-full.png" alt="LikeIcon">
-                                <div class="like-num"><%= review.likeCount %></div>
-                            </div>
-                            <div class="review-btn">
-                                <button class="patch-btn" type="button">수정</button>
-                                <button class="del-btn" type="button">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <div id="no-reviews">아직 작성한 리뷰가 없습니다.</div>
-            <% } %>
-        </div>
-        
-    
-        <% if (pagination.totalPages > 1) { %>
-            <div class="pagination">
-                <% for(let i = 1; i <= pagination.totalPages; i++) { %>
-                    <% if(i == pagination.currentPage) { %>
-                        <span class="page-number active"><%= i %></span>
-                    <% } else { %>
-                        <a href="#" class="page-number" data-page="<%= i %>"><%= i %></a>
-                    <% } %>
-                <% } %>
-            </div>
-        <% } %>
-    </div>
-    <div id="delete-modal" class="modal">
-        <div class="del-modal-content">
-            <p>정말 삭제하시겠습니까?</p>
-            <p>삭제 시, 복구할 수 없습니다.</p>
-            <button id="confirm-delete" class="modal-btn">예</button>
-            <button id="cancel-delete" class="modal-btn">아니오</button>
-        </div>
-    </div>
+      <table>
+        <thead>
+            <tr>
+              <th>닉네임</th>
+              <th>영화 제목</th>
+              <th>리뷰 내용</th>
+              <th>좋아요 수</th>
+              <th>신고수</th>
+                <th>작성일</th>
+                <th>편집일</th>
+                <th>리뷰삭제</th>
+                <th>강제퇴장</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>사용자1</td>
+              <td>영화1</td>
+              <td>아주 재미있었어요!</td>
+              <td>10</td>
+              <td>3</td>
+                <td>2023-01-01</td>
+                <td>2023-01-02</td>
+                <td><button class="review-delete-btn" type="submit">삭제</button></td>
+                <td><button class="member-delete-btn" type="submit">회원탈퇴</button></td>
+            </tr>
+        </tbody>
+      </table>
 
-    <div id="patch-modal" class="modal">
-        <div class="modal-content">
-            <h2>리뷰 수정</h2>
-            <form id="patch-form">
-                <textarea id="patch-content" rows="10" style="width: 100%;"></textarea>
-                <div class="modal-btn-container">
-                    <button type="button" id="confirm-patch" class="modal-btn">수정</button>
-                    <button type="button" id="cancel-patch" class="modal-btn">취소</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
+      <div class="pagination">
+        <a href="#">&laquo;</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">&raquo;</a>
+      </div>
+
+          <div id="delete-modal" class="modal">
+              <div class="del-modal-content">
+                  <p>정말 삭제하시겠습니까?</p>
+                  <p>삭제 시, 복구할 수 없습니다.</p>
+                  <button id="confirm-delete" class="modal-btn">예</button>
+                  <button id="cancel-delete" class="modal-btn">아니오</button>
+              </div>
+          </div>
+
+          <div id="patch-modal" class="modal">
+              <div class="modal-content">
+                  <h2>리뷰 상세보기</h2>
+                  <form id="patch-form">
+                      <textarea id="patch-content" rows="10" style="width: 100%;"></textarea>
+                      <div class="modal-btn-container">
+                          <button type="button" id="confirm-patch" class="modal-btn">닫기</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+
 
     
 </body>
-<script defer src="/js/adminpage.js"></script>
+<script defer src="/js/mypage.js"></script>
 
 </html>
