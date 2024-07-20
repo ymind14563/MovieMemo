@@ -131,3 +131,32 @@
     border: 1px solid rgb(192, 192, 192);
   }
   
+
+
+/* 모바일 화면에서 적용될 스타일 */
+@media screen and (max-width: 500px) {
+  .wrapper {
+    width: 90%; /* 화면 너비의 90%로 설정 */
+    padding: 20px; /* 내부 패딩 축소 */
+    margin: 30px auto; /* 상하 여백 축소 */
+  }
+
+  h1 {
+    font-size: 28px; /* 제목 폰트 크기 축소 */
+    margin-bottom: 40px; /* 제목과 입력 폼 사이 여백 축소 */
+  }
+
+  form input {
+    width: 100%; /* 입력 필드 너비를 100%로 설정하여 화면에 꽉 차게 함 */
+  }
+
+  form .radio-group {
+    margin-bottom: 10px; /* 라디오 버튼 그룹 간격 축소 */
+  }
+
+  .signup-btn {
+    font-size: 14px; /* 버튼 폰트 크기 축소 */
+    margin-top: 24px; /* 버튼과 하단 여백 축소 */
+    padding: 8px 0; /* 버튼 패딩 축소 */
+  }
+}
