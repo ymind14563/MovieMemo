@@ -354,3 +354,71 @@ input:focus {
 }
 
 
+/* 모바일 미디어 쿼리 */
+@media screen and (max-width: 500px) {
+  .logo a {
+      font-size: 20px; /* 로고 폰트 크기 축소 */
+  }
+
+  .navbar {
+      margin-bottom: 50px; /* 네비게이션 바 간격 조정 */
+  }
+
+  .wrapper {
+      padding: 20px; /* 패딩 축소 */
+  }
+
+  h2 {
+      font-size: 20px; /* 제목 폰트 크기 축소 */
+  }
+
+  .fields-container {
+      flex-direction: column; /* 필드 세로 정렬 */
+  }
+
+  .nick-field{
+    width: 100%;
+  }
+
+  .nick-field p{
+    margin-bottom: 1.875rem;
+  }
+
+  .password-field{
+    width: 100%;
+  }
+
+  .member-patch-btn {
+    margin-left: 0;
+    margin-top: 1.25rem;  
+    font-size: 14px; /* 버튼 폰트 크기 축소 */
+  }
+
+  .member-delete-btn{
+    margin-top: 1.25rem;
+    font-size: 14px;
+  }
+
+  .button-container {
+    gap: 5px; /* 버튼 사이 간격 축소 */
+}
+
+
+  #sortBy {
+    
+  }
+
+  h2{
+    margin-left: 0;
+    margin-bottom: 3.125rem;
+  }
+
+  .review-title {
+      margin-bottom: 10px; /* 리뷰 타이틀 하단 여백 조정 */
+  }
+
+  .page-number {
+      width: 30px; /* 페이지 넘버 크기 축소 */
+      height: 30px;
+  }
+}
