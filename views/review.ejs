@@ -99,8 +99,15 @@
         <div class="movie_review_modal_bg hidden">
           <div class="movie_review_modal">
               <form action="" name="reviewForm" id="reviewForm">
-                  <label for="rating">평점:</label>
-                  <input type="number" id="rating" name="reviewMovieRating" min="1" max="5" required><br>
+                  <div class="rating_btn">
+                    <span>평점: </span>
+                    <!-- <input type="number" id="rating" name="reviewMovieRating" min="1" max="5" required><br> -->
+                    <label for="rating1">1점</label><input type="radio" id="rating1" name="rating" value="1">
+                    <label for="rating2">2점</label><input type="radio" id="rating2" name="rating" value="2">
+                    <label for="rating3">3점</label><input type="radio" id="rating3" name="rating" value="3">
+                    <label for="rating4">4점</label><input type="radio" id="rating4" name="rating" value="4">
+                    <label for="rating5">5점</label><input type="radio" id="rating5" name="rating" value="5">
+                  </div>
                   <textarea name="reviewPost" id="reviewPost" cols="40" rows="20" placeholder="리뷰를 작성해 주세요"></textarea>
                   <p class="form_btn_section">
                     <button type="button" class="buttonClose">취소</button>

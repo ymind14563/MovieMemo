@@ -1,5 +1,11 @@
 body{
+    padding: 0;
+    margin: 0;
     background-color: #050C0A;
+}
+
+div, main, section{
+    box-sizing: border-box;
 }
 
 ul{
@@ -230,14 +236,6 @@ button {
 }
 
 
-.review_box{
-    width: 30%;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    /* color: #eee; */
-    /* border: 1px solid #262626; */
-}
 
 .createReviewBtn{
     display: flex;
@@ -272,8 +270,8 @@ button {
 
 .review_content{
     height: 150px;
-    margin: 20px 0;
-    padding: 20px 0;
+    margin: 1.25rem 0;
+    padding: 1.25rem 0;
     border-top: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
 }
@@ -354,8 +352,8 @@ button {
 .load_more{
     display: block;
     margin: 0 auto;
-    margin-top: 30px;
-    padding: 12px 25px;
+    margin-top: 1.875rem;
+    padding: 0.75rem 1.562rem;
     text-align: center;
     color: #eee;
     font-size: 18px;
@@ -367,12 +365,18 @@ button {
 
 
 
-
-
-
-
-
 /* 별점 주기 */
+.review_box{
+    width: 30%;
+    max-height: 300px;
+    padding: 1.25rem;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    margin-bottom: 1.875rem;
+    /* color: #eee; */
+    /* border: 1px solid #262626; */
+}
+
 .rating {
     margin-top: 20px;
     width: 100%;
@@ -427,3 +431,108 @@ button {
     font-size: 16px;
     color: #fff;
 }
+
+
+
+
+
+
+@media (max-width: 500px) {
+
+    #page_container{
+        width: 100%;
+        padding: 0 3%;
+        margin: 0 auto;
+    }    
+
+    /* Movie Info Container */
+    #movie_info_container {
+      margin-top: 20px;
+    }
+  
+    .sub_detail_box {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .poster_container {
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 1.875rem;
+    }
+
+    .poster_box{
+        text-align: center;
+    }
+
+    .poster_box img{
+        width: 60%;
+    }
+
+
+    .rating_box{
+        display: inline-block;
+        width: 45%;
+    }
+
+    .rating{
+        margin-top: 0;
+    }
+
+    .releaseBox{
+        display: inline-block;
+        width: 45%;
+        margin-top: 30px;
+    }
+  
+    .detailNcastBox {
+      width: 100%;
+    }
+  
+    .detail_box, .cast_box {
+      width: 100%;
+    }
+  
+    .detail_info_list {
+      width: 100%;
+      /* flex-direction: column; */
+      /* justify-content: center; */
+      padding: 1.25rem;
+    }
+  
+    .directorBox, .genreBox {
+      width: 45%;
+    }
+    
+    .cast_box{
+        margin-top: 1.875rem;
+    }
+
+    .cast_list {
+      justify-content: flex-start;
+      padding: 1.25rem;
+      /* overflow-x: scroll;
+      -webkit-overflow-scrolling: touch; */
+    }
+  
+    .cast_list li {
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+  
+    /* Review Section */
+    .review_section {
+      /* flex-direction: column; */
+    }
+  
+    .review_box {
+      width: 100%;
+      margin-bottom: 1.25rem;
+    }
+
+  
+    .load_more {
+      margin-top: 1.25rem;
+    }
+  }
+  
