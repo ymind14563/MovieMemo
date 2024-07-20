@@ -32,7 +32,7 @@ body {
 }
 
 button {
-    background-color: #B20710;
+    background-color: #c9302c;
     margin-left: 10px;
     border-radius: 10px;
     padding: 10px;
@@ -42,6 +42,10 @@ button {
     color: white;
 }
 
+button:hover {
+    background-color: #B20710;
+    cursor: pointer;
+}
 button a {
     color: white;
     font-weight: bold;
@@ -57,7 +61,7 @@ button a {
 
 .wrapper {
     width: 90%;
-    padding: 32px 16px;
+    padding: 16px 16px;
     margin: 50px auto;
     background-color: #fff;
     border-radius: 10px;
@@ -66,11 +70,59 @@ button a {
     min-height: 300px;
     flex-grow: 1; /* 페이지 아래까지 공간을 차지하도록 설정 */
 }
+.wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 1em;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+.wrapper table thead tr {
+    background-color: #333;
+    color: #ffffff;
+}
+
+.wrapper table th, table td {
+    padding: 0.8em;
+    text-align: center;
+}
+
+.wrapper table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.wrapper table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.wrapper table tbody tr:last-of-type {
+    border-bottom: none;
+}
+.wrapper.button {
+    font-size: 16px;
+    margin-top: 28px;
+    padding: 10px 0;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    width: 20%; 
+    color: #fff;
+    cursor: pointer;
+    background-color: #B20710;
+}
+
+.wrapper.button:hover {
+    background-color: #c9302c;
+}
 
 h1 {
     font-size: 32px;
-    color: #07001f;
+    color: white;
     margin-bottom: 60px;
+    text-align: center;
 }
 
 h2 {
@@ -120,27 +172,6 @@ form select {
     gap: 30px;
     width: 100%;
     margin-top: 5px;
-}
-
-.member-patch-btn, .member-delete-btn {
-    font-size: 16px;
-    margin-top: 28px;
-    padding: 10px 0;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    width: 20%; 
-    color: #fff;
-    cursor: pointer;
-    background-color: #B20710;
-}
-
-.member-patch-btn:hover, .member-delete-btn:hover {
-    background-color: #8C0610;
-}
-
-input:focus {
-    border: 1px solid rgb(192, 192, 192);
 }
 
 #sortBy {
@@ -352,18 +383,13 @@ input:focus {
     top: 73%; 
     right: 13%;
 }
-
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-th, td {
-    border: 1px solid black;
-    padding: 10px;
+.search-box-word {
+    outline: none;
+    border: 1px solid #fff;
+    padding: 12px 20px;
+    margin: 5px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background: #e4e4e4;
     text-align: center;
-}
-th {
-    background-color: #f2f2f2;
 }
