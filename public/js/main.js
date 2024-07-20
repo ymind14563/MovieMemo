@@ -1,3 +1,76 @@
+
+//first slide
+
+
+
+async function fetchTopReviews(limit = 3) {
+  try {
+    const response = await axios.get(`/review/getTopReviews/${limit}`);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching top reviews:", error);
+    return [];
+  }
+}
+
+fetchTopReviews().then((data) => console.log("Fetched data:", data));
+
+async function fetchMovieDetails(movieId) {
+  try {
+    const response = await axios.get(`/movie/movieInfo/${movieId}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error fetching movie details for movieId ${movieId}:`,
+      error
+    );
+    return null;
+  }
+}
+
+
+async function initializeSwiper() {
+  //fetch top reviews
+  const reviews = await fetchTopReviews();
+
+  //unique movieId
+  const movieIds = reviews.map((review) => review.movieId);
+  
+  //fetch movie details for movieId
+  const movieDetailsPromises = movieIds.map((id) => fetchMovieDetails(id));
+  const movieDetailsArray = await Promise.all(movieDetailsPromises);
+
+  const movieDetailsMap = movieDetailsArray.reduce((map, movie) => {
+    if (movie) {
+      map[movie.movieId] = movie;
+    }
+    return map;
+  }, {});
+
+  const swiperWrapper = document.querySelector('.swiper-wrapper')
+
+  reviews.forEach(review => {
+   const movie = movieDetailsMap[review.movieId];
+
+   if (movie) {
+     const slide = document.createElement("div");
+     slide.classList.add("swiper-slide");
+
+     // Create content with poster and review text
+     const poster = document.createElement("img");
+     poster.src = movie.posterUrl; // URL of the movie poster
+     poster.alt = movie.movieTitle;
+
+     const content = document.createElement("p");
+     content.textContent = review.content; // Review content
+
+     slide.appendChild(poster);
+     slide.appendChild(content);
+
+     swiperWrapper.appendChild(slide);
+   }
+  })
 const firstSwiper = new Swiper(".first-swiper", {
   // Optional parameters
   loop: true,
@@ -18,6 +91,10 @@ const firstSwiper = new Swiper(".first-swiper", {
     el: ".swiper-scrollbar",
   },
 });
+
+  
+}
+initializeSwiper()
 
 // modal
 
@@ -64,10 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
-
-
- // main posters api 
+//  main posters api 
 
 
 function shuffleArraysInSync(arr1, arr2) {
