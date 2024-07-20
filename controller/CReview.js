@@ -163,7 +163,9 @@ exports.getMemberReviewList = async (req, res) => {
 // 영화에 작성된 리뷰 목록
 exports.getMovieReviewList = async (req, res) => {
     const { movieId } = req.params;
-    const { sortBy = 'rating', page = 1, pageSize = 8 } = req.query;
+    let  sortBy = 'rating';
+    let  page = req.query.page;
+    let  pageSize = 6;
 
     const order = sort(sortBy);
 

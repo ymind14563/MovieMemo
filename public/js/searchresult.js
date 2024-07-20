@@ -18,7 +18,6 @@ function seemore() {
   }).then((res) => {
     if (res.data.data.length < 10) { moreBtn.style.display = 'none'; }
     res.data.data.forEach(movie => {
-      console.log(movie.directorNm);
       const movieHtml = `
         <div class="search-result-wrapper" id="result${movie.movieId}">
           <div class="search-result-image">
