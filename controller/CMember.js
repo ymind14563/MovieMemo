@@ -2,6 +2,8 @@ const encUtil = require("../utils/encrypt");
 const jwt = require("jsonwebtoken");
 const { Member } = require("../model");
 const { validationResult } = require("express-validator");
+const { Op } = require('sequelize'); // sequelize Operator(연산자)
+
 
 //로그인
 exports.loginMember = async (req, res) => {
@@ -35,7 +37,7 @@ exports.loginMember = async (req, res) => {
       { memberId: member.memberId, isAdmin: member.isAdmin },
       process.env.JWT_SECRET,
       {
-        expiresIn: "10m",
+        expiresIn: "100m",
       }
     );
 
@@ -55,7 +57,7 @@ exports.loginMember = async (req, res) => {
 //회원 가입
 exports.postMember = async (req, res) => {
   try {
-    const { gender, age, name, nick, email, password } = req.body;
+    const { gender, age, name, nick, email, password, isAdmin } = req.body;
 
     // 입력값 검증
     const errors = validationResult(req);
@@ -73,6 +75,7 @@ exports.postMember = async (req, res) => {
       password: hashedPassword,
       gender,
       age,
+      isAdmin
     });
 
     res.status(201).json(newMember);
@@ -81,6 +84,39 @@ exports.postMember = async (req, res) => {
     res.status(500).json({ message: "서버 오류" });
   }
 };
+
+
+// 회원 검색
+exports.getMembers = async (req, res) => {
+  try {
+    const { nick } = req.query;
+
+    // 닉네임 부분 검색
+    const members = await Member.findAll({
+      where: {
+        nick: {
+          [Op.like]: `%${nick}%`
+        }
+      }
+    });
+
+    // 정확히 일치하는 회원을 최상단에 배치
+    const exactMatches = members.filter(member => member.nick === nick);
+    const partialMatches = members.filter(member => member.nick !== nick);
+    const sortedMembers = [...exactMatches, ...partialMatches];
+
+    if (sortedMembers.length === 0) {
+      return res.status(404).json({ message: '일치하는 회원이 없습니다.' });
+    }
+
+    res.status(200).json(sortedMembers);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: '서버 오류' });
+  }
+};
+
+
 
 // 비밀번호 수정 (회원정보 업데이트)
 exports.patchMember = async (req, res) => {
