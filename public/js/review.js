@@ -1,10 +1,12 @@
 //영화 상세페이지
 // (영화)상세 페이지  viewMovieDetails()
-
 //리뷰 등록
 // 리뷰 등록 버튼 postReview()
+let nowPage = 0;
 
-
+const targerE = document.querySelector('.trailer_box');
+const targerId = targerE.id;
+  
 // 리뷰 모달 버튼
 const createReview = document.querySelector('.createReviewBtn');
 const buttonClose = document.querySelector('.buttonClose');
@@ -51,111 +53,34 @@ const movieGenre = document.querySelector('.genre');
 // 영화 예고편
 const trailerMovie = document.querySelector('.trailer_box');
 
-
-// function movieInfo(){
-
-//   try{
-//       const movie = await axios.get(movieUrl);
-    
-//       // console.log("영화 데이터 전체", movie);
-
-//       // 데이터 공통 경로 변수에 담기
-//       const movieShort = movie.data.Data[0].Result[0];
-
-//       // * 영화 포스터 가져오기 *
-//       const urlString = movie.data.Data[0].Result[0].posters;
-
-//       // 1. URL을 '|'로 분리하여 배열로 만듭니다.
-//       const posterUrls = urlString.split('|');
-      
-//       // 2. 첫 번째 URL을 가져옵니다.
-//       const firstUrl = posterUrls[0];
-      
-//       // 3. img 태그에 이미지 넣기
-//       moviePoster.innerHTML = `<img src="${firstUrl}" alt="${movieShort.title}">`;
-
-
-
-      // 영화 예고편 가져오기
-      // const trailerUrl = 'https://www.kmdb.or.kr/trailer/trailerPlayPop?pFileNm=MK060579_P02.mp4';
-
-      // 쿼리 파라미터에서 'pFileNm' 값을 가져옴
-      // const pFileNmValue = trailerUrl.searchParams.get('pFileNm');
-          
-      // pathname에서 'trailerPlayPop'를 'play'로 변경
-      // trailerUrl.pathname = trailerUrl.pathname.replace('/trailerPlayPop', '/play');
-          
-      // 최종 URL 생성
-      // const newUrl = `${trailerUrl.origin}${trailerUrl.pathname}/${pFileNmValue}`;
-
-      // trailerMovie.innerHTML = `<video src="${newUrl}" autoplay muted loop></video>`;
-      // console.log(trailerMovie.innerHTML);
-//       //영화 제목 가져오기
-//       movieTitle.textContent = movie.data.KMAQuery;
-
-//       // 영화 줄거리 가져오기
-//         moviePlot.textContent = `${movieShort.plots.plot[0].plotText}`
-      
-//       // 영화 개봉일 가져오기
-//       const date1 = movieShort.repRlsDate;
-  
-//       function formatDate(dateStr) {
-//         const year = dateStr.substring(0, 4);
-//         const month = dateStr.substring(4, 6);
-//         const day = dateStr.substring(6, 8);
-
-//         return releaseDate.textContent = `${year}-${month}-${day}`;
-//       }
-      
-//       formatDate(date1);
-
-//       // 영화 장르 가져오기
-//       movieGenre.textContent = movieShort.genre;
-
-//       // 출연 배우 목록 가져오기
-//       for(i = 0; i < 5; i++){
-//         const actorLi = document.createElement('li');
-//         actorLi.textContent = `${movieShort.actors.actor[i].actorNm}`;
-//         actors.appendChild(actorLi);
-//       }
-      
-//   }catch(error){
-//     console.log(error);
-//   }
-// }
-
-// movieInfo();
-
-
-
 // 좋아요 버튼 누를 시 요청
 
 const likeBtn = document.querySelector('.likeBtn');
 
-likeBtn.addEventListener('click', async () => {
-  const reviewId = likeBtn.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
-  const memberId = 'YOUR_MEMBER_ID'; // 실제 memberId를 설정하세요
+// likeBtn.addEventListener('click', async () => {
+//   const reviewId = likeBtn.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
+//   const memberId = 'YOUR_MEMBER_ID'; // 실제 memberId를 설정하세요
 
-  try {
-      const response = await axios.post('/like', { reviewId }, {
-          headers: {
-              'Authorization': `Bearer ${memberId}` // 필요한 경우 인증 헤더 추가
-          }
-      });
+//   try {
+//       const response = await axios.post('/like', { reviewId }, {
+//           headers: {
+//               'Authorization': `Bearer ${memberId}` // 필요한 경우 인증 헤더 추가
+//           }
+//       });
 
-      // 성공적인 응답 처리
-      alert(response.data.message);
-      updateLikeCount(response.data.review.likeCount); // UI 업데이트 함수 호출
-  } catch (error) {
-      // 오류 처리
-      if (error.response) {
-          alert(error.response.data.message); // 서버에서 보낸 오류 메시지
-      } else {
-          console.error('Error:', error.message);
-          alert('좋아요를 처리하는 중 오류가 발생했습니다.');
-      }
-  }
-});
+//       // 성공적인 응답 처리
+//       alert(response.data.message);
+//       updateLikeCount(response.data.review.likeCount); // UI 업데이트 함수 호출
+//   } catch (error) {
+//       // 오류 처리
+//       if (error.response) {
+//           alert(error.response.data.message); // 서버에서 보낸 오류 메시지
+//       } else {
+//           console.error('Error:', error.message);
+//           alert('좋아요를 처리하는 중 오류가 발생했습니다.');
+//       }
+//   }
+// });
 
 // UI 업데이트를 위한 함수
 function updateLikeCount(likeCount) {
@@ -242,3 +167,130 @@ function addReviewToList(review) {
   `;
   reviewList.appendChild(reviewItem);
 }
+
+// DOMContentLoaded 이벤트에 리스너 추가
+document.addEventListener('DOMContentLoaded', async ()=>{
+  
+  let data;
+
+  await axios({
+      method : 'get',
+    url : `/review/movie/${targerId}`,
+  }).then((res)=>{
+    data = res.data;
+  })
+  if( ( data.totalReviews - 6*nowPage ) < 7){ document.querySelector('.load_more').style.display = 'none';};
+  data.reviews.forEach(review =>{
+    let reviewHtml = `
+            <div class="review_box">
+          <div class="review_user">
+            <div class="user_rating">
+              <span class="user_nickname">${review.Member.nick}</span>
+              <span> 별점 : ${review.reviewMovieRating}</span>
+            </div>
+            <div class="likeBox">
+              <button type="button" class="likeBtn">
+                <span class="material-symbols-rounded">
+                  favorite
+                </span>
+              </button>
+              <p class="likeCount">4</p>
+            </div>
+            <button type="button" class="editBtn">
+              <span class="material-symbols-rounded">
+                edit
+              </span>
+            </button>
+          </div>
+          <div class="review_content">
+            <p>
+            ${review.content}
+            </p>
+          </div>
+          <div class="review_date">
+            <span class="write_date">${review.createdAt.substr(0,9)}</span>
+
+            <p class="review_btns_box">
+              <button type="button" class="deleteBtn" data-review-id="123">
+                <span class="material-symbols-rounded">
+                  delete
+                </span>
+              </button>
+              <button type="button" class="warningBtn">
+                <span class="material-symbols-rounded">
+                  dangerous
+                </span>
+              </button>
+            </p>
+          </div>`
+          const reviewSc = document.querySelector('.review_section');
+          reviewSc.insertAdjacentHTML('beforeend',reviewHtml);      
+      })
+});
+
+const moreBtn = document.querySelector('.load_more');
+
+moreBtn.addEventListener('click',async ()=>{
+  nowPage = nowPage + 1;
+  let pagedata;
+  console.log(nowPage);
+  
+  await axios({
+    method : 'get',
+    url : `/review/movie/${targerId}`,
+    params: {
+      page : nowPage
+    }
+  }).then((res)=>{
+    pagedata = res.data;
+  })
+  
+  if( pagedata.totalReviews -6*nowPage < 7){ document.querySelector('.load_more').style.display = 'none';};
+  pagedata.reviews.forEach(review =>{
+    let reviewHtml = `
+      <div class="review_box">
+      <div class="review_user">
+        <div class="user_rating">
+          <span class="user_nickname">${review.Member.nick}</span>
+          <span> 별점 : ${review.reviewMovieRating}</span>
+        </div>
+        <div class="likeBox">
+          <button type="button" class="likeBtn">
+            <span class="material-symbols-rounded">
+              favorite
+            </span>
+          </button>
+          <p class="likeCount">4</p>
+        </div>
+        <button type="button" class="editBtn">
+          <span class="material-symbols-rounded">
+            edit
+          </span>
+        </button>
+      </div>
+      <div class="review_content">
+        <p>
+        ${review.content}
+        </p>
+      </div>
+      <div class="review_date">
+        <span class="write_date">${review.createdAt.substr(0,9)}</span>
+
+        <p class="review_btns_box">
+          <button type="button" class="deleteBtn" data-review-id="123">
+            <span class="material-symbols-rounded">
+              delete
+            </span>
+          </button>
+          <button type="button" class="warningBtn">
+            <span class="material-symbols-rounded">
+              dangerous
+            </span>
+          </button>
+        </p>
+      </div>`
+      const reviewSc = document.querySelector('.review_section');
+      reviewSc.insertAdjacentHTML('beforeend',reviewHtml);      
+    })
+});
+

@@ -13,7 +13,7 @@
 <body>
   <main id="page_container">
 
-    <div class="trailer_box">
+    <div class="trailer_box" id="<%= data.movieId%>">
       <video src="https://www.kmdb.or.kr/trailer/play/<%= data.vodUrl %>" autoplay="" muted="" loop=""></video>
     </div>
 
@@ -25,6 +25,7 @@
           <div class="detail_info_box">
             <div class="movie_title">
               <p class="contents_title">
+                <%= data.movieTitle %>
               </p>
             </div>
   
@@ -65,12 +66,14 @@
                   </div>
                 </div>
                 <div class="cast_box">
-                  <p class="contents_title">Cast</p>
-  
-                  <ul class="cast_list" style="color: white;">
-                    <%= data.movieCast  %>
-                  </ul>
-                </div>
+                <p class="contents_title">Cast</p>
+                
+                <ul class="cast_list" style="color: white;">
+                  <% const castMembers = data.movieCast.split(',').slice(0, 5); castMembers.forEach(function(actor) { %>
+                    <li><%= actor.trim() %></li>
+                  <% }); %>
+                </ul>
+              </div>
 
                 <div class="story_box">
                   <p class="contents_title">Storyline</p>
@@ -112,149 +115,10 @@
       </div>
 
       <div class="review_section">
-
-        <div class="review_box">
-          <div class="review_user">
-            <div class="user_rating">
-              <span class="user_nickname">오늘만 산다</span>
-              <span>별점 5개</span>
-            </div>
-            <div class="likeBox">
-              <button type="button" class="likeBtn">
-                <span class="material-symbols-rounded">
-                  favorite
-                </span>
-              </button>
-              <p class="likeCount">4</p>
-            </div>
-            <button type="button" class="editBtn">
-              <span class="material-symbols-rounded">
-                edit
-              </span>
-            </button>
-          </div>
-          <div class="review_content">
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
-              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
-              dicta itaque?
-            </p>
-          </div>
-          <div class="review_date">
-            <span class="write_date">2024-07-11</span>
-
-            <p class="review_btns_box">
-              <button type="button" class="deleteBtn" data-review-id="123">
-                <span class="material-symbols-rounded">
-                  delete
-                </span>
-              </button>
-              <button type="button" class="warningBtn">
-                <span class="material-symbols-rounded">
-                  dangerous
-                </span>
-              </button>
-            </p>
-          </div>
-        </div>
-
-        <div class="review_box">
-          <div class="review_user">
-            <div class="user_rating">
-              <span class="user_nickname">오늘만 산다</span>
-              <span>별점 5개</span>
-            </div>
-            <div class="likeBox">
-              <button type="button" class="likeBtn">
-                <span class="material-symbols-rounded">
-                  favorite
-                </span>
-              </button>
-              <p class="likeCount">4</p>
-            </div>
-            <button type="button" class="editBtn">
-              <span class="material-symbols-rounded">
-                edit
-              </span>
-            </button>
-          </div>
-          <div class="review_content">
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
-              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
-              dicta itaque?
-            </p>
-          </div>
-          <div class="review_date">
-            <span class="write_date">2024-07-11</span>
-
-            <p class="review_btns_box">
-              <button type="button" class="deleteBtn" data-review-id="123">
-                <span class="material-symbols-rounded">
-                  delete
-                </span>
-              </button>
-              <button type="button" class="warningBtn">
-                <span class="material-symbols-rounded">
-                  dangerous
-                </span>
-              </button>
-            </p>
-          </div>
-        </div>
-
-        <div class="review_box">
-          <div class="review_user">
-            <div class="user_rating">
-              <span class="user_nickname">오늘만 산다</span>
-              <span>별점 5개</span>
-            </div>
-            <div class="likeBox">
-              <button type="button" class="likeBtn">
-                <span class="material-symbols-rounded">
-                  favorite
-                </span>
-              </button>
-              <p class="likeCount">4</p>
-            </div>
-            <button type="button" class="editBtn">
-              <span class="material-symbols-rounded">
-                edit
-              </span>
-            </button>
-          </div>
-          <div class="review_content">
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-              Commodi eaque, voluptates esse reiciendis id aperiam iste quis deleniti, 
-              necessitatibus aliquam ab velit at autem consequuntur harum nobis dolorum 
-              dicta itaque?
-            </p>
-          </div>
-          <div class="review_date">
-            <span class="write_date">2024-07-11</span>
-
-            <p class="review_btns_box">
-              <button type="button" class="deleteBtn" data-review-id="123">
-                <span class="material-symbols-rounded">
-                  delete
-                </span>
-              </button>
-              <button type="button" class="warningBtn">
-                <span class="material-symbols-rounded">
-                  dangerous
-                </span>
-              </button>
-            </p>
-          </div>
-        </div>
-
       </div>
 
       <button class="load_more">더 보기</button>
-
+      
       
     </section>
   </main>
