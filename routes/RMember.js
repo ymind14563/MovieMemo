@@ -113,4 +113,7 @@ router.delete("/logout", authenticateUser, controller.logoutMember);
 // 비밀번호 확인
 router.post('/verifyPassword', authenticateUser, controller.verifyPassword);
 
+// 회원 조회 (관리자)
+router.get('/searchM', authenticateAdmin ,controller.getMembers);
+
 module.exports = router;
