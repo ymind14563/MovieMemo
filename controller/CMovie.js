@@ -243,23 +243,52 @@ exports.getMovieInfo = async (req, res) => {
     const { movieId } = req.params;
     
     const result = await db.Movie.findOne({
-      where: { movieId: movieId }
+      where: { movieId: movieId },
+      include: [{
+        model: db.Genre,
+        through: { attributes: [] }
+      }]
     });
 
     if (!result) {    
       return errorHandler(404, res, '삭제되거나 존재하지 않는 영화 데이터 입니다.');
     }
-    console.log('getmovieInfo>>>>>>>>>>>>>> 요청받음');
-    // JSON 응답 보내기
-    res.status(200).render('review',{
+
+    const genres = result.Genres.map(genre => genre.genreType);
+    
+    let vodFileName;
+    let filename;
+
+    if(result.vodUrl){
+      vodFileName = new URL(result.vodUrl);
+      filename = vodFileName.searchParams.get('pFileNm');
+    }
+    console.log(filename);
+    // 'pFileNm' 쿼리 파라미터 값 가져오기
+    const movieData = {
+      movieId: result.movieId,
+      movieTitle: result.movieTitle,
+      posterUrl: result.posterUrl,
+      vodUrl: filename,
+      reviewMovieRating: result.reviewMovieRating,
+      movieSynopsys: result.movieSynopsys,
+      moviereleaseDate: result.moviereleaseDate,
+      directorNm: result.directorNm,
+      movie_salesAcc: result.movie_salesAcc,
+      movieCast: result.movieCast,
+      genres: genres
+    };
+
+    res.status(200).render('review', {
       message: '영화 정보를 성공적으로 조회했습니다.',
-      // redirect: `/movie/movieInfo/${movieId}`,
-      data: result
+      data: movieData
     });
   } catch (err) {
     errorHandler(500, res, err);
   }
 }
+
+
 
 /**
  *  특정 장르로 영화 리스트 불러오기

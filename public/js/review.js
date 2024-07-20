@@ -52,79 +52,79 @@ const movieGenre = document.querySelector('.genre');
 const trailerMovie = document.querySelector('.trailer_box');
 
 
-async function movieInfo(){
+// function movieInfo(){
 
-  try{
-      const movie = await axios.get(movieUrl);
+//   try{
+//       const movie = await axios.get(movieUrl);
     
-      // console.log("영화 데이터 전체", movie);
+//       // console.log("영화 데이터 전체", movie);
 
-      // 데이터 공통 경로 변수에 담기
-      const movieShort = movie.data.Data[0].Result[0];
+//       // 데이터 공통 경로 변수에 담기
+//       const movieShort = movie.data.Data[0].Result[0];
 
-      // * 영화 포스터 가져오기 *
-      const urlString = movie.data.Data[0].Result[0].posters;
+//       // * 영화 포스터 가져오기 *
+//       const urlString = movie.data.Data[0].Result[0].posters;
 
-      // 1. URL을 '|'로 분리하여 배열로 만듭니다.
-      const posterUrls = urlString.split('|');
+//       // 1. URL을 '|'로 분리하여 배열로 만듭니다.
+//       const posterUrls = urlString.split('|');
       
-      // 2. 첫 번째 URL을 가져옵니다.
-      const firstUrl = posterUrls[0];
+//       // 2. 첫 번째 URL을 가져옵니다.
+//       const firstUrl = posterUrls[0];
       
-      // 3. img 태그에 이미지 넣기
-      moviePoster.innerHTML = `<img src="${firstUrl}" alt="${movieShort.title}">`;
+//       // 3. img 태그에 이미지 넣기
+//       moviePoster.innerHTML = `<img src="${firstUrl}" alt="${movieShort.title}">`;
 
 
 
       // 영화 예고편 가져오기
-      const trailerUrl = new URL(movieShort.vods.vod[0].vodUrl);
+      // const trailerUrl = 'https://www.kmdb.or.kr/trailer/trailerPlayPop?pFileNm=MK060579_P02.mp4';
 
       // 쿼리 파라미터에서 'pFileNm' 값을 가져옴
-      const pFileNmValue = trailerUrl.searchParams.get('pFileNm');
+      // const pFileNmValue = trailerUrl.searchParams.get('pFileNm');
           
       // pathname에서 'trailerPlayPop'를 'play'로 변경
-      trailerUrl.pathname = trailerUrl.pathname.replace('/trailerPlayPop', '/play');
+      // trailerUrl.pathname = trailerUrl.pathname.replace('/trailerPlayPop', '/play');
           
       // 최종 URL 생성
-      const newUrl = `${trailerUrl.origin}${trailerUrl.pathname}/${pFileNmValue}`;
+      // const newUrl = `${trailerUrl.origin}${trailerUrl.pathname}/${pFileNmValue}`;
 
-      trailerMovie.innerHTML = `<video src="${newUrl}" autoplay muted loop></video>`;
+      // trailerMovie.innerHTML = `<video src="${newUrl}" autoplay muted loop></video>`;
+      // console.log(trailerMovie.innerHTML);
+//       //영화 제목 가져오기
+//       movieTitle.textContent = movie.data.KMAQuery;
 
-      //영화 제목 가져오기
-      movieTitle.textContent = movie.data.KMAQuery;
-
-      // 영화 줄거리 가져오기
-        moviePlot.textContent = `${movieShort.plots.plot[0].plotText}`
+//       // 영화 줄거리 가져오기
+//         moviePlot.textContent = `${movieShort.plots.plot[0].plotText}`
       
-      // 영화 개봉일 가져오기
-      const date1 = movieShort.repRlsDate;
+//       // 영화 개봉일 가져오기
+//       const date1 = movieShort.repRlsDate;
   
-      function formatDate(dateStr) {
-        const year = dateStr.substring(0, 4);
-        const month = dateStr.substring(4, 6);
-        const day = dateStr.substring(6, 8);
+//       function formatDate(dateStr) {
+//         const year = dateStr.substring(0, 4);
+//         const month = dateStr.substring(4, 6);
+//         const day = dateStr.substring(6, 8);
 
-        return releaseDate.textContent = `${year}-${month}-${day}`;
-      }
+//         return releaseDate.textContent = `${year}-${month}-${day}`;
+//       }
       
-      formatDate(date1);
+//       formatDate(date1);
 
-      // 영화 장르 가져오기
-      movieGenre.textContent = movieShort.genre;
+//       // 영화 장르 가져오기
+//       movieGenre.textContent = movieShort.genre;
 
-      // 출연 배우 목록 가져오기
-      for(i = 0; i < 5; i++){
-        const actorLi = document.createElement('li');
-        actorLi.textContent = `${movieShort.actors.actor[i].actorNm}`;
-        actors.appendChild(actorLi);
-      }
+//       // 출연 배우 목록 가져오기
+//       for(i = 0; i < 5; i++){
+//         const actorLi = document.createElement('li');
+//         actorLi.textContent = `${movieShort.actors.actor[i].actorNm}`;
+//         actors.appendChild(actorLi);
+//       }
       
-  }catch(error){
-    console.log(error);
-  }
-}
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
 
-movieInfo();
+// movieInfo();
 
 
 

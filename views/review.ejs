@@ -14,6 +14,7 @@
   <main id="page_container">
 
     <div class="trailer_box">
+      <video src="https://www.kmdb.or.kr/trailer/play/<%= data.vodUrl %>" autoplay="" muted="" loop=""></video>
     </div>
 
     <div id="movie_info_container">
@@ -29,19 +30,19 @@
   
             <div class="sub_detail_box">
               <div class="poster_container">
-                <article class="poster_box"></article>
+                <article class="poster_box"><img src="<%= data.posterUrl %>" alt="${movieShort.title}"></article>
 
                 
                 <div class="rating_box">
                   <div class="rating">
                     <i class="rating__star far fa-star"></i>
-                    <span class="rating_num">8.5</span>
+                    <span class="rating_num"><%= data.reviewMovieRating  %></span>
                   </div>
                 </div>
 
                 <div class="releaseBox">
                   <p class="commonTitle">Release Date</p>
-                  <p class="release_date commonText"></p>
+                  <p class="release_date commonText"><%= data.moviereleaseDate %></p>
                 </div>
               </div>
 
@@ -54,25 +55,26 @@
                   <div class="detail_info_list">
                     <div class="directorBox">
                       <p class="commonTitle">Director</p>
-                      <p class="director commonText">엄복동</p>
+                      <p class="director commonText"><%= data.directorNm %></p>
                     </div>
   
                     <div class="genreBox">
                       <p class="commonTitle">Genre</p>
-                      <p class="genre commonText"></p>
+                      <p class="genre commonText"><%= data.genres %></p>
                     </div>
                   </div>
                 </div>
                 <div class="cast_box">
                   <p class="contents_title">Cast</p>
   
-                  <ul class="cast_list">
+                  <ul class="cast_list" style="color: white;">
+                    <%= data.movieCast  %>
                   </ul>
                 </div>
 
                 <div class="story_box">
                   <p class="contents_title">Storyline</p>
-                  <p class="story_text"></p>
+                  <p class="story_text"><%= data.movieSynopsys  %></p>
                 </div>
               </div>
             </div>
