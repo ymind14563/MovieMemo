@@ -26,6 +26,7 @@ body {
     font-weight: 600;
     color: white;
 }
+
 button {
     background-color: #C9302C;
     margin-left: 10px;
@@ -36,6 +37,7 @@ button {
     outline: none;
     color: white;
 }
+
 button:hover {
     background-color: #B20710;
     cursor: pointer;
@@ -76,16 +78,20 @@ button a {
     background-color: #333;
     color: #FFFFFF;
 }
+
 .wrapper table th, table td {
     padding: 0 0.8em;
     text-align: center;
 }
+
 .wrapper table tbody tr {
     border-bottom: 1px solid #DDDDDD;
 }
+
 .wrapper table tbody tr:nth-of-type(even) {
     background-color: #F3F3F3;
 }
+
 .wrapper table tbody tr:last-of-type {
     border-bottom: none;
 }
@@ -101,9 +107,11 @@ button a {
     cursor: pointer;
     background-color: #B20710;
 }
+
 .wrapper.button:hover {
     background-color: #C9302C;
 }
+
 h1 {
     font-size: 32px;
     color: white;
@@ -153,6 +161,7 @@ form select {
     width: 100%;
     margin-top: 5px;
 }
+
 #sortBy {
     position: absolute;
     right: 4%;
