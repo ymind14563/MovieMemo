@@ -54,7 +54,7 @@ button a:visited {
   display: flex !important;
   flex-direction: row;
   align-items: center;
-  background: #ccc;
+  background: rgb(40,43,44);
   padding: 20px;
 }
 
@@ -90,6 +90,7 @@ button a:visited {
 
 .firstSlide-text {
   margin-left: 50px;
+  color: #fefefe !important
 }
 
 /* hide the scrollbar temporary */
