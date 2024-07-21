@@ -121,6 +121,7 @@ button {
   padding: 1.875rem;
   border-radius: 8px;
   border: 1px solid #262626;
+  height: 180px;
 }
 
 .directorBox {
