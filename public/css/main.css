@@ -313,22 +313,22 @@ form input {
     }
 
     .modal-content {
-        margin: 10% auto; /* 모달 창을 화면 중앙으로 이동 */
-        padding: 15px; /* 내부 패딩 축소 */
-        width: 80%; /* 모달 창 너비 조정 */
-        max-width: 300px; /* 최대 너비 지정 */
-        border: none; /* 테두리 제거 */
-      }
+      margin: 10% auto; /* 모달 창을 화면 중앙으로 이동 */
+      padding: 15px; /* 내부 패딩 축소 */
+      width: 80%; /* 모달 창 너비 조정 */
+      max-width: 300px; /* 최대 너비 지정 */
+      border: none; /* 테두리 제거 */
+    }
     
-      form input {
-        width: 100%; /* 입력 필드 너비를 100%로 설정하여 화면에 꽉 차게 함 */
-      }
+    form input {
+      width: 100%; /* 입력 필드 너비를 100%로 설정하여 화면에 꽉 차게 함 */
+    }
     
-      .close {
-        font-size: 24px; /* 닫기 버튼 아이콘 크기 조정 */
-        top: 5px; /* 닫기 버튼 위치 조정 */
-        right: 10px;
-      }
+    .close {
+      font-size: 24px; /* 닫기 버튼 아이콘 크기 조정 */
+      top: 5px; /* 닫기 버튼 위치 조정 */
+      right: 10px;
+    }
     
       .login-btn {
         width: 100%; /* 로그인 버튼 너비 조정 */
