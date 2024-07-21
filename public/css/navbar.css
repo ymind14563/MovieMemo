@@ -57,13 +57,24 @@ form input {
   text-decoration: none;
 }
 
-.login-btn {
+button{
   background: #B20710;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8e060d;
+}
+
+
+.login-btn {
+ 
   color: white;
   border-radius: 10px;
   padding: 10px;
   width: 90px;
   margin-top: 10px;
+ 
 
 }
 
@@ -153,12 +164,6 @@ display: none;
   font-weight: bold;
 }
 
-#myPageButton{
-  background-color: #B20710;
-}
-#openLoginModal{
-  background-color: #B20710;
-}
 
 @media screen and (max-width: 500px) {
 
