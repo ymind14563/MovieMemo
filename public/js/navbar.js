@@ -1,5 +1,5 @@
 // modal
-
+console.log('!!');
 const loginBtn = document.querySelector("#openLoginModal");
 const modal = document.querySelector(".loginModal");
 const closeBtn = document.querySelector(".close");

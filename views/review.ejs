@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>new rendering</title>
+  <%- include('partials/head.ejs') %>
+  <link rel="stylesheet" href="/css/searchresult.css">
   <link rel="stylesheet" href="/css/review.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -11,6 +13,7 @@
   <script defer src="/js/review.js"></script>
 </head>
 <body>
+  <%- include('partials/components/navbar') %>
   <main id="page_container">
 
     <div class="trailer_box" id="<%= data.movieId%>">
@@ -129,5 +132,7 @@
       
     </section>
   </main>
+
+  <script src="/js/navbar.js"></script>
 </body>
 </html>
