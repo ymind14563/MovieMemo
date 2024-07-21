@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
                   delete
                 </span>
               </button>
-              <button type="button" class="warningBtn" id="warningBtn${review.reviewId}}">
+              <button type="button" class="warningBtn" id="warningBtn${review.reviewId}">
                 <span class="material-symbols-rounded">
                   dangerous
                 </span>
@@ -294,7 +294,6 @@ document.querySelector('.review_section').addEventListener('click', async functi
   // 삭제 버튼 클릭 처리
   if (e.target.closest('.deleteBtn')) {
     const reviewId = e.target.closest('.deleteBtn').getAttribute('id').replace('deleteBtn','');
-    console.log('요청을 보냄');
     await axios({
       method :'delete',
       url: `/review/${reviewId}`,
@@ -310,9 +309,7 @@ document.querySelector('.review_section').addEventListener('click', async functi
   // 신고 버튼 클릭 처리
   if (e.target.closest('.warningBtn')) {
     const reviewId = e.target.closest('.warningBtn').id.replace('warningBtn', '');
-    // const userData = getUserNickname();
-    // const userIdfromB = userData.userId;
-    console.log('경고 버튼 클릭됨, 리뷰 ID:', reviewId);
+    
     await axios({
       method : 'post',
       url: `/review/report`,
