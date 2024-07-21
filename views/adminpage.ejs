@@ -6,19 +6,16 @@
     <link rel="stylesheet" href="/css/adminpage.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>MovieMemo</title>
+    <%- include('partials/head.ejs') %>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navdiv">
-            <div class="logo">
-                <a href="/">MovieMemo</a>
-            </div>
-        </div>
-    </nav>
+    <%- include('partials/components/navbar') %>
 
     <div class="wrapper">
-        <input class="search-box-word" type="text" placeholder="영화 제목을 입력해주세요">
-        <button class="search-button">검색</button>
+        <div class="admin-search-box">
+            <input class="search-box-word" type="text" placeholder="영화 제목을 입력해주세요">
+            <button class="search-button">검색</button>
+        </div>
 
         <table>
             <thead>
@@ -90,6 +87,12 @@
         </div>
 
 
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/adminpage.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/login.js"></script>
+    <script src="/js/navbar.js"></script>
 </body>
 </html>

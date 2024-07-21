@@ -160,3 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getReviews(sortOrder.value);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname.includes('/adminpage')) {
+      const adminButton = document.getElementById('adminButton');
+      const myPageButton = document.getElementById('myPageButton');
+      
+      if (adminButton) {
+        adminButton.style.display = 'none';
+      }
+      
+      if (myPageButton) {
+        myPageButton.style.display = 'none';
+      }
+    }
+  });

@@ -27,7 +27,7 @@ body {
     color: white;
 }
 
-button {
+.search-button, .del-btn, .patch-btn{
     background-color: #C9302C;
     margin-left: 10px;
     border-radius: 10px;
@@ -36,6 +36,7 @@ button {
     border: none;
     outline: none;
     color: white;
+    
 }
 
 button:hover {
@@ -56,14 +57,14 @@ button a {
 .wrapper {
     width: 90%;
     padding: 16px 16px;
-    margin: 50px auto;
-    background-color: #fff;
+    margin: 25px auto;
+    background-color: rgb(25,26,27);
     border-radius: 10px;
     text-align: center;
     position: relative;
     min-height: 300px;
     flex-grow: 1; /* 페이지 아래까지 공간을 차지하도록 설정 */
-    overflow: scroll;
+    overflow: auto;
 }
 .wrapper th, tr{
     padding: 0.3em;
@@ -117,6 +118,28 @@ button a {
 .wrapper.button:hover {
     background-color: #C9302C;
 }
+
+.admin-search-box{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.admin-search-box .search-box-word {
+    width: 200px;
+    margin-right: 10px;
+    background-color: white;
+    outline: none;
+    border: 1px solid #fff;
+    padding: 12px 20px;
+    margin: 5px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background: #E4E4E4;
+    height: 38px;
+}
+
 
 h1 {
     font-size: 32px;
@@ -356,14 +379,4 @@ form select {
     position: absolute;
     top: 73%;
     right: 13%;
-}
-.search-box-word {
-    outline: none;
-    border: 1px solid #fff;
-    padding: 12px 20px;
-    margin: 5px;
-    margin-bottom: 10px;
-    border-radius: 20px;
-    background: #E4E4E4;
-    text-align: center;
 }
