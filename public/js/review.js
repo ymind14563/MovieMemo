@@ -56,39 +56,11 @@ const trailerMovie = document.querySelector('.trailer_box');
 
 const likeBtn = document.querySelector('.likeBtn');
 
-// likeBtn.addEventListener('click', async () => {
-//   const reviewId = likeBtn.dataset.reviewId; // 버튼에 reviewId 데이터 속성이 있다고 가정
-//   const memberId = 'YOUR_MEMBER_ID'; // 실제 memberId를 설정하세요
-
-//   try {
-//       const response = await axios.post('/like', { reviewId }, {
-//           headers: {
-//               'Authorization': `Bearer ${memberId}` // 필요한 경우 인증 헤더 추가
-//           }
-//       });
-
-//       // 성공적인 응답 처리
-//       alert(response.data.message);
-//       updateLikeCount(response.data.review.likeCount); // UI 업데이트 함수 호출
-//   } catch (error) {
-//       // 오류 처리
-//       if (error.response) {
-//           alert(error.response.data.message); // 서버에서 보낸 오류 메시지
-//       } else {
-//           console.error('Error:', error.message);
-//           alert('좋아요를 처리하는 중 오류가 발생했습니다.');
-//       }
-//   }
-// });
-
 // UI 업데이트를 위한 함수
 function updateLikeCount(likeCount) {
   const likeCountDisplay = document.querySelector('.likeCount');
   likeCountDisplay.textContent = likeCount; // 좋아요 수 업데이트
 }
-
-
-
 
 // 리뷰 작성 버튼
 
@@ -185,11 +157,10 @@ document.addEventListener('DOMContentLoaded', async ()=>{
             </div>
             <div class="likeBox">
               <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
-                <span class="material-symbols-rounded">
-                  favorite
-                </span>
+                <div class="like-btn-img">
+                </div>
               </button>
-              <p class="likeCount">4</p>
+              <p class="likeCount">${review.likeCount}</p>
             </div>
             <button type="button" class="editBtn" id="editBtn${review.reviewId}">
               <span class="material-symbols-rounded">
@@ -251,11 +222,10 @@ moreBtn.addEventListener('click',async ()=>{
         </div>
         <div class="likeBox">
           <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
-            <span class="material-symbols-rounded">
-              favorite
-            </span>
+            <div class="like-btn-img">
+            </div>
           </button>
-          <p class="likeCount">4</p>
+          <p class="likeCount">${review.likeCount}</p>
         </div>
         <button type="button" class="editBtn" id="editBtn${review.reviewId}">
           <span class="material-symbols-rounded">
@@ -320,6 +290,25 @@ document.querySelector('.review_section').addEventListener('click', async functi
       window.location.href = `/movie/movieInfo/${targerId}`
     })
     await alert('리뷰를 신고했습니다.')
+  }
+
+  if (e.target.closest('.likeBtn')) {
+    const reviewId = e.target.closest('.likeBtn').id.replace('likeBtn', '');
+
+    await axios({
+      method : 'post',
+      url: `/review/like`,
+      data:{
+        reviewId: reviewId  
+      }
+    }).then((res)=>{
+      console.log('res.result',res.data.result);
+      if (res.data.result) {
+
+      }
+      window.location.href = `/movie/movieInfo/${targerId}`
+    })
+    await alert('리뷰에 좋아요에 대한 요청을 전달했습니다.')
   }
 
   // 수정 버튼 클릭 처리
