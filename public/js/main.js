@@ -1,100 +1,65 @@
 
 //first slide
 
-
-
 async function fetchTopReviews(limit = 3) {
   try {
-    const response = await axios.get(`/review/getTopReviews/${limit}`);
-    console.log(response.data)
-    return response.data;
+      const response = await axios.get(`/review/getTopReviews/${limit}`);
+      return response.data;
   } catch (error) {
-    console.error("Error fetching top reviews:", error);
-    return [];
+      console.error("Error fetching top reviews:", error);
+      return [];
   }
 }
 
-fetchTopReviews().then((data) => console.log("Fetched data:", data));
-
-async function fetchMovieDetails(movieId) {
-  try {
-    const response = await axios.get(`/movie/movieInfo/${movieId}`);
-    return response.data;
-  } catch (error) {
-    console.error(
-      `Error fetching movie details for movieId ${movieId}:`,
-      error
-    );
-    return null;
-  }
+// to check the data we got
+async function logTopReviews() {
+  const reviews = await fetchTopReviews();
+  console.log("Fetched Reviews:", reviews);
 }
-
+logTopReviews();
 
 async function initializeSwiper() {
-  //fetch top reviews
   const reviews = await fetchTopReviews();
 
-  //unique movieId
-  const movieIds = reviews.map((review) => review.movieId);
+  const swiperWrapper = document.querySelector('.swiper-wrapper');
   
-  //fetch movie details for movieId
-  const movieDetailsPromises = movieIds.map((id) => fetchMovieDetails(id));
-  const movieDetailsArray = await Promise.all(movieDetailsPromises);
-
-  const movieDetailsMap = movieDetailsArray.reduce((map, movie) => {
-    if (movie) {
-      map[movie.movieId] = movie;
-    }
-    return map;
-  }, {});
-
-  const swiperWrapper = document.querySelector('.swiper-wrapper')
-
   reviews.forEach(review => {
-   const movie = movieDetailsMap[review.movieId];
+      const slide = document.createElement('div');
+      slide.classList.add('swiper-slide');
 
-   if (movie) {
-     const slide = document.createElement("div");
-     slide.classList.add("swiper-slide");
+      const img = document.createElement('img');
+      img.src = review.Movie.posterUrl;
+      img.alt = review.title;
+      img.classList.add('firstSlide-image');
 
-     // Create content with poster and review text
-     const poster = document.createElement("img");
-     poster.src = movie.posterUrl; // URL of the movie poster
-     poster.alt = movie.movieTitle;
+      const content = document.createElement('p')
+      content.textContent = review.content;
+      content.classList.add('firstSlide-text')
+      
+      slide.appendChild(img);
+      slide.appendChild(content);
 
-     const content = document.createElement("p");
-     content.textContent = review.content; // Review content
+      swiperWrapper.appendChild(slide);
+  });
 
-     slide.appendChild(poster);
-     slide.appendChild(content);
-
-     swiperWrapper.appendChild(slide);
-   }
-  })
-const firstSwiper = new Swiper(".first-swiper", {
-  // Optional parameters
-  loop: true,
-
-  // If we need pagination
-  pagination: {
-    el: ".swiper-pagination",
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: ".custom-next-button-first",
-    prevEl: ".custom-prev-button-first",
-  },
-
-  // And if we need scrollbar
-  scrollbar: {
-    el: ".swiper-scrollbar",
-  },
-});
-
-  
+  const swiper = new Swiper('.first-swiper', {
+      // Optional parameters
+      loop: true,
+      pagination: {
+          el: '.swiper-pagination',
+      },
+      navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+      },
+      scrollbar: {
+          el: '.swiper-scrollbar',
+      },
+  });
 }
-initializeSwiper()
+
+document.addEventListener('DOMContentLoaded', initializeSwiper);
+
 
 // modal
 const loginBtn = document.querySelector("#openLoginModal");
