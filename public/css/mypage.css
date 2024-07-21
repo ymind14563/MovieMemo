@@ -414,7 +414,24 @@ input:focus {
   }
 
   .review-title {
-      margin-bottom: 10px; /* 리뷰 타이틀 하단 여백 조정 */
+    margin-left: 0;  
+    margin-bottom: 10px; /* 리뷰 타이틀 하단 여백 조정 */
+  }
+
+  .review-content{
+    width: 35%;
+  }
+
+  .read-more{
+    width: 15%;
+  }
+
+  .review-btn{
+    width: 33%;
+  }
+
+  .review-title-row{
+    font-size: 1.3rem;
   }
 
   .page-number {
