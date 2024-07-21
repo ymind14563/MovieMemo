@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmPatchBtn.addEventListener('click', () => {
         if (currentMemberId) {
-            patchMember(currentMemberId);
+            checkAndPatchMember(currentMemberId);
             patchModal.style.display = 'none';
         }
     });
@@ -71,16 +71,39 @@ document.addEventListener('DOMContentLoaded', () => {
         patchModal.style.display = 'none';
     });
 
+    sortOrder.addEventListener('click', (e) => {
+        const sortBy = e.target.value;
+        getReviews(sortBy);
+    });
+
+    sortOrder.addEventListener('change', (e) => {
+        const sortBy = e.target.value;
+        getReviews(sortBy);
+    });
+
+    paginationContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('page-number')) {
+            e.preventDefault();
+            const page = e.target.getAttribute('data-page');
+            getReviews(sortOrder.value, page);
+        }
+    });
+
     function getReviews(sortBy, page = 1) {
         axios.get(`/adminpage`, {
             params: {
                 sortBy,
                 page
+            },
+            headers: {
+                'Accept': 'application/json' // JSON 응답을 기대
             }
         })
         .then(response => {
-            const reviews = response.data.reviews;
+            const reviews = response.data.data.reviews; // 수정된 경로 사용
+            console.log("🚀 ~ getReviews ~ reviews:", reviews);
             const pagination = response.data.pagination;
+            console.log("🚀 ~ getReviews ~ pagination:", pagination);
             renderReviews(reviews);
             renderPagination(pagination);
         })
@@ -93,18 +116,31 @@ document.addEventListener('DOMContentLoaded', () => {
         axios.delete(`/review/${reviewId}`)
         .then(response => {
             console.log('리뷰삭제성공', response);
-            // getReviews(sortOrder.value); // 리뷰 삭제 후 리뷰 목록 갱신
+            getReviews(sortOrder.value); // 리뷰 삭제 후 리뷰 목록 갱신
         })
         .catch(error => {
             console.error('리뷰를 삭제할 수 없습니다.', error);
         });
     }
 
+    function checkAndPatchMember(memberId) {
+        const token = sessionStorage.getItem('token');
+        const decodedToken = parseJwt(token);
+        const memberIdFromToken = decodedToken ? decodedToken.memberId : null;
+
+        if (memberId === memberIdFromToken) {
+            alert('본인은 본인을 강제퇴장시킬 수 없습니다.');
+            return;
+        }
+
+        patchMember(memberId);
+    }
+
     function patchMember(memberId) {
         axios.delete(`/member/${memberId}`)
         .then(response => {
             console.log('회원 강퇴 성공', response);
-            // getReviews(sortOrder.value); // 회원 강퇴 후 리뷰 목록 갱신
+            getReviews(sortOrder.value); // 회원 강퇴 후 리뷰 목록 갱신
         })
         .catch(error => {
             console.error('회원을 강퇴할 수 없습니다.', error);
@@ -156,6 +192,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);
         return `${year}-${month}-${day}`;
+    }
+
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error('토큰을 파싱할 수 없습니다.', error);
+            return null;
+        }
     }
 
     getReviews(sortOrder.value);
