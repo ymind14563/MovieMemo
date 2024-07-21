@@ -57,13 +57,34 @@ form input {
   text-decoration: none;
 }
 
+button{
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100px;
+  border: none;
+  outline: none;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+
+
+button:hover {
+  background-color:  #B20710;
+}
+
+
 .login-btn {
-  background: #B20710;
+ 
   color: white;
   border-radius: 10px;
   padding: 10px;
   width: 90px;
   margin-top: 10px;
+ 
 
 }
 
@@ -109,11 +130,12 @@ form input {
 }
 
 button {
-  background-color: #B20710;
+  /* background-color: #B20710; */
+  background:transparent;
   margin-left: 10px;
   border-radius: 10px;
   padding: 10px;
-  width: 90px;
+  width: 100px;
   border: none;
   outline: none;
 }
@@ -153,12 +175,10 @@ display: none;
   font-weight: bold;
 }
 
-#myPageButton{
-  background-color: #B20710;
+#openLoginModal:hover{
+  background: #B20710;
 }
-#openLoginModal{
-  background-color: #B20710;
-}
+
 
 @media screen and (max-width: 500px) {
 

@@ -33,18 +33,8 @@ span {
   color: white;
 }
 
-button {
-  background-color: #b20710;
-  margin-left: 10px;
-  border-radius: 10px;
-  padding: 10px;
-  width: 100px;
-  border: none;
-  outline: none;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-}
+
+
 
 button a {
   text-decoration: none;
@@ -64,7 +54,7 @@ button a:visited {
   display: flex !important;
   flex-direction: row;
   align-items: center;
-  background: #ccc;
+  background: rgb(40,43,44);
   padding: 20px;
 }
 
@@ -100,6 +90,7 @@ button a:visited {
 
 .firstSlide-text {
   margin-left: 50px;
+  color: #fefefe !important
 }
 
 /* hide the scrollbar temporary */
@@ -120,7 +111,18 @@ button a:visited {
 }
 
 .card-container {
+  display: inline-block;
+  overflow:hidden;
+  position: relative;
   padding: 10px;
+}
+
+.card-container img{
+  transition: transform 0.3s ease;
+}
+
+.card-container img:hover{
+    transform: scale(1.3)
 }
 
 .card-content {
