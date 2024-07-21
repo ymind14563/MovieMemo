@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmPatchBtn.addEventListener('click', () => {
         if (currentMemberId) {
-            patchReview(currentMemberId);
+            patchMember(currentMemberId);
             patchModal.style.display = 'none';
         }
     });
@@ -93,18 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
         axios.delete(`/review/${reviewId}`)
         .then(response => {
             console.log('리뷰삭제성공', response);
-            getReviews(sortOrder.value); // 리뷰 삭제 후 리뷰 목록 갱신
+            // getReviews(sortOrder.value); // 리뷰 삭제 후 리뷰 목록 갱신
         })
         .catch(error => {
             console.error('리뷰를 삭제할 수 없습니다.', error);
         });
     }
 
-    function patchReview(memberId) {
-        axios.patch(`/member/${memberId}/ban`)
+    function patchMember(memberId) {
+        axios.delete(`/member/${memberId}`)
         .then(response => {
             console.log('회원 강퇴 성공', response);
-            getReviews(sortOrder.value); // 회원 강퇴 후 리뷰 목록 갱신
+            // getReviews(sortOrder.value); // 회원 강퇴 후 리뷰 목록 갱신
         })
         .catch(error => {
             console.error('회원을 강퇴할 수 없습니다.', error);
@@ -159,33 +159,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     getReviews(sortOrder.value);
-});
-confirmDeleteBtn.addEventListener('click', () => {
-    if (currentReviewId) {
-        axios.delete(`/review/${currentReviewId}`)
-            .then(response => {
-                console.log('Review deleted:', response.data);
-                getReviews(sortOrder.value);
-                deleteModal.style.display = 'none';
-            })
-            .catch(error => {
-                console.error('Error deleting review:', error);
-                deleteModal.style.display = 'none';
-            });
-    }
-});
-
-confirmPatchBtn.addEventListener('click', () => {
-    if (currentMemberId) {
-        axios.patch(`/member/${currentMemberId}/ban`)
-            .then(response => {
-                console.log('Member banned:', response.data);
-                getReviews(sortOrder.value);
-                patchModal.style.display = 'none';
-            })
-            .catch(error => {
-                console.error('Error banning member:', error);
-                patchModal.style.display = 'none';
-            });
-    }
 });

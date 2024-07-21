@@ -273,3 +273,20 @@ exports.getNicks = async (req, res) => {
     res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 };
+
+// 회원 탈퇴
+exports.deleteMemberAdmin = async (req, res) => {
+  const { memberId } = req.params;
+  try {
+      const member = await Member.findOne({ where: { memberId } });
+
+      if (!member) return res.status(404).json({ message: `회원을 찾을 수 없습니다.` });
+
+      await member.destroy();
+
+      return res.status(200).json({ message: `회원이 삭제되었습니다.` });
+  } catch (error) {
+      console.log(`Error : ${error.message}`);
+      return res.status(500).json({ message: `회원 삭제 중 오류가 발생했습니다.` });
+  }
+}

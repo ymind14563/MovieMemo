@@ -118,4 +118,7 @@ router.get('/searchM', authenticateAdmin ,controller.getMembers);
 
 router.get('/nickname', controller.getNicks);
 
+// 회원 탈퇴
+router.delete('/:memberId', authenticateAdmin, controller.deleteMemberAdmin);
+
 module.exports = router;
