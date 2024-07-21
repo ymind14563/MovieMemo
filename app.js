@@ -2,6 +2,8 @@ const express = require("express");
 const path = require(`path`);
 const dotenv = require(`dotenv`);
 const { routerMiddleware } = require("./middleware/routerMiddleware");
+const db = require('./model/index');
+const jwt = require("jsonwebtoken");
 
 // 기본 .env 파일을 로드
 dotenv.config({
@@ -48,6 +50,7 @@ app.get("/", (req, res) => {
 app.get("/review", (req, res) => {
   res.render("review");
 });
+
 
 // 회원가입 경로
 app.get("/register", (req, res) => {
