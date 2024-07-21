@@ -281,8 +281,12 @@ input:focus {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
+.modal-content{
+    background-color: rgb(25, 26, 27);
+}
+
 .del-modal-content {
-    background-color: #fefefe;
+   
     text-align: center;
     margin: 20% auto;
     padding: 20px;
@@ -299,7 +303,14 @@ input:focus {
     margin-bottom: 20px;
 }
 
+#patch-content{
+    background-color: rgb(40, 43, 44);
+    color:#fefefe;
+}
+
+
 .modal-content textarea {
+    
     margin-bottom: 20px;
     white-space: pre-wrap; /* 줄바꿈과 연속된 공백을 유지 */
 }
