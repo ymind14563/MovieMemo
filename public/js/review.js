@@ -309,8 +309,7 @@ document.querySelector('.review_section').addEventListener('click', async functi
   // 신고 버튼 클릭 처리
   if (e.target.closest('.warningBtn')) {
     const reviewId = e.target.closest('.warningBtn').id.replace('warningBtn', '');
-    // const userData = getUserNickname();
-    // const userIdfromB = userData.userId;
+    
     await axios({
       method : 'post',
       url: `/review/report`,
