@@ -98,9 +98,15 @@ exports.getTopReviews = async (req, res) => {
                     model: Member,
                     attributes: ['nick']
                 }
+            ],
+            include: [
+                {
+                    model: Movie,
+                    attributes: ['posterUrl']
+                }
             ]
         });
-        console.log(reviews);
+        // console.log(reviews);
         if (reviews.length === 0) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.` });
 
         return res.status(200).json(reviews);

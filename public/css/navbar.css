@@ -155,7 +155,7 @@ display: none;
 
 @media screen and (max-width: 500px) {
 
-  .navdiv {
+  /* .navdiv {
     flex-wrap: wrap;
   }
 
@@ -190,6 +190,13 @@ display: none;
 
   .m-search-box-btn{
     background-color: #B20710;
+  } */
+
+
+  .loginModal {
+    width: 90%; /* 로그인 모달 창 너비 조정 */
+    left: 5%; /* 화면 가운데 정렬 */
+    top: 20%; /* 상단 여백 추가 */
   }
 }
 
@@ -237,6 +244,7 @@ display: none;
     top: 20%; /* 상단 여백 추가 */
   }
 
+
   .modal-content {
     padding: 20px; /* 내부 패딩 축소 */
   }
@@ -277,3 +285,4 @@ display: none;
       background-color: rgba(0, 0, 0, 0.8); /* 배경 투명도 조정 */
     }
 }
+
