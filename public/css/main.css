@@ -14,10 +14,11 @@ span {
 }
 
 .navbar {
-  background: #050c0a;
-  padding: 0 15px;
-  margin-bottom: 100px;
-  margin-top: 10px;
+
+    background: #050C0A;
+    padding: 0 15px;
+    margin-bottom: 100px;
+    /* margin-top: 10px; */
 }
 
 .navdiv {

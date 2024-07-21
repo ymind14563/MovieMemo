@@ -1,5 +1,6 @@
 const encUtil = require("../utils/encrypt");
 const jwt = require("jsonwebtoken");
+const db = require("../model/index");
 const { Member } = require("../model");
 const { validationResult } = require("express-validator");
 const { Op } = require('sequelize'); // sequelize Operator(연산자)
@@ -240,3 +241,35 @@ exports.logoutMember = async (req, res) => {
 };
 
 
+exports.getNicks = async (req, res) => {
+  try {
+    // Authorization 헤더에서 토큰 추출
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: '인증 토큰이 필요합니다.' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    // 토큰 검증
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // 데이터베이스에서 사용자 정보 조회
+    const member = await db.Member.findOne({ where: { memberId: decoded.memberId } });
+
+    if (!member) {
+      return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+    }
+    console.log(member);
+    // 사용자 ID와 닉네임 반환
+    res.json({
+      userId: member.memberId,
+      nickname: member.nick // 또는 member.nickname, 모델에 따라 다를 수 있음
+    });
+
+  } catch (error) {
+    console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: '유효하지 않은 토큰입니다.' });
+    }
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+  }
+};

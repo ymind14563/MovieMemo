@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    const reviewList = document.querySelector('tbody');
+    const reviewList = document.getElementById('review-list');
     const sortOrder = document.getElementById('sortBy');
     const paginationContainer = document.querySelector('.pagination');
     const deleteModal = document.getElementById('delete-modal');
@@ -9,10 +8,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const patchModal = document.getElementById('patch-modal');
     const confirmPatchBtn = document.getElementById('confirm-patch');
     const cancelPatchBtn = document.getElementById('cancel-patch');
-    const patchContent = document.getElementById('patch-content');
-
     let currentReviewId = null;
-    let currentReviewElement = null;
+    let currentMemberId = null;
+
+    window.addEventListener('click', (e) => {
+        if (e.target === deleteModal) {
+            deleteModal.style.display = 'none';
+        }
+        if (e.target === patchModal) {
+            patchModal.style.display = 'none';
+        }
+    });
+
+    function onDeleteButtonClick(button) {
+        currentReviewId = button.getAttribute('data-review-id');
+        deleteModal.style.display = 'block';
+    }
+
+    function onPatchButtonClick(button) {
+        currentMemberId = button.getAttribute('data-member-id');
+        patchModal.style.display = 'block';
+    }
 
     reviewList.addEventListener('click', (e) => {
         if (e.target.classList.contains('read-more')) {
@@ -25,66 +41,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.textContent = '더보기';
             }
         }
-
         if (e.target.classList.contains('del-btn')) {
-            const reviewElement = e.target.closest('tr');
-            if (reviewElement) {
-                currentReviewId = reviewElement.querySelector('.review-delete-btn').getAttribute('data-review-id');
-                deleteModal.style.display = 'block'; // 모달 창 열기
-            } else {
-                console.error('Review element not found');
-            }
+            onDeleteButtonClick(e.target);
         }
-
         if (e.target.classList.contains('patch-btn')) {
-            const reviewElement = e.target.closest('tr');
-            if (reviewElement) {
-                currentReviewId = reviewElement.querySelector('.review-delete-btn').getAttribute('data-review-id');
-                currentReviewElement = reviewElement;
-                const reviewContent = reviewElement.querySelector('.review-content').textContent;
-                patchContent.value = reviewContent;
-                patchModal.style.display = 'block'; // 모달 창 열기
-            } else {
-                console.error('Review element not found');
-            }
+            onPatchButtonClick(e.target);
         }
     });
 
     confirmDeleteBtn.addEventListener('click', () => {
         if (currentReviewId) {
             deleteReview(currentReviewId);
-            deleteModal.style.display = 'none'; // 모달 창 닫기
+            deleteModal.style.display = 'none';
         }
     });
 
     cancelDeleteBtn.addEventListener('click', () => {
-        deleteModal.style.display = 'none'; // 모달 창 닫기
+        deleteModal.style.display = 'none';
     });
 
     confirmPatchBtn.addEventListener('click', () => {
-        if (currentReviewId && currentReviewElement) {
-            const updatedContent = patchContent.value;
-            currentReviewElement.querySelector('.review-content').textContent = updatedContent;
-            patchReview(currentReviewId, updatedContent);
-            patchModal.style.display = 'none'; // 모달 창 닫기
+        if (currentMemberId) {
+            patchReview(currentMemberId);
+            patchModal.style.display = 'none';
         }
     });
 
     cancelPatchBtn.addEventListener('click', () => {
-        patchModal.style.display = 'none'; // 모달 창 닫기
-    });
-
-    sortOrder.addEventListener('change', (e) => {
-        const sortBy = e.target.value;
-        getReviews(sortBy);
-    });
-
-    paginationContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('page-number')) {
-            e.preventDefault();
-            const page = e.target.getAttribute('data-page');
-            getReviews(sortOrder.value, page);
-        }
+        patchModal.style.display = 'none';
     });
 
     function getReviews(sortBy, page = 1) {
@@ -108,49 +92,42 @@ document.addEventListener('DOMContentLoaded', () => {
     function deleteReview(reviewId) {
         axios.delete(`/review/${reviewId}`)
         .then(response => {
-            getReviews(sortOrder.value); // 삭제 후 리뷰 목록을 다시 로드
+            console.log('리뷰삭제성공', response);
+            getReviews(sortOrder.value); // 리뷰 삭제 후 리뷰 목록 갱신
         })
         .catch(error => {
             console.error('리뷰를 삭제할 수 없습니다.', error);
         });
     }
 
-    function patchReview(reviewId, content) {
-        axios.patch(`/review/${reviewId}`, { content })
+    function patchReview(memberId) {
+        axios.patch(`/member/${memberId}/ban`)
         .then(response => {
-            getReviews(sortOrder.value); // 수정 후 리뷰 목록을 다시 로드
+            console.log('회원 강퇴 성공', response);
+            getReviews(sortOrder.value); // 회원 강퇴 후 리뷰 목록 갱신
         })
         .catch(error => {
-            console.error('리뷰를 수정할 수 없습니다.', error); // 에러 메시지 출력
+            console.error('회원을 강퇴할 수 없습니다.', error);
         });
     }
 
     function renderReviews(reviews) {
         reviewList.innerHTML = '';
         reviews.forEach(review => {
-            const reviewElement = document.createElement('tr');
-            reviewElement.innerHTML = `
+            const reviewRow = document.createElement('tr');
+            reviewRow.innerHTML = `
                 <td>${review.Member.nick}</td>
                 <td>${review.Movie.movieTitle}</td>
                 <td class="review-content">${review.content}</td>
                 <td class="read-more">더보기</td>
                 <td>${review.likeCount}</td>
                 <td>${review.reportCount}</td>
-                <td>${review.createdAt}</td>
-                <td>${review.updatedAt}</td>
-                <td><button class="review-delete-btn" type="submit" data-review-id="${review.reviewId}">삭제</button></td>
-                <td><button class="member-delete-btn" type="submit" data-member-id="${review.memberId}">회원탈퇴</button></td>
+                <td>${formatDate(review.createdAt)}</td>
+                <td>${formatDate(review.updatedAt)}</td>
+                <td><button class="del-btn" type="submit" data-review-id="${review.reviewId}">삭제</button></td>
+                <td><button class="patch-btn" type="submit" data-member-id="${review.memberId}">회원탈퇴</button></td>
             `;
-            reviewList.appendChild(reviewElement);
-
-            const reviewContent = reviewElement.querySelector('.review-content');
-            const readMoreBtn = reviewElement.querySelector('.read-more');
-
-            if (reviewContent.scrollHeight > reviewContent.clientHeight) {
-                readMoreBtn.style.display = 'block';
-            } else {
-                readMoreBtn.style.display = 'none';
-            }
+            reviewList.appendChild(reviewRow);
         });
     }
 
@@ -163,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 pageElement.textContent = i;
             } else {
                 const pageLink = document.createElement('a');
-                pageLink.href = `#`;
+                pageLink.href = '#';
                 pageLink.classList.add('page-number');
                 pageLink.textContent = i;
                 pageLink.setAttribute('data-page', i);
@@ -173,6 +150,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 초기 데이터 로드
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+    }
+
     getReviews(sortOrder.value);
+});
+confirmDeleteBtn.addEventListener('click', () => {
+    if (currentReviewId) {
+        axios.delete(`/review/${currentReviewId}`)
+            .then(response => {
+                console.log('Review deleted:', response.data);
+                getReviews(sortOrder.value);
+                deleteModal.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error deleting review:', error);
+                deleteModal.style.display = 'none';
+            });
+    }
+});
+
+confirmPatchBtn.addEventListener('click', () => {
+    if (currentMemberId) {
+        axios.patch(`/member/${currentMemberId}/ban`)
+            .then(response => {
+                console.log('Member banned:', response.data);
+                getReviews(sortOrder.value);
+                patchModal.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error banning member:', error);
+                patchModal.style.display = 'none';
+            });
+    }
 });

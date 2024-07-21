@@ -63,6 +63,12 @@ button a {
     position: relative;
     min-height: 300px;
     flex-grow: 1; /* 페이지 아래까지 공간을 차지하도록 설정 */
+    overflow: scroll;
+}
+.wrapper th, tr{
+    padding: 0.3em;
+    white-space: nowrap;
+    height: 3em;
 }
 .wrapper table {
     width: 100%;
@@ -202,7 +208,6 @@ form select {
     overflow: hidden;
     text-overflow: ellipsis;
     max-height: 1.2em; /* 기본 한 줄 높이 */
-    vertical-align: top;
     margin-top: 4px;
 }
 
@@ -300,6 +305,21 @@ form select {
     padding: 20px;
     border: 1px solid #888;
     width: 30%;
+    border-radius: 1em;
+}
+.patch-modal-content{
+    background-color: #FEFEFE;
+    text-align: center;
+    margin: 20% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    border-radius: 1em;
+
+}
+.patch-modal-content p {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .del-modal-content p {
     margin-top: 20px;
@@ -307,10 +327,6 @@ form select {
 }
 .modal-content h2 {
     margin-bottom: 20px;
-}
-.modal-content textarea {
-    margin-bottom: 20px;
-    white-space: pre-wrap; /* 줄바꿈과 연속된 공백을 유지 */
 }
 .modal-btn {
     margin: 10px;
