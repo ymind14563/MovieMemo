@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <%- include('partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/searchresult.css">
     <link rel="stylesheet" href="/css/main.css" />
     <link
       rel="stylesheet"
@@ -12,7 +14,8 @@
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar">
+    <%- include('partials/components/navbar') %>
+    <!-- <nav class="navbar">
       <div class="navdiv">
         <div class="logo">
           <a href="#">MovieMemo</a>
@@ -23,7 +26,7 @@
           <button id="openLoginModal"><a href="#">로그인</a></button>
         </ul>
       </div>
-    </nav>
+    </nav> -->
 
     <!-- Swiper -->
     <!-- Slider main container -->
@@ -94,9 +97,11 @@
     <!-- Footer -->
     <footer class="footer"></footer>
 
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/login.js"></script>
+    <script src="/js/navbar.js"></script>
   </body>
 </html>

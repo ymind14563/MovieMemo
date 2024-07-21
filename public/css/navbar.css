@@ -141,7 +141,7 @@ button a {
 }
 .search-box-Smethod{
   cursor: pointer;
-  color: white;
+  color: #fff;
 }
 
 .m-search-box-wrapper{
@@ -174,10 +174,12 @@ display: none;
     border-bottom: 1px solid #fff;
    }
 
+
    .m-search-box-Smethod{
     width: 15%;
     color: white;
   }
+
 
   .m-search-box-word{
     width: 40%;
@@ -192,6 +194,9 @@ display: none;
     background-color: #B20710;
   } */
 
+  .m-search-box-Smethod{
+    color: #fff;;
+  }
 
   .loginModal {
     width: 90%; /* 로그인 모달 창 너비 조정 */
