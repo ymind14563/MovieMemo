@@ -116,4 +116,6 @@ router.post('/verifyPassword', authenticateUser, controller.verifyPassword);
 // 회원 조회 (관리자)
 router.get('/searchM', authenticateAdmin ,controller.getMembers);
 
+router.get('/nickname', controller.getNicks);
+
 module.exports = router;

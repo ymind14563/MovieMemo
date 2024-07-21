@@ -1,4 +1,3 @@
-//영화 상세페이지
 // (영화)상세 페이지  viewMovieDetails()
 //리뷰 등록
 // 리뷰 등록 버튼 postReview()
@@ -10,16 +9,16 @@ const targerId = targerE.id;
 // 리뷰 모달 버튼
 const createReview = document.querySelector('.createReviewBtn');
 const buttonClose = document.querySelector('.buttonClose');
-const modal = document.querySelector('.movie_review_modal_bg');
+const rvmodal = document.querySelector('.movie_review_modal_bg');
 
 createReview.addEventListener('click', () => {
-  modal.classList.remove('hidden');
-  modal.classList.add('visible');
+  rvmodal.classList.remove('hidden');
+  rvmodal.classList.add('visible');
 })
 
 buttonClose.addEventListener('click', () => {
-  modal.classList.add('hidden');
-  modal.classList.remove('visible');
+  rvmodal.classList.add('hidden');
+  rvmodal.classList.remove('visible');
 })
 
 
@@ -95,92 +94,88 @@ function updateLikeCount(likeCount) {
 
 async function getUserNickname() {
   try {
-    const response = await axios.get('/user/nickname', {
+    let result = {};
+    await axios.get('/member/nickname', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
+      }).then((res)=>{
+        result = res.data;
       });
-      return response.data.nickname;
+
+      return result;
   } catch (error) {
       console.error('사용자 닉네임을 가져오는 중 오류 발생:', error);
       return null;
   }
 }
 
+function getRating() {
+  // name이 'rating'인 모든 라디오 버튼을 선택합니다.
+  const ratingInputs = document.querySelectorAll('input[name="rating"]');
+  
+  // 선택된 라디오 버튼을 찾습니다.
+  for (const input of ratingInputs) {
+    if (input.checked) {
+      return input.value; // 선택된 라디오 버튼의 값을 반환합니다.
+    }
+  }
+  
+  // 선택된 라디오 버튼이 없는 경우
+  return null;
+}
+
 document.querySelector('.reviewSubBtn').addEventListener('click', async function(e) {
   e.preventDefault();
-
-  const rating = document.getElementById('rating').value;
-  const reviewPost = document.getElementById('reviewPost').value;
-
-  const nickname = await getUserNickname();
-
-  if (!nickname) {
-      document.getElementById('responseMessage').innerText = '닉네임을 가져오는 데 실패했습니다.';
-      return;
+  const RVRating = getRating();
+  if( !RVRating ){
+    alert('리뷰에 등록할 평점을 입력해주세요');
   }
 
-  try {
-      const response = await axios.post('/review', {
-          reviewMovieRating: rating,
-          reviewPost,
-          nickname
-      }, {
-          headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-      });
+  const reviewPost = document.getElementById('reviewPost').value;
+  const memberInfo = await getUserNickname();
+  let userNick = memberInfo.nickname;
+  let userId = memberInfo.userId;
 
-        document.getElementById('responseMessage').innerText = response.data.message;
-        addReviewToList({ rating, reviewPost, nickname });
-        document.getElementById('reviewForm').reset();
-    } catch (error) {
-        if (error.response) {
-            document.getElementById('responseMessage').innerText = error.response.data.message;
-        } else {
-            document.getElementById('responseMessage').innerText = '서버에 요청 중 오류가 발생했습니다.';
-        }
+  try {  
+    const response = await axios.post('/review', 
+          {
+            reviewMovieRating: RVRating,
+            content : reviewPost,
+            memberId : userId,
+            movieId: targerId
+          },
+          {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        // document.getElementById('responseMessage').innerText = response.data.message;
+        document.querySelector('#reviewForm').reset();
+        
+        window.location.href = `/movie/movieInfo/${targerId}`
+      } catch (error) {
+        console.error(err)
       }
   });
 
-function addReviewToList(review) {
-  const reviewList = document.getElementById('review_container');
-  const reviewItem = document.createElement('div');
 
-  // 현재 날짜 포맷
-  const currentDate = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-
-  reviewItem.innerHTML = `
-    <span>${review.nickname}</span>
-    <span>${review.rating}</span>
-    <button type="button" class="likeBtn">좋아요</button>
-    <button type="button" class="editBtn">수정버튼</button>
-    <p class="likeCount"></p>
-    <p>
-    ${review.reviewPost}
-    </p>
-    <p>
-      <span>${currentDate}</span>
-      <button type="button" class="deleteBtn" data-review-id="123">삭제</button>
-      <button type="button" class="warningBtn">신고버튼</button>
-    </p>
-  `;
-  reviewList.appendChild(reviewItem);
-}
-
-// DOMContentLoaded 이벤트에 리스너 추가
 document.addEventListener('DOMContentLoaded', async ()=>{
   
   let data;
 
   await axios({
-      method : 'get',
+    method : 'get',
     url : `/review/movie/${targerId}`,
   }).then((res)=>{
     data = res.data;
   })
-  if( ( data.totalReviews - 6*nowPage ) < 7){ document.querySelector('.load_more').style.display = 'none';};
-  data.reviews.forEach(review =>{
+  if( ( 
+    data.totalReviews - 6*nowPage ) < 7){ document.querySelector('.load_more').style.display = 'none';};
+    data.reviews.forEach(review =>{
     let reviewHtml = `
             <div class="review_box">
           <div class="review_user">
@@ -189,14 +184,14 @@ document.addEventListener('DOMContentLoaded', async ()=>{
               <span> 별점 : ${review.reviewMovieRating}</span>
             </div>
             <div class="likeBox">
-              <button type="button" class="likeBtn">
+              <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
                 <span class="material-symbols-rounded">
                   favorite
                 </span>
               </button>
               <p class="likeCount">4</p>
             </div>
-            <button type="button" class="editBtn">
+            <button type="button" class="editBtn" id="editBtn${review.reviewId}">
               <span class="material-symbols-rounded">
                 edit
               </span>
@@ -211,12 +206,12 @@ document.addEventListener('DOMContentLoaded', async ()=>{
             <span class="write_date">${review.createdAt.substr(0,9)}</span>
 
             <p class="review_btns_box">
-              <button type="button" class="deleteBtn" data-review-id="123">
+              <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
                 <span class="material-symbols-rounded">
                   delete
                 </span>
               </button>
-              <button type="button" class="warningBtn">
+              <button type="button" class="warningBtn" id="warningBtn${review.reviewId}}">
                 <span class="material-symbols-rounded">
                   dangerous
                 </span>
@@ -233,7 +228,6 @@ const moreBtn = document.querySelector('.load_more');
 moreBtn.addEventListener('click',async ()=>{
   nowPage = nowPage + 1;
   let pagedata;
-  console.log(nowPage);
   
   await axios({
     method : 'get',
@@ -245,8 +239,9 @@ moreBtn.addEventListener('click',async ()=>{
     pagedata = res.data;
   })
   
-  if( pagedata.totalReviews -6*nowPage < 7){ document.querySelector('.load_more').style.display = 'none';};
-  pagedata.reviews.forEach(review =>{
+  if( 
+    pagedata.totalReviews -6*nowPage < 7){ document.querySelector('.load_more').style.display = 'none';};
+    pagedata.reviews.forEach(review =>{
     let reviewHtml = `
       <div class="review_box">
       <div class="review_user">
@@ -255,14 +250,14 @@ moreBtn.addEventListener('click',async ()=>{
           <span> 별점 : ${review.reviewMovieRating}</span>
         </div>
         <div class="likeBox">
-          <button type="button" class="likeBtn">
+          <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
             <span class="material-symbols-rounded">
               favorite
             </span>
           </button>
           <p class="likeCount">4</p>
         </div>
-        <button type="button" class="editBtn">
+        <button type="button" class="editBtn" id="editBtn${review.reviewId}">
           <span class="material-symbols-rounded">
             edit
           </span>
@@ -277,12 +272,12 @@ moreBtn.addEventListener('click',async ()=>{
         <span class="write_date">${review.createdAt.substr(0,9)}</span>
 
         <p class="review_btns_box">
-          <button type="button" class="deleteBtn" data-review-id="123">
-            <span class="material-symbols-rounded">
+          <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
+            <span class="material-symbols-rounded" >
               delete
             </span>
           </button>
-          <button type="button" class="warningBtn">
+          <button type="button" class="warningBtn" id="warningBtn${review.reviewId}">
             <span class="material-symbols-rounded">
               dangerous
             </span>
@@ -294,3 +289,46 @@ moreBtn.addEventListener('click',async ()=>{
     })
 });
 
+
+document.querySelector('.review_section').addEventListener('click', async function(e) {
+  // 삭제 버튼 클릭 처리
+  if (e.target.closest('.deleteBtn')) {
+    const reviewId = e.target.closest('.deleteBtn').getAttribute('id').replace('deleteBtn','');
+    console.log('요청을 보냄');
+    await axios({
+      method :'delete',
+      url: `/review/${reviewId}`,
+      data:{
+
+      }
+    }).then((res)=>{
+      window.location.href = `/movie/movieInfo/${targerId}`
+    })
+    await alert('리뷰가 삭제되었습니다.')
+  }
+
+  // 신고 버튼 클릭 처리
+  if (e.target.closest('.warningBtn')) {
+    const reviewId = e.target.closest('.warningBtn').id.replace('warningBtn', '');
+    // const userData = getUserNickname();
+    // const userIdfromB = userData.userId;
+    console.log('경고 버튼 클릭됨, 리뷰 ID:', reviewId);
+    await axios({
+      method : 'post',
+      url: `/review/report`,
+      data:{
+        reviewId: reviewId  
+      }
+    }).then((res)=>{
+      window.location.href = `/movie/movieInfo/${targerId}`
+    })
+    await alert('리뷰를 신고했습니다.')
+  }
+
+  // 수정 버튼 클릭 처리
+  // if (e.target.closest('.editBtn')) {
+  //   const reviewId = e.target.closest('.editBtn').id.replace('edidBtn', '');
+  //   console.log('수정 버튼 클릭됨, 리뷰 ID:', reviewId);
+  //
+  // }
+});
