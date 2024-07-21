@@ -8,10 +8,7 @@ const jwt = require('jsonwebtoken');
 
 // 리뷰 생성
 exports.postReview = async (req, res) => {
-
-    const { movieId, reviewMovieRating : rating, content } = req.body;
-    const memberId = req.memberId;
-
+    const { memberId, movieId, content, reviewMovieRating } = req.body;
     // 영어 및 한국어 필터링
     if (checkBadWords(content)) {
         return res.status(400).json({ message: "부적절한 단어가 포함되어 있습니다." });
@@ -19,7 +16,7 @@ exports.postReview = async (req, res) => {
 
     try {
         const review = await Review.create({
-            memberId, movieId, content, reviewMovieRating: rating
+            memberId, movieId, content, reviewMovieRating
         });
 
         /* // 해당 영화의 모든 리뷰 조회
@@ -36,19 +33,16 @@ exports.postReview = async (req, res) => {
         // 현재 영화의 리뷰 평균 평점 업데이트
         // 새로 작성한 리뷰에 해당하는 영화 조회
         const movie = await Movie.findOne({ where: { movieId } });
-
         if (!movie) return res.status(404).json({ message: `영화가 존재하지 않습니다.`});
- 
         // 현재 컬럼에 등록된 영화 리뷰 평점 평균 (새로 작성된 리뷰 포함 하지 않음)
-        const currentAvgRating = movie.reviewMovieRating;
+        const currentAvgRating = parseFloat(movie.reviewMovieRating);
         // 영화 리뷰 개수 (새로 작성된 리뷰 포함)
         const totalReviews = await Review.count({ where: { movieId } });
         // 새로운 평균 평점 계산 (새로 작성된 리뷰 포함)
-        const newAvgRating = ((currentAvgRating * (totalReviews - 1)) + rating) / totalReviews;
+        const newAvgRating = (parseFloat(parseFloat(currentAvgRating * parseFloat(parseFloat(parseFloat(totalReviews) - 1))) + parseFloat(reviewMovieRating) ) / parseFloat(totalReviews));
 
         // 영화 리뷰 평점 평균 업데이트
         const update = await Movie.update({ reviewMovieRating: newAvgRating }, { where: { movieId } });
-        console.log(update);
         return res.status(201).json({ message: `리뷰가 작성되었습니다.`, review });
         
     } catch (error) {
@@ -241,11 +235,14 @@ exports.patchReview = async (req, res) => {
 
 // 특정 리뷰 삭제
 exports.deleteReview = async (req, res) => {
-   
-    const { reviewId } = req.params;
-    const memberId = req.memberId;
-    const isAdmin = req.isAdmin;
     
+    console.log('요청을 받는데는 성공!');
+    const { reviewId } = req.params;
+    console.log('reviewId>>>>>>>>',reviewId);
+    const memberId = req.memberId;
+    console.log('memberId',memberId);
+    const isAdmin = req.isAdmin;
+    console.log('isAdmin',isAdmin);
     try {
         const review = await Review.findOne({
             where: { reviewId }
@@ -324,7 +321,9 @@ exports.likeReview = async (req, res) => {
 // 신고
 exports.reportReview = async (req, res) => {
     const memberId = req.memberId;
+    console.log('memberId>>>>>>>>>>',memberId);
     const { reviewId } = req.body;
+    console.log('reviewId>>>>>>>>>>>',reviewId);
 
     try {
         const review = await Review.findOne({
@@ -332,7 +331,7 @@ exports.reportReview = async (req, res) => {
         })
 
         if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
-
+            console.log('1');
         // 신고 내역 확인
         const existReport = await Report.findOne({ where : { memberId, reviewId }});
         if (existReport) {
@@ -344,12 +343,15 @@ exports.reportReview = async (req, res) => {
 
             return res.status(200).json({ message : `신고가 취소 되었습니다.`, review });
         }
-
+        console.log('2');
+        
         // 신고 증가
         await Report.create({ memberId, reviewId });
+        console.log('5');
         review.reportCount += 1;
+        console.log('3');
         await review.save();
-
+        console.log('34444444444444');
         return res.status(200).json({ message : `신고가 추가 되었습니다.`, review });
         
     } catch (error) {
@@ -357,3 +359,4 @@ exports.reportReview = async (req, res) => {
         return res.status(500).json({ message: `신고 추가 중 오류가 발생했습니다.` });
     }
 }
+
