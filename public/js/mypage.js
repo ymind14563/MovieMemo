@@ -44,12 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
+    // 정보수정 이벤트 리스너
     document.querySelector('.member-patch-btn').addEventListener('click', () => {
-        const form = document.querySelector('form');
+        const form = document.querySelector('.member-info-form');
     
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        form.addEventListener('submit', patchMemberInfo);
+    });
+
+    // 회원탈퇴 이벤트 리스너
+    document.querySelector('.member-delete-btn').addEventListener('click', () => {
+        const form = document.querySelector('.member-info-form');
+    
+        form.addEventListener('submit', deleteMember);
+    });
+
+    async function patchMemberInfo(e) {
+        e.preventDefault();
         
         const currentPassword = currentPasswordInput.value;
         const newPassword = changePasswordInput.value;
@@ -57,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const age = document.getElementById('age').value;
         const gender = document.getElementById('gender').value;
     
-         if (currentPassword) {
+        if (currentPassword) {
             try {
                 const verifyResponse = await axios.post('/member/verifyPassword', { currentPassword });
                 
@@ -69,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         gender
                     });
                     alert('회원 정보가 수정되었습니다.');
-                    return  window.location.reload();
+                    return window.location.reload();
                 }
             } catch (error) {
                 if (error.response && error.response.status === 400) {
@@ -84,11 +94,36 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             alert('현재 비밀번호를 입력해주세요.');
         }
-    })
-});
+    }
     
-    reviewList.addEventListener('click', (e) => {
+    async function deleteMember(e) {
+        e.preventDefault();
+        
+        const currentPassword = currentPasswordInput.value;
+    
+        if (currentPassword) {
+            try {
+                const verifyResponse = await axios.post('/member/verifyPassword', { currentPassword });
+                
+                if (verifyResponse.status === 200) {
+                    await axios.delete(`/member`);
+                    alert('회원 탈퇴 처리되었습니다.');
+                    return window.location.href = '/';
+                }
+            } catch (error) {
+                if (error.response) {
+                    alert('회원 탈퇴가 실패하였습니다.');
+                } else {
+                    console.error('회원 탈퇴를 진행 하는 중 오류가 발생했습니다.', error);
+                    alert('회원 탈퇴를 진행 하는 중 오류가 발생했습니다.');
+                }
+            }
+        } else {
+            alert('현재 비밀번호를 입력해주세요.');
+        }
+    }
 
+    reviewList.addEventListener('click', (e) => {
         if (e.target.classList.contains('read-more')) {
             const reviewContent = e.target.previousElementSibling;
             if (e.target.textContent === '더보기') {
@@ -99,25 +134,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.textContent = '더보기';
             }
         }
-    
 
         if (e.target.classList.contains('del-btn')) {
             const reviewElement = e.target.closest('.review-title');
             if (reviewElement) {
                 currentReviewId = reviewElement.getAttribute('data-review-id');
-                
-                // deleteReview(reviewId);
                 deleteModal.style.display = 'block'; // 모달 창 열기
-
             } else {
                 console.error('Review element not found');
             }
         }
 
         if (e.target.classList.contains('patch-btn')) {
-
             const reviewElement = e.target.closest('.review-title');
-
             if (reviewElement) {
                 currentReviewId = reviewElement.getAttribute('data-review-id');
                 currentReviewElement = reviewElement;
@@ -141,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteModal.style.display = 'none'; // 모달 창 닫기
     });
 
-
     confirmPatchBtn.addEventListener('click', () => {
         if (currentReviewId && currentReviewElement) {
             const updatedContent = patchContent.value;
@@ -154,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelPatchBtn.addEventListener('click', () => {
         patchModal.style.display = 'none'; // 모달 창 닫기
     });
-
 
     sortOrder.addEventListener('change', (e) => {
         const sortBy = e.target.value;
@@ -197,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-
     function patchReview(reviewId, content) {
         axios.patch(`/review/${reviewId}`, { content })
         .then(response => {
@@ -286,42 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
     }
-
-
-    document.querySelector('.member-delete-btn').addEventListener('click', () => {
-        const form = document.querySelector('form');
-    
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-        
-        const currentPassword = currentPasswordInput.value;
-    
-        if (currentPassword) {
-            try {
-                const verifyResponse = await axios.post('/member/verifyPassword', { currentPassword });
-                
-                if (verifyResponse.status === 200) {
-                    await axios.delete(`/member`);
-                    alert('회원 탈퇴 처리되었습니다.');
-                    return window.location.href = '/';
-                }
-            } catch (error) {
-                if (error.response) {
-                    alert('회원 탈퇴가 실패하였습니다.');
-                    
-                } else {
-                    console.error('회원 탈퇴를 진행 하는 중 오류가 발생했습니다.', error);
-                    alert('회원 탈퇴를 진행 하는 중 오류가 발생했습니다.');
-                }
-            }
-        } else {
-            alert('현재 비밀번호를 입력해주세요.');
-        }
-    })
-});
-    
-
-
 
     // 초기 데이터 로드
     getReviews(sortOrder.value);
