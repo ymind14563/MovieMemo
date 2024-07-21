@@ -150,8 +150,15 @@ display: none;
 
 #openLoginModal{
   color: white;
+  font-weight: bold;
 }
 
+#myPageButton{
+  background-color: #B20710;
+}
+#openLoginModal{
+  background-color: #B20710;
+}
 
 @media screen and (max-width: 500px) {
 
