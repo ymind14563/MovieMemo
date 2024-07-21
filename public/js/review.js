@@ -329,3 +329,23 @@ document.querySelector('.review_section').addEventListener('click', async functi
   //
   // }
 });
+
+//release date
+
+document.addEventListener('DOMContentLoaded', () => {
+  const releaseBox = document.querySelector('.releaseBox');
+  const releaseDateStr = releaseBox.getAttribute('data-release-date');
+  
+  if (releaseDateStr) {
+    const releaseDate = new Date(
+      releaseDateStr.substring(0, 4),  // Year
+      releaseDateStr.substring(4, 6) - 1,  // Month (0-based index)
+      releaseDateStr.substring(6, 8)  // Day
+    );
+    
+    // yyyy-mm-dd
+    const formattedDate = releaseDate.toISOString().slice(0, 10);
+    
+    document.getElementById('releaseDate').innerText = formattedDate;
+  }
+});
