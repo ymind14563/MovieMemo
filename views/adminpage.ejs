@@ -17,8 +17,17 @@
     </nav>
 
     <div class="wrapper">
-        <input class="search-box-word" type="text" placeholder="영화 제목을 입력해주세요">
-        <button class="search-button">검색</button>
+        
+        <select id="sortBy" name="sortBy" onchange="sortReviews(this.value)">
+            <option value="" >정렬 순서</option>
+            <option value="patch-latest">최신편집순</option>
+            <option value="latest">최신등록순</option>
+            <option value="oldest">과거등록순</option>
+            <option value="rating">평점순</option>
+            <option value="popular">좋아요순</option>
+            <option value="report" selected>신고순</option>
+
+        </select>
 
         <table>
             <thead>
@@ -90,6 +99,6 @@
         </div>
 
 
-    <script src="/js/adminpage.js"></script>
+    <script defer src="/js/adminpage.js"></script>
 </body>
 </html>
