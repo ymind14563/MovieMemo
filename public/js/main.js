@@ -73,7 +73,7 @@ function openLoginModal() {
 }
 
 
-
+//movie slider
 function shuffleArraysInSync(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     throw new Error('Arrays must have the same length');
