@@ -365,4 +365,52 @@ exports.reportReview = async (req, res) => {
         return res.status(500).json({ message: `신고 추가 중 오류가 발생했습니다.` });
     }
 }
+// 특정 리뷰 삭제
+exports.deleteReview = async (req, res) => {
+    
+    console.log('요청을 받는데는 성공!');
+    const { reviewId } = req.params;
+    console.log('reviewId>>>>>>>>',reviewId);
+    const memberId = req.memberId;
+    console.log('memberId',memberId);
+    const isAdmin = req.isAdmin;
+    console.log('isAdmin',isAdmin);
+    try {
+        const review = await Review.findOne({
+            where: { reviewId }
+        })
+
+        if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+
+        // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
+        if (review.memberId !== memberId && !isAdmin) {
+            console.log(`권한이 없습니다.`);
+            return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
+        }
+
+        // 삭제 할 영화 리뷰 평점
+        const deleteMovieRating = review.reviewMovieRating;
+
+        await review.destroy();
+
+        // 영화의 리뷰 평균 평점 업데이트
+        const movie = await Movie.findOne({ where: { movieId: review.movieId } });
+        const currentAvgRating = movie.avgRating;
+        const totalReviews = await Review.count({ where: { movieId: review.movieId } });
+
+        // 리뷰 삭제 후 남은 리뷰가 있다면 다시 계산, 없으면 0으로 처리
+        const newAvgRating = totalReviews > 0 ? ((currentAvgRating * (totalReviews + 1)) - deleteMovieRating) / totalReviews : 0;
+
+        await Movie.update({ avgRating: newAvgRating }, { where: { movieId: review.movieId } });
+
+        return res.status(200).json({ message: `리뷰가 삭제되었습니다.`})
+
+    } catch (error) {
+        console.log(`Error : ${error.message}`);
+        return res.status(500).json({ message: `리뷰 삭제 중 오류가 발생했습니다.` });
+    }
+}
+
+
+
 
