@@ -223,6 +223,7 @@ button {
 .likeBox {
   display: flex;
   align-items: center;
+  width: 10%;
 }
 .like-btn-img{
     height: 10px;
@@ -279,6 +280,8 @@ button {
   background: #ffffff;
   border-radius: 10px;
 }
+ 
+
 .form_btn_section {
   display: flex;
   justify-content: space-around;
@@ -308,6 +311,10 @@ button {
   color: #fff;
   cursor: pointer;
   transition: box-shadow 0.2s;
+}
+
+.reviewSubBtn:hover{
+  background-color: green;
 }
 
 .visible {
@@ -395,6 +402,84 @@ button {
   font-size: 16px;
   color: #fff;
 }
+
+.review_box span{
+  color: #000;
+}
+
+.review_content p{
+  color: #000;;
+}
+
+
+
+
+.likeBtn, .editBtn{
+  margin-left: 0;
+  border-radius: 0;
+  padding: 0;
+  font-weight: normal;
+}
+
+.editBtn{
+  width: auto;
+}
+
+.likeBtn:hover{
+  background-color: transparent;
+}
+
+.editBtn:hover{
+  background-color: transparent;
+}
+
+.likeCount{
+  color: #000;
+}
+
+.write_date{
+  width: 50%;
+}
+
+.deleteBtn{
+  margin-left: 0;
+  border-radius: 0;
+  padding: 5px;
+  width: auto;
+}
+
+.warningBtn{
+  margin-left: 0;
+  border-radius: 0;
+  padding: 5px;
+  width: auto;
+}
+
+.deleteBtn:hover{
+  background-color: transparent;
+}
+.warningBtn:hover{
+  background-color: transparent;
+}
+
+.rating_btn input{
+  width: auto;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.rating_btn label{
+  color: #000;
+  margin-right: 5px;
+}
+
+.rating_btn span{
+  color: #000;
+}
+
+
 
 @media (max-width: 500px) {
   #page_container {
