@@ -21,10 +21,6 @@ buttonClose.addEventListener("click", () => {
   rvmodal.classList.remove("visible");
 });
 
-// 영화 api 불러오기 관련
-const key = "BNUTWI8LOC2C99593QD4";
-const movieUrl = `http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&detail=Y&title="파묘"&ServiceKey=${key}`;
-
 // 영화 제목
 const movieTitle = document.querySelector(".movie_title > .contents_title");
 
@@ -143,10 +139,10 @@ document
         await axios.patch(
           `/review/${reviewId}`,
           {
-            rating: RVRating,
+            reviewMovieRating: RVRating,
             content: reviewPost,
             memberId: userId,
-            movieId: targetId,
+            movieId: targerId,
           },
           {
             headers: {
@@ -191,7 +187,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           </div>
           <button type="button" class="editBtn" id="editBtn${review.reviewId}">
             <span class="material-symbols-rounded">
-              dangerous
               edit
             </span>
           </button>
