@@ -189,7 +189,8 @@ function dynamicSlides(url, sectionClass, movieData, swiperWrapper) {
 
   const image = document.createElement('img');
   image.src = url;
-  image.alt = 'poster';
+  image.alt = alt="포스터 이미지" 
+  image.setAttribute('onerror',"this.onerror=null; this.src='/img/sample_poster.png';");
   image.id = movieData.movieId;
   
   cardContent.appendChild(image);

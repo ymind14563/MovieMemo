@@ -7,16 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     movieTitle: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(150),
       allowNull: false,
       unique: true
     },
     posterUrl: {
-      type: DataTypes.STRING(300),
+      type: DataTypes.STRING(400),
       allowNull: true
     },
     vodUrl: {
-      type: DataTypes.STRING(300),
+      type: DataTypes.STRING(400),
       allowNull: true
     },
     reviewMovieRating: {
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     movieSynopsys: {
-      type: DataTypes.STRING(2000),
+      type: DataTypes.STRING(3000),
       allowNull: true
     },
     moviereleaseDate: {
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     movieCast: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(400),
       allowNull: true
     }
   }, {

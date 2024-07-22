@@ -3,7 +3,7 @@
 // 리뷰 등록 버튼 postReview()
 let nowPage = 0;
 
-const targerE = document.querySelector(".trailer_box");
+const targerE = document.querySelector(".info_container");
 const targerId = targerE.id;
 
 // 리뷰 모달 버튼
