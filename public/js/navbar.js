@@ -2,6 +2,28 @@ function isOnMyPage(){
   return window.location.pathname === "/mypage"
 }
 
+function navigateTo(url) {
+  window.location.href = url;
+}
+
+const adminButton = document.getElementById('adminButton');
+const signupBtn = document.getElementById('signupBtn');
+
+if (adminButton) {
+  adminButton.addEventListener('click', function() {
+    navigateTo('/adminpage');
+  });
+}
+
+if (signupBtn) {
+  signupBtn.addEventListener('click', function() {
+    navigateTo('/register');
+  });
+}
+
+
+
+
 //nav-bar search Area
 const SmethodElement = document.querySelector('.search-box-Smethod');
 
@@ -108,9 +130,7 @@ function removeSignUpButton() {
 
 // Function to add back the sign-up button
 function addSignUpButton() {
-  const existingSignUpButton = document.querySelector(
-    "nav ul button a[href='/register']"
-  );
+  const existingSignUpButton = document.getElementById('signupBtn');
   if (!existingSignUpButton) {
     const signUpButton = document.createElement("button");
     signUpButton.innerHTML = '<a href="/register">회원가입</a>';
