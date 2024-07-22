@@ -6,7 +6,7 @@
 </head>
 <body>
   <%- include('partials/components/navbar') %>
-  <h3><span class="searchType"><% if(searchType==='searchT'){%>제목<%}else{%>배우<%}%></span> <span class="searchWord"><%= searchWord%></span>에 대한 검색 결과 페이지 입니다. 총 <%= totalCount %> 개의 결과가 검색되었습니다.</h3>
+  <h3><span class="searchType"><% if(searchType==='searchT'){%>제목<%}else{%>배우<%}%></span> <span class="searchWord"><%= searchWord%></span>에 대한 검색 결과 페이지 입니다. <br><br> 총 <%= totalCount %> 개의 결과가 검색되었습니다.</h3>
   <div class="search-result-container">
     <div class="search-result-section">
     <% for(let i = 0 ; i <data.length ; i ++ ) {%>
