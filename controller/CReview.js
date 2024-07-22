@@ -160,38 +160,72 @@ exports.getMemberReviewList = async (req, res) => {
 }
 
 
-// 영화에 작성된 리뷰 목록
 exports.getMovieReviewList = async (req, res) => {
     const { movieId } = req.params;
-    let  sortBy = 'rating';
-    let  page = req.query.page;
-    let  pageSize = 6;
+    let sortBy = 'rating';
+    let page = req.query.page;
+    let pageSize = 6;
 
     const order = sort(sortBy);
-
     const { limit, offset } = paginate(page, pageSize);
 
     try {
         const { count, rows } = await Review.findAndCountAll({
             where: { movieId },
-
-            include: [{
-                model: Member,
-                attributes: [`nick`]
-            }],
-
+            include: [
+                {
+                    model: Member,
+                    attributes: ['nick']
+                },
+                {
+                    model: Like,
+                    include: [
+                        {
+                            model: Member,
+                            attributes: ['memberId', 'nick']
+                        }
+                    ]
+                },
+                {
+                    model: Report,
+                    include: [
+                        {
+                            model: Member,
+                            attributes: ['memberId', 'nick']
+                        }
+                    ]
+                }
+            ],
             order,
             offset,
             limit
         });
 
-        if (!rows.length) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+        if (!rows.length) return res.status(404).json({ message: '리뷰를 찾을 수 없습니다.' });
 
-        return res.status(200).json(paginateResponse(rows, count, page, limit, 'reviews'));
+        const reviewsWithLikeReport = rows.map(review => {
+            const plainReview = review.get({ plain: true });
+            return {
+                ...plainReview,
+                likeCount: plainReview.Likes.length,
+                reportCount: plainReview.Reports.length,
+                likedUsers: plainReview.Likes.map(like => ({
+                    memberId: like.Member.memberId,
+                    nick: like.Member.nick
+                })),
+                reportedUsers: plainReview.Reports.map(report => ({
+                    memberId: report.Member.memberId,
+                    nick: report.Member.nick
+                }))
+            };
+        });
+        console.log(reviewsWithLikeReport);
+
+        return res.status(200).json(paginateResponse(reviewsWithLikeReport, count, page, limit, 'reviews'));
         
     } catch (error) {
         console.log(`Error : ${error.message}`);
-        return res.status(500).json({ message: `리뷰 조회 중 오류가 발생했습니다.` });
+        return res.status(500).json({ message: '리뷰 조회 중 오류가 발생했습니다.' });
     }
 }
 
@@ -242,13 +276,9 @@ exports.patchReview = async (req, res) => {
 // 특정 리뷰 삭제
 exports.deleteReview = async (req, res) => {
     
-    console.log('요청을 받는데는 성공!');
     const { reviewId } = req.params;
-    console.log('reviewId>>>>>>>>',reviewId);
     const memberId = req.memberId;
-    console.log('memberId',memberId);
     const isAdmin = req.isAdmin;
-    console.log('isAdmin',isAdmin);
     try {
         const review = await Review.findOne({
             where: { reviewId }
@@ -327,9 +357,7 @@ exports.likeReview = async (req, res) => {
 // 신고
 exports.reportReview = async (req, res) => {
     const memberId = req.memberId;
-    console.log('memberId>>>>>>>>>>',memberId);
     const { reviewId } = req.body;
-    console.log('reviewId>>>>>>>>>>>',reviewId);
 
     try {
         const review = await Review.findOne({
@@ -337,7 +365,6 @@ exports.reportReview = async (req, res) => {
         })
 
         if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
-            console.log('1');
         // 신고 내역 확인
         const existReport = await Report.findOne({ where : { memberId, reviewId }});
         if (existReport) {
@@ -349,15 +376,11 @@ exports.reportReview = async (req, res) => {
 
             return res.status(200).json({ message : `신고가 취소 되었습니다.`, review });
         }
-        console.log('2');
         
         // 신고 증가
         await Report.create({ memberId, reviewId });
-        console.log('5');
         review.reportCount += 1;
-        console.log('3');
         await review.save();
-        console.log('34444444444444');
         return res.status(200).json({ message : `신고가 추가 되었습니다.`, review });
         
     } catch (error) {
@@ -365,51 +388,47 @@ exports.reportReview = async (req, res) => {
         return res.status(500).json({ message: `신고 추가 중 오류가 발생했습니다.` });
     }
 }
-// 특정 리뷰 삭제
-exports.deleteReview = async (req, res) => {
+// // 특정 리뷰 삭제
+// exports.deleteReview = async (req, res) => {
     
-    console.log('요청을 받는데는 성공!');
-    const { reviewId } = req.params;
-    console.log('reviewId>>>>>>>>',reviewId);
-    const memberId = req.memberId;
-    console.log('memberId',memberId);
-    const isAdmin = req.isAdmin;
-    console.log('isAdmin',isAdmin);
-    try {
-        const review = await Review.findOne({
-            where: { reviewId }
-        })
+//     const { reviewId } = req.params;
+//     const memberId = req.memberId;
+//     const isAdmin = req.isAdmin;
+//     try {
+//         const review = await Review.findOne({
+//             where: { reviewId }
+//         })
 
-        if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
+//         if (!review) return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.`})
 
-        // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
-        if (review.memberId !== memberId && !isAdmin) {
-            console.log(`권한이 없습니다.`);
-            return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
-        }
+//         // 리뷰 작성자가 현재 사용자와 일치하거나 ADMIN인지 확인
+//         if (review.memberId !== memberId && !isAdmin) {
+//             console.log(`권한이 없습니다.`);
+//             return res.status(403).json({ message: `유효하지 않은 접근입니다.` });
+//         }
 
-        // 삭제 할 영화 리뷰 평점
-        const deleteMovieRating = review.reviewMovieRating;
+//         // 삭제 할 영화 리뷰 평점
+//         const deleteMovieRating = review.reviewMovieRating;
 
-        await review.destroy();
+//         await review.destroy();
 
-        // 영화의 리뷰 평균 평점 업데이트
-        const movie = await Movie.findOne({ where: { movieId: review.movieId } });
-        const currentAvgRating = movie.avgRating;
-        const totalReviews = await Review.count({ where: { movieId: review.movieId } });
+//         // 영화의 리뷰 평균 평점 업데이트
+//         const movie = await Movie.findOne({ where: { movieId: review.movieId } });
+//         const currentAvgRating = movie.avgRating;
+//         const totalReviews = await Review.count({ where: { movieId: review.movieId } });
 
-        // 리뷰 삭제 후 남은 리뷰가 있다면 다시 계산, 없으면 0으로 처리
-        const newAvgRating = totalReviews > 0 ? ((currentAvgRating * (totalReviews + 1)) - deleteMovieRating) / totalReviews : 0;
+//         // 리뷰 삭제 후 남은 리뷰가 있다면 다시 계산, 없으면 0으로 처리
+//         const newAvgRating = totalReviews > 0 ? ((currentAvgRating * (totalReviews + 1)) - deleteMovieRating) / totalReviews : 0;
 
-        await Movie.update({ avgRating: newAvgRating }, { where: { movieId: review.movieId } });
+//         await Movie.update({ avgRating: newAvgRating }, { where: { movieId: review.movieId } });
 
-        return res.status(200).json({ message: `리뷰가 삭제되었습니다.`})
+//         return res.status(200).json({ message: `리뷰가 삭제되었습니다.`})
 
-    } catch (error) {
-        console.log(`Error : ${error.message}`);
-        return res.status(500).json({ message: `리뷰 삭제 중 오류가 발생했습니다.` });
-    }
-}
+//     } catch (error) {
+//         console.log(`Error : ${error.message}`);
+//         return res.status(500).json({ message: `리뷰 삭제 중 오류가 발생했습니다.` });
+//     }
+// }
 
 
 
