@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </p>
         </div>
         <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 9)}</span>
+          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
           <p class="review_btns_box">
             <button type="button" class="warningBtn" id="warningBtn${
               review.reviewId
@@ -328,7 +328,7 @@ moreBtn.addEventListener("click", async () => {
           </p>
         </div>
         <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 9)}</span>
+          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
           <p class="review_btns_box">
             <button type="button" class="warningBtn" id="warningBtn${
               review.reviewId
@@ -432,17 +432,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const releaseBox = document.querySelector(".releaseBox");
   const typeOfMethod = document.querySelector(".reviewSubBtn").textContent;
   const releaseDateStr = releaseBox.getAttribute("data-release-date");
-
+  let formattedDate; 
+  let releaseDate ;
+  console.log('releaseDateStr>>>>>>>>>>>>>>>>>',releaseDateStr);
   if (releaseDateStr) {
-    const releaseDate = new Date(
+      releaseDate = new Date(
       releaseDateStr.substring(0, 4), // Year
       releaseDateStr.substring(4, 6) - 1, // Month (0-based index)
-      releaseDateStr.substring(6, 8) // Day
-    );
-
+      releaseDateStr.substring(6, 9) // Day
+    )
     // yyyy-mm-dd
-    const formattedDate = releaseDate.toISOString().slice(0, 10);
-
-    document.getElementById("releaseDate").innerText = formattedDate;
+    formattedDate = releaseDate.toISOString().slice(0, 10);
+  }else{
+    releaseDate = '개봉일자를 알 수 없습니다. ';
+    formattedDate = releaseDate;
   }
+  console.log('formattedDate>>>>>>>>>>>>>>>>>',formattedDate);
+  document.getElementById("releaseDate").innerText = formattedDate;
+
 });
