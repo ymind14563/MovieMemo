@@ -16,11 +16,11 @@
 <body>
   <%- include('partials/components/navbar') %>
   <main id="page_container">
-
-    <div class="trailer_box" id="<%= data.movieId%>">
-      <video src="https://www.kmdb.or.kr/trailer/play/<%= data.vodUrl %>" autoplay="" muted="" loop=""></video>
-    </div>
-
+    <% if(data.vodUrl && data.vodUrl !== '') { %>
+      <div class="trailer_box" id="<%= data.movieId%>">
+        <video src="https://www.kmdb.or.kr/trailer/play/<%= data.vodUrl %>" autoplay="" muted="" loop=""></video>
+      </div>
+    <% } %>
     <div id="movie_info_container">
 
   
