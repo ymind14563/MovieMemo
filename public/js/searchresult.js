@@ -21,7 +21,7 @@ function seemore() {
       const movieHtml = `
         <div class="search-result-wrapper" id="result${movie.movieId}">
           <div class="search-result-image">
-            <img src="${movie.posterUrl}" alt="">
+            <img src="${movie.posterUrl}" alt="포스터 이미지" onerror="this.onerror=null; this.src='/img/sample_poster.png';">
           </div>
           <div class="search-result-content-box">
             <span class="search-result-content search-result-content-title">
