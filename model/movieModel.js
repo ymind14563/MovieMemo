@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     movieTitle: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
       allowNull: false,
       unique: true
     },
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     directorNm: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(200),
       allowNull: true
     },
     movie_salesAcc: {
