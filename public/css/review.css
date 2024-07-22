@@ -34,6 +34,7 @@ button {
   background-color: transparent;
 }
 
+
 /* 15 픽셀 = 0.9375rem */
 /* 18 픽셀 = 1.125rem */
 /* 20 픽셀 = 1.25rem */
@@ -222,6 +223,14 @@ button {
 .likeBox {
   display: flex;
   align-items: center;
+}
+.like-btn-img{
+    height: 10px;
+    width: 10px;
+    background-image: url('../img/icon-heart-full.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .review_user {
