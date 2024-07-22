@@ -2,6 +2,38 @@ function isOnMyPage(){
   return window.location.pathname === "/mypage"
 }
 
+//nav-bar search Area
+const SmethodElement = document.querySelector('.search-box-Smethod');
+
+SmethodElement.addEventListener('click', () => {
+  let Smethod = SmethodElement.textContent.trim();
+  if (Smethod === 'Title') {
+    SmethodElement.innerHTML=`<span style="color: red; font-size: 2rem;">A</span>ctor`;
+    document.querySelector('.search-box-word').setAttribute('placeholder','배우 이름을 입력해주세요');
+  } else {
+    SmethodElement.innerHTML=`<span style="color: red; font-size: 2rem;">T</span>itle`;
+    document.querySelector('.search-box-word').setAttribute('placeholder','영화 제목을 입력해주세요');
+  }
+});
+
+const searchBtn = document.querySelector('.search-box-btn');
+const searchInput = document.querySelector('.search-box-word');
+
+function performSearch() {
+  const searchTerm = searchInput.value;
+  const searchMethod = SmethodElement.textContent === 'Title' ? 'searchT' : 'searchA';
+  window.location.href = `/movie/${searchMethod}/${searchTerm}`;
+}
+searchInput.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch();
+  }
+});
+// 버튼 클릭 이벤트
+searchBtn.addEventListener('click', performSearch);
+
+
 
 function updateUIForLoggedInUser(isAdmin) {
   if (loginBtn) {
