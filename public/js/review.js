@@ -174,6 +174,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     let userInfo = await getUserNickname();
     let usernick = await userInfo.nickname;
 
+    let checkReport ;
+    let checkLike ;
+    
     let reviewHtml =
       usernick === review.Member.nick
         ? `<div class="review_box">
@@ -270,6 +273,9 @@ moreBtn.addEventListener("click", async () => {
     let userInfo = await getUserNickname();
     let usernick = await userInfo.nickname;
 
+    let checkReport = review.reportedUsers.some(user => user.nick === usernick);
+    let checkLike = review.likedUsers.some(user => user.nick === usernick);
+    
     let reviewHtml =
       usernick === review.Member.nick
         ? `<div class="review_box">
@@ -283,7 +289,6 @@ moreBtn.addEventListener("click", async () => {
           </div>
           <button type="button" class="editBtn" id="editBtn${review.reviewId}">
             <span class="material-symbols-rounded">
-              dangerous
               edit
             </span>
           </button>
@@ -297,9 +302,7 @@ moreBtn.addEventListener("click", async () => {
           <span class="write_date">${review.createdAt.substr(0, 9)}</span>
 
           <p class="review_btns_box">
-            <button type="button" class="deleteBtn" id="deleteBtn${
-              review.reviewId
-            }" data-review-id="123">
+            <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
               <span class="material-symbols-rounded">
                 delete
               </span>
@@ -313,9 +316,7 @@ moreBtn.addEventListener("click", async () => {
             <span> 별점 : ${review.reviewMovieRating}</span>
           </div>
           <div class="likeBox">
-            <button type="button" class="likeBtn" id="likeBtn${
-              review.reviewId
-            }">
+            <button type="button" class="likeBtn ${checkLike ? 'liked' : ''}" id="likeBtn${review.reviewId}">
               <div class="like-btn-img">
               </div>
             </button>
@@ -330,15 +331,14 @@ moreBtn.addEventListener("click", async () => {
         <div class="review_date">
           <span class="write_date">${review.createdAt.substr(0, 10)}</span>
           <p class="review_btns_box">
-            <button type="button" class="warningBtn" id="warningBtn${
-              review.reviewId
-            }">
+            <button type="button" class="warningBtn ${checkReport ? 'reported' : ''}" id="warningBtn${review.reviewId}">
               <span class="material-symbols-rounded">
                 dangerous
               </span>
             </button>
           </p>
         </div>`;
+
     const reviewSc = document.querySelector(".review_section");
     reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
   });
@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const releaseDateStr = releaseBox.getAttribute("data-release-date");
   let formattedDate; 
   let releaseDate ;
-  console.log('releaseDateStr>>>>>>>>>>>>>>>>>',releaseDateStr);
+  
   if (releaseDateStr) {
       releaseDate = new Date(
       releaseDateStr.substring(0, 4), // Year
@@ -447,7 +447,5 @@ document.addEventListener("DOMContentLoaded", () => {
     releaseDate = '개봉일자를 알 수 없습니다. ';
     formattedDate = releaseDate;
   }
-  console.log('formattedDate>>>>>>>>>>>>>>>>>',formattedDate);
   document.getElementById("releaseDate").innerText = formattedDate;
-
 });
