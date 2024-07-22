@@ -299,10 +299,10 @@ form select {
     text-decoration: none;
     color: #333;
     text-align: center;
-}
-.page-number:hover {
     background-color: #F0F0F0;
+    
 }
+
 .page-number.active {
     background-color: #333;
     color: #fff;

@@ -72,7 +72,9 @@ function updateUIForLoggedInUser(isAdmin) {
     adminButton.classList.remove("hidden");
   } else {
     adminButton.classList.add("hidden");
+    updateNavBarForLoggedInUser()
   }
+  
 }
 
 
@@ -96,7 +98,11 @@ function updateNavBarForLoggedInUser() {
   if (!existingMyPageButton) {
     const myPageButton = document.createElement("button");
     myPageButton.id = "myPageButton";
-    myPageButton.innerHTML = '<a href="/mypage">마이페이지</a>';
+    myPageButton.textContent="마이페이지"
+    myPageButton.addEventListener('click', function() {
+      navigateTo('/mypage');
+    });
+
 
     const navList = document.querySelector("nav ul");
 
@@ -120,11 +126,9 @@ function logoutUser() {
 
 // Function to remove the sign-up button
 function removeSignUpButton() {
-  const signUpButton = document.querySelector(
-    "nav ul button a[href='/register']"
-  );
+  const signUpButton = document.getElementById('signupBtn');
   if (signUpButton) {
-    signUpButton.parentElement.remove(); // Remove the button element
+    signUpButton.remove(); 
   }
 }
 
@@ -133,10 +137,17 @@ function addSignUpButton() {
   const existingSignUpButton = document.getElementById('signupBtn');
   if (!existingSignUpButton) {
     const signUpButton = document.createElement("button");
-    signUpButton.innerHTML = '<a href="/register">회원가입</a>';
+    signUpButton.id = 'signupBtn'; 
+    signUpButton.textContent = "회원가입";
+    signUpButton.addEventListener('click', function() {
+      navigateTo('/register');
+    });
+
+    const navList = document.querySelector("nav ul");
     navList.appendChild(signUpButton);
   }
 }
+
 
 // Function to remove "마이페이지" button
 function removeMyPageButton() {
