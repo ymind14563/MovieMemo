@@ -134,7 +134,7 @@
 
 
 /* 모바일 화면에서 적용될 스타일 */
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
   .wrapper {
     width: 90%; /* 화면 너비의 90%로 설정 */
     padding: 20px; /* 내부 패딩 축소 */

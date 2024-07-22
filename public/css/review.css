@@ -481,7 +481,7 @@ button {
 
 
 
-@media (max-width: 500px) {
+@media (max-width: 800px) {
   #page_container {
     width: 100%;
     padding: 0 3%;
