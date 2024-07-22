@@ -25,14 +25,12 @@
             <option value="report" selected>신고순</option>
         </select>
 
-
         <table>
             <thead>
                 <tr>
                     <th>닉네임</th>
                     <th>영화 제목</th>
                     <th>리뷰 내용</th>
-                    <th></th>
                     <th>좋아요 수</th>
                     <th>신고수</th>
                     <th>작성일</th>
@@ -57,8 +55,7 @@
                         <tr>
                             <td><%= review.Member.nick %></td>
                             <td><%= review.Movie.movieTitle %></td>
-                            <td class="review-content"><%= review.content %></td>
-                            <td class="read-more">더보기</td>
+                            <td><a href="#" class="read-more" data-review-content="<%= review.content %>">자세히 보기</a></td>
                             <td><%= review.likeCount %></td>
                             <td><%= review.reportCount %></td>
                             <td><%= formatDate(review.createdAt) %></td>
@@ -95,6 +92,12 @@
             </div>
         </div>
 
+        <div id="review-modal" class="modal">
+            <div class="modal-content">
+                <p id="review-modal-content"></p>
+                <button id="close-review-modal" class="review-modal-btn">닫기</button>
+            </div>
+        </div>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

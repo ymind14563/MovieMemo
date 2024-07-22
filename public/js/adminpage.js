@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const patchModal = document.getElementById('patch-modal');
     const confirmPatchBtn = document.getElementById('confirm-patch');
     const cancelPatchBtn = document.getElementById('cancel-patch');
+    const reviewModal = document.getElementById('review-modal');
+    const closeReviewModal = document.getElementById('close-review-modal');
+    const reviewModalContent = document.getElementById('review-modal-content');
     let currentReviewId = null;
     let currentMemberId = null;
 
@@ -17,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (e.target === patchModal) {
             patchModal.style.display = 'none';
+        }
+        if (e.target === reviewModal) {
+            reviewModal.style.display = 'none';
         }
     });
 
@@ -30,16 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
         patchModal.style.display = 'block';
     }
 
+    function onReadMoreButtonClick(button) {
+        const reviewContent = button.getAttribute('data-review-content');
+        reviewModalContent.textContent = reviewContent;
+        reviewModal.style.display = 'block';
+    }
+
     reviewList.addEventListener('click', (e) => {
         if (e.target.classList.contains('read-more')) {
-            const reviewContent = e.target.previousElementSibling;
-            if (e.target.textContent === '더보기') {
-                reviewContent.classList.add('full');
-                e.target.textContent = '간략히';
-            } else {
-                reviewContent.classList.remove('full');
-                e.target.textContent = '더보기';
-            }
+            onReadMoreButtonClick(e.target);
         }
         if (e.target.classList.contains('del-btn')) {
             onDeleteButtonClick(e.target);
@@ -69,6 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelPatchBtn.addEventListener('click', () => {
         patchModal.style.display = 'none';
+    });
+
+    closeReviewModal.addEventListener('click', () => {
+        reviewModal.style.display = 'none';
     });
 
     sortOrder.addEventListener('click', (e) => {
@@ -154,8 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewRow.innerHTML = `
                 <td>${review.Member.nick}</td>
                 <td>${review.Movie.movieTitle}</td>
-                <td class="review-content">${review.content}</td>
-                <td class="read-more">더보기</td>
+                <td><a href="#" class="read-more" data-review-content="${review.content}">자세히 보기</a></td>
                 <td>${review.likeCount}</td>
                 <td>${review.reportCount}</td>
                 <td>${formatDate(review.createdAt)}</td>
@@ -210,18 +218,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     getReviews(sortOrder.value);
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    if (window.location.pathname.includes('/adminpage')) {
-      const adminButton = document.getElementById('adminButton');
-      const myPageButton = document.getElementById('myPageButton');
-      
-      if (adminButton) {
-        adminButton.style.display = 'none';
-      }
-      
-      if (myPageButton) {
-        myPageButton.style.display = 'none';
-      }
-    }
-  });

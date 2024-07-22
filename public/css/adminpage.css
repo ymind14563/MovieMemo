@@ -64,7 +64,7 @@ button a {
     position: relative;
     min-height: 300px;
     flex-grow: 1; /* 페이지 아래까지 공간을 차지하도록 설정 */
-    overflow: auto;
+    /* overflow: auto; */
 }
 .wrapper th, tr{
     padding: 0.3em;
@@ -72,7 +72,7 @@ button a {
     height: 3em;
 }
 .wrapper table {
-    width: 100%;
+    width: 100%; /* 너비를 100%로 설정 */
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 1em;
@@ -340,6 +340,62 @@ form select {
     border-radius: 1em;
 
 }
+
+#review-modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0; 
+    top: 0; 
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    padding-top: 300px; 
+}
+
+#review-modal .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#review-modal .modal-content p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    width: 100%;
+    text-align: left;
+}
+
+.review-modal-btn {
+    margin: 10px;
+    cursor: pointer;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #B20710;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    align-self: center;
+}
+
+
+#review-modal .close-btn:hover {
+    background-color: #8C0610;
+}
+
 .patch-modal-content p {
     margin-top: 20px;
     margin-bottom: 20px;
