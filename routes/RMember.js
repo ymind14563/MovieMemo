@@ -33,6 +33,9 @@ const fieldValidations = (field) => {
       return check('name').notEmpty().withMessage("이름을 입력해주세요.");
     case 'nick':
       return check('nick').notEmpty().withMessage("닉네임을 입력해주세요.");
+    case 'email':
+      return check('email')
+        .isEmail().withMessage("올바른 이메일 양식을 지켜주세요.");
     case 'password':
       return [
         check('password')
@@ -46,6 +49,7 @@ const fieldValidations = (field) => {
       return [];
   }
 };
+
 
 // Route for field-specific validation
 router.post('/validate/:field', (req, res) => {

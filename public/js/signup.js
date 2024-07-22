@@ -70,7 +70,7 @@ form.addEventListener('submit', async function(e) {
       const errorArrays = error.response.data.errors;
       showErrors(errorArrays);
     } else {
-      errorMessageElement.innerHTML = '<p>에러가 발생했습니다</p>';
+      errorMessageElement.innerHTML = '<p>나이와 성별을 선택해 주세요.</p>';
       errorMessageElement.style.display = 'block';
     }
   }

@@ -13,7 +13,6 @@ exports.getAdminPage = async (req, res) => {
 
     try {
         let data = [];
-        let pagination = {};
         let searchMessage = '';
 
         // 닉네임 검색이 있는 경우 멤버 목록 조회 및 정렬
@@ -39,7 +38,6 @@ exports.getAdminPage = async (req, res) => {
                 const sortedMembers = [...exactMemberMatches, ...partialMemberMatches];
 
                 data = paginateResponse(sortedMembers, memberCount, page, pageSize, 'members');
-                
             }
         } else {
             // 리뷰 목록 조회 (기본값, 신고순으로 정렬)
@@ -60,30 +58,46 @@ exports.getAdminPage = async (req, res) => {
             });
 
             data = paginateResponse(reviewRows, reviewCount, page, pageSize, 'reviews');
-            
-            // console.log("🚀 ~ exports.getAdminPage= ~ reviewResult:", reviewResult)
-            // console.log("🚀 ~ exports.getAdminPage= ~ data:", data)
-            // console.log("🚀 ~ exports.getAdminPage= ~ pagination:", pagination)
 
             if (reviewRows.length === 0) {
                 return res.status(404).json({ message: `리뷰를 찾을 수 없습니다.` });
             }
         }
 
+        const pagination = {
+            currentPage: page,
+            totalPages: data.totalPages,
+            totalReviews: data.totalReviews,
+            pageSize: pageSize
+        };
 
-        // return res.status(200).json({
-        //     data,
-        //     pagination: data,
-        //     searchMessage,
-        //     sortBy
-        // });
-        
-        return res.status(200).render('adminpage', {
-          data,
-          pagination: data,
-          searchMessage,
-          sortBy
-        });
+        if (req.xhr || req.headers.accept.includes('application/json')) {
+            console.log('JSON response:', {
+                data,
+                pagination,
+                searchMessage,
+                sortBy
+            });
+            return res.status(200).json({
+                data,
+                pagination,
+                searchMessage,
+                sortBy
+            });
+        } else {
+            console.log('HTML response:', {
+                data,
+                pagination,
+                searchMessage,
+                sortBy
+            });
+            return res.status(200).render('adminpage', {
+                data,
+                pagination,
+                searchMessage,
+                sortBy
+            });
+        }
 
     } catch (error) {
         console.log(`Error: ${error.message}`);
