@@ -64,7 +64,7 @@ const errorHandler = (statusCode, res, msg) => {
   switch (statusCode) {
     case 400:
       console.error('잘못된 요청:', msg);
-      res.status(statusCode).json({ message: msg || '잘못된 요청입니다.' });
+      res.status(statusCode).render('404',{ message: msg || '잘못된 요청입니다.' });
       break;
     case 404:
       console.error('오류 발생:', msg);
@@ -72,11 +72,11 @@ const errorHandler = (statusCode, res, msg) => {
       break;
     case 500:
       console.error('서버 오류 발생:', msg);
-      res.status(statusCode).json({ message: msg || '서버 오류가 발생했습니다.' });
+      res.status(statusCode).render('404',{ message: msg || '서버 오류가 발생했습니다.' });
       break;
     default:
       console.error('알 수 없는 오류 발생:', msg);
-      res.status(500).json({ message: '알 수 없는 오류가 발생했습니다.' });
+      res.status(500).render('404',{ message: '알 수 없는 오류가 발생했습니다.' });
       break;
   }
 };

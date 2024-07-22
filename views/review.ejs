@@ -18,14 +18,14 @@
   <%- include('partials/components/navbar') %>
   <main id="page_container">
     <% if(data.vodUrl && data.vodUrl !== '') { %>
-      <div class="trailer_box" id="<%= data.movieId%>">
+      <div class="trailer_box">
         <video src="https://www.kmdb.or.kr/trailer/play/<%= data.vodUrl %>" autoplay="" muted="" loop=""></video>
       </div>
     <% } %>
     <div id="movie_info_container">
 
   
-      <section class="info_container">
+      <section class="info_container" id="<%= data.movieId%>">
         <article class="sub_info_box">
           <div class="detail_info_box">
             <div class="movie_title">
