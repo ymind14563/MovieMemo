@@ -1,14 +1,16 @@
 const express = require("express");
-const path = require(`path`);
-const dotenv = require(`dotenv`);
+const path = require('path');
+const dotenv = require('dotenv');
 const { routerMiddleware } = require("./middleware/routerMiddleware");
 const db = require('./model/index');
 const jwt = require("jsonwebtoken");
 
-// 기본 .env 파일을 로드
+const envFile = process.env.NODE_ENV === 'server' ? '../.env.server' : '.env';
+
 dotenv.config({
-  path: path.resolve(__dirname, `.env`),
+  path: path.resolve(__dirname, envFile),
 });
+
 const aaa = process.env.SESSION_SECRET;
 
 const session = require("express-session");

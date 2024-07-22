@@ -1,8 +1,10 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
+const envFile = process.env.NODE_ENV === 'server' ? '../.env.server' : '../.env';
+
 dotenv.config({
-  path: path.resolve(__dirname, `../.env`),
+  path: path.resolve(__dirname, envFile),
 });
 
 const config = {
