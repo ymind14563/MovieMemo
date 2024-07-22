@@ -227,7 +227,7 @@ exports.patchReview = async (req, res) => {
         const movie = await Movie.findOne({ where: { movieId: review.movieId } });
         const currentAvgRating = movie.avgRating;
         const totalReviews = await Review.count({ where: { movieId: review.movieId } });
-        const newAvgRating = ((currentAvgRating * totalReviews) - previousMovieRating + rating) / totalReviews;
+        const newAvgRating = parseFloat(parseFloat(parseFloat(currentAvgRating) * parseFloat(totalReviews)) - parseFloat(previousMovieRating) + parseFloat(rating)) / parseFloat(totalReviews);
 
         await Movie.update({ avgRating: newAvgRating }, { where: { movieId: review.movieId } });
 
