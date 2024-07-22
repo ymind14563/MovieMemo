@@ -1,11 +1,15 @@
 const Sequelize = require("sequelize");
-const env = process.env.NODE_ENV || "development";
+const env = "server" || process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if (env === 'server') {
+  sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT
+  });
 } else {
   sequelize = new Sequelize(
     config.database,
@@ -24,9 +28,7 @@ const Review = require("./reviewModel")(sequelize, Sequelize);
 const Like = require("./likeModel")(sequelize, Sequelize);
 const Report = require("./reportModel")(sequelize, Sequelize);
 
-// db 객체에 모델 추가
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+
 
 db.Movie = Movie;
 db.Genre = Genre;
@@ -54,5 +56,9 @@ Object.keys(db).forEach(modelName => {
 });
 
 db.syncModels = syncModels;
+
+// db 객체에 모델 추가
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 module.exports = db;

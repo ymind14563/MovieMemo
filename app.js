@@ -67,7 +67,7 @@ app.get("*", (req, res) => {
 sequelize
   // force : true ; 서버 실행할 때마다 테이블 재생성
   // force : false ; 서버 실행 시 테이블이 없으면 생성
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     app.listen(port, () => {
       console.log(`${port}에 연결됨`);
