@@ -45,12 +45,13 @@ body {
     width: 90%;
     padding: 32px 16px;
     margin: 50px auto;
-    background-color: #fff;
+    background-color: rgb(25,26,27);
     border-radius: 10px;
     text-align: center;
     position: relative;
     min-height: 300px;
     flex-grow: 1; /* 페이지 아래까지 공간을 차지하도록 설정 */
+    color:white;
 }
 
 h1 {
@@ -61,7 +62,7 @@ h1 {
 
 h2 {
     font-size: 30px;
-    color: #07001f;
+    color: white;
     margin-bottom: 5%;
     text-align: center;
     margin-left: 20px;
@@ -280,8 +281,12 @@ input:focus {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
+.modal-content{
+    background-color: rgb(25, 26, 27);
+}
+
 .del-modal-content {
-    background-color: #fefefe;
+   
     text-align: center;
     margin: 20% auto;
     padding: 20px;
@@ -298,7 +303,14 @@ input:focus {
     margin-bottom: 20px;
 }
 
+#patch-content{
+    background-color: rgb(40, 43, 44);
+    color:#fefefe;
+}
+
+
 .modal-content textarea {
+    
     margin-bottom: 20px;
     white-space: pre-wrap; /* 줄바꿈과 연속된 공백을 유지 */
 }
