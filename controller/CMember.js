@@ -258,7 +258,6 @@ exports.getNicks = async (req, res) => {
     if (!member) {
       return res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
     }
-    console.log(member);
     // 사용자 ID와 닉네임 반환
     res.json({
       userId: member.memberId,
