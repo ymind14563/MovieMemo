@@ -12,7 +12,7 @@
     <% for(let i = 0 ; i <data.length ; i ++ ) {%>
       <div class="search-result-wrapper" id="result<%= data[i].dataValues.movieId %>">
         <div class="search-result-image">
-          <img src="<%= data[i].dataValues.posterUrl%>" alt="">
+          <img src="<%= data[i].dataValues.posterUrl%>" alt="포스터 이미지" onerror="this.onerror=null; this.src='/img/sample_poster.png';">
         </div>
         <div class="search-result-content-box">
           <span class="search-result-content search-result-content-title">
