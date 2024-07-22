@@ -380,3 +380,46 @@ form select {
     top: 73%;
     right: 13%;
 }
+
+/* 미디어 쿼리 추가 */
+@media (max-width: 800px) {
+    .wrapper {
+        width: 90%;
+        padding: 10px;
+        margin: 0 auto;
+        overflow-x: scroll; /* 가로 스크롤 추가 */
+        position: relative;
+    }
+
+    .admin-search-box {
+        flex-direction: column;
+    }
+
+    .admin-search-box .search-box-word {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .search-button, .del-btn, .patch-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #sortBy {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    .modal-content {
+        width: 80%;
+    }
+
+    .wrapper table {
+        width: 100%;
+        margin: 4rem 0 0 0;
+    }
+    
+
+
+}
