@@ -353,7 +353,7 @@ input:focus {
 
 
 /* 모바일 미디어 쿼리 */
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
   .logo a {
       font-size: 20px; /* 로고 폰트 크기 축소 */
   }

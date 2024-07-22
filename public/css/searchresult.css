@@ -170,7 +170,7 @@ form input {
 
 
 /* 모바일 화면에서 적용될 스타일 */
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
 
     h3{
         margin-left: 0;
@@ -256,7 +256,7 @@ form input {
   }
 
   .m-search-box-btn{
-    background-color: #B20710;
+    background-color: transparent
   }
 
 

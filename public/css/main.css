@@ -256,7 +256,7 @@ form input {
 }
 
 /* 모바일 화면에서 적용될 스타일 */
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
   .navbar {
     padding: 10px 15px; /* 네비게이션 바의 패딩 축소 */
     margin-bottom: 50px; /* 네비게이션 바와 슬라이더 사이 여백 축소 */
