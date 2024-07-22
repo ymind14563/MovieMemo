@@ -42,7 +42,7 @@ function updateUIForLoggedInUser(isAdmin) {
     loginBtn.addEventListener("click", logoutUser); // Add logout event listener
   }
   removeSignUpButton(); // Remove the sign-up button
-  updateNavBarForLoggedInUser(); // Add the '마이페이지' button
+
 
   // 관리자 버튼을 보이거나 숨기는 로직 추가
   const adminButton = document.getElementById("adminButton");
