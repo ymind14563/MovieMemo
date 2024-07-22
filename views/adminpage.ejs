@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/adminpage.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>MovieMemo</title>
@@ -92,12 +93,16 @@
             </div>
         </div>
 
+
+        <%- include('partials/tail.ejs') %>
+
         <div id="review-modal" class="modal">
             <div class="modal-content">
                 <p id="review-modal-content"></p>
                 <button id="close-review-modal" class="review-modal-btn">닫기</button>
             </div>
         </div>
+
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
