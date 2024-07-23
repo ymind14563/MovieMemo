@@ -146,10 +146,15 @@ form input {
 }
 .search-result-content-box{
     height: 150px;
+    width: calc(100% - 100px);
     display: flex;
+    margin: 10px;
     flex-direction: column;
     align-items: left;
     justify-content: center;
+}
+.search-result-content{
+  width: 100%;
 }
 
 .show-next-page-btn {
