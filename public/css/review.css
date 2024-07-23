@@ -433,6 +433,9 @@ button {
 
 .review_content p {
   color: #000;
+  word-wrap: break-word;
+  height: 100%;
+  overflow: hidden;
 }
 
 .likeBtn,
