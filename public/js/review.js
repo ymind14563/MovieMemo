@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <p>${review.content}</p>
         </div>
         <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 9)}</span>
+          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
 
           <p class="review_btns_box">
             <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
@@ -305,7 +305,7 @@ moreBtn.addEventListener("click", async () => {
           <p>${review.content}</p>
         </div>
         <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 9)}</span>
+          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
 
           <p class="review_btns_box">
             <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
