@@ -168,28 +168,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     data = res.data;
   });
 
-
   if (data.totalReviews - 6 * nowPage < 7) {
     document.querySelector(".load_more").style.display = "none";
   }
-  
-  
+
   data.reviews.forEach(async (review) => {
     let userInfo = await getUserNickname();
     let usernick = await userInfo.nickname;
 
-    let checkReport = review.reportedUsers.some(user => user.nick === usernick);
-    let checkLike = review.likedUsers.some(user => user.nick === usernick);
-    
+    let checkReport = review.reportedUsers.some(
+      (user) => user.nick === usernick
+    );
+    let checkLike = review.likedUsers.some((user) => user.nick === usernick);
+
     let reportElement = `<div class='review-icon review-icon-report-empty' id='rpBtn${review.reviewId}'></div>`;
     let likeElement = `<div class='review-icon review-icon-like-empty' id='lkBtn${review.reviewId}'></div>`;
-    
-    if(checkLike){ likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>` };
-    if(checkReport){ reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>` };
 
-    let reviewHtml; usernick === review.Member.nick
-      ? reviewHtml = 
-        `<div class="review_box">
+    if (checkLike) {
+      likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>`;
+    }
+    if (checkReport) {
+      reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>`;
+    }
+
+    let reviewHtml;
+    usernick === review.Member.nick
+      ? (reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
@@ -212,25 +216,30 @@ document.addEventListener("DOMContentLoaded", async () => {
           <span class="write_date">${review.createdAt.substr(0, 10)}</span>
 
           <p class="review_btns_box">
-            <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
+            <button type="button" class="deleteBtn" id="deleteBtn${
+              review.reviewId
+            }" data-review-id="123">
               <span class="material-symbols-rounded">
                 delete
               </span>
             </button>
             </p>
-        </div>`
-      :
-      reviewHtml =  `<div class="review_box">
+        </div>`)
+      : (reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
             <span> 별점 : ${review.reviewMovieRating}</span>
           </div>
           <div class="likeBox">
-            <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
+            <button type="button" class="likeBtn" id="likeBtn${
+              review.reviewId
+            }">
               ${likeElement}
             </button>
-            <p class="likeCount" id='lkCount${review.reviewId}'>${review.likeCount}</p>
+            <p class="likeCount" id='lkCount${review.reviewId}'>${
+          review.likeCount
+        }</p>
           </div>
         </div>
         <div class="review_content">
@@ -241,11 +250,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="review_date">
           <span class="write_date">${review.createdAt.substr(0, 10)}</span>
           <p class="review_btns_box">
-            <button type="button" class="warningBtn" id="warningBtn${review.reviewId}">
+            <button type="button" class="warningBtn" id="warningBtn${
+              review.reviewId
+            }">
               ${reportElement}
             </button>
           </p>
-        </div>`;
+        </div>`);
     const reviewSc = document.querySelector(".review_section");
     reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
   });
@@ -274,18 +285,24 @@ moreBtn.addEventListener("click", async () => {
     let userInfo = await getUserNickname();
     let usernick = await userInfo.nickname;
 
-    let checkReport = review.reportedUsers.some(user => user.nick === usernick);
-    let checkLike = review.likedUsers.some(user => user.nick === usernick);
-    
+    let checkReport = review.reportedUsers.some(
+      (user) => user.nick === usernick
+    );
+    let checkLike = review.likedUsers.some((user) => user.nick === usernick);
+
     let reportElement = `<div class='review-icon review-icon-report-empty' id='rpBtn${review.reviewId}'></div>`;
     let likeElement = `<div class='review-icon review-icon-like-empty' id='lkBtn${review.reviewId}'></div>`;
-    
-    if(checkLike){ likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>` };
-    if(checkReport){ reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>` };
 
-    let reviewHtml; usernick === review.Member.nick
-      ? reviewHtml = 
-        `<div class="review_box">
+    if (checkLike) {
+      likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>`;
+    }
+    if (checkReport) {
+      reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>`;
+    }
+
+    let reviewHtml;
+    usernick === review.Member.nick
+      ? (reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
@@ -308,22 +325,25 @@ moreBtn.addEventListener("click", async () => {
           <span class="write_date">${review.createdAt.substr(0, 10)}</span>
 
           <p class="review_btns_box">
-            <button type="button" class="deleteBtn" id="deleteBtn${review.reviewId}" data-review-id="123">
+            <button type="button" class="deleteBtn" id="deleteBtn${
+              review.reviewId
+            }" data-review-id="123">
               <span class="material-symbols-rounded">
                 delete
               </span>
             </button>
             </p>
-        </div>`
-      :
-      reviewHtml =  `<div class="review_box">
+        </div>`)
+      : (reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
             <span> 별점 : ${review.reviewMovieRating}</span>
           </div>
           <div class="likeBox">
-            <button type="button" class="likeBtn" id="likeBtn${review.reviewId}">
+            <button type="button" class="likeBtn" id="likeBtn${
+              review.reviewId
+            }">
               ${likeElement}
             </button>
             <p class="likeCount">${review.likeCount}</p>
@@ -337,13 +357,15 @@ moreBtn.addEventListener("click", async () => {
         <div class="review_date">
           <span class="write_date">${review.createdAt.substr(0, 10)}</span>
           <p class="review_btns_box">
-            <button type="button" class="warningBtn" id="warningBtn${review.reviewId}">
+            <button type="button" class="warningBtn" id="warningBtn${
+              review.reviewId
+            }">
               ${reportElement}
             </button>
           </p>
-        </div>`;
+        </div>`);
 
-        const reviewSc = document.querySelector(".review_section");
+    const reviewSc = document.querySelector(".review_section");
     reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
   });
 });
@@ -369,7 +391,9 @@ document
 
     // 신고 버튼 클릭 처리
     if (e.target.closest(".warningBtn")) {
-      const reviewId = e.target.closest(".warningBtn").id.replace("warningBtn", "");
+      const reviewId = e.target
+        .closest(".warningBtn")
+        .id.replace("warningBtn", "");
 
       await axios({
         method: "post",
@@ -378,12 +402,24 @@ document
           reviewId: reviewId,
         },
       }).then((res) => {
-        if( document.querySelector(`#rpBtn${reviewId}`).classList.contains('review-icon-report-full') ){
-          document.querySelector(`#rpBtn${reviewId}`).classList.add('review-icon-report-empty')
-          document.querySelector(`#rpBtn${reviewId}`).classList.remove('review-icon-report-full')
-        }else{
-          document.querySelector(`#rpBtn${reviewId}`).classList.add('review-icon-report-full')
-          document.querySelector(`#rpBtn${reviewId}`).classList.remove('review-icon-report-empty')
+        if (
+          document
+            .querySelector(`#rpBtn${reviewId}`)
+            .classList.contains("review-icon-report-full")
+        ) {
+          document
+            .querySelector(`#rpBtn${reviewId}`)
+            .classList.add("review-icon-report-empty");
+          document
+            .querySelector(`#rpBtn${reviewId}`)
+            .classList.remove("review-icon-report-full");
+        } else {
+          document
+            .querySelector(`#rpBtn${reviewId}`)
+            .classList.add("review-icon-report-full");
+          document
+            .querySelector(`#rpBtn${reviewId}`)
+            .classList.remove("review-icon-report-empty");
         }
       });
     }
@@ -398,14 +434,32 @@ document
           reviewId: reviewId,
         },
       }).then((res) => {
-        if( document.querySelector(`#lkBtn${reviewId}`).classList.contains('review-icon-like-full') ){
-          document.querySelector(`#lkBtn${reviewId}`).classList.add('review-icon-like-empty');
-          document.querySelector(`#lkBtn${reviewId}`).classList.remove('review-icon-like-full');
-          document.querySelector(`#lkCount${reviewId}`).textContent = parseInt(document.querySelector(`#lkCount${reviewId}`).textContent)-1;
-        }else{
-          document.querySelector(`#lkBtn${reviewId}`).classList.add('review-icon-like-full');
-          document.querySelector(`#lkBtn${reviewId}`).classList.remove('review-icon-like-empty');
-          document.querySelector(`#lkCount${reviewId}`).textContent = parseInt(document.querySelector(`#lkCount${reviewId}`).textContent)+1;
+        if (
+          document
+            .querySelector(`#lkBtn${reviewId}`)
+            .classList.contains("review-icon-like-full")
+        ) {
+          document
+            .querySelector(`#lkBtn${reviewId}`)
+            .classList.add("review-icon-like-empty");
+          document
+            .querySelector(`#lkBtn${reviewId}`)
+            .classList.remove("review-icon-like-full");
+          document.querySelector(`#lkCount${reviewId}`).textContent =
+            parseInt(
+              document.querySelector(`#lkCount${reviewId}`).textContent
+            ) - 1;
+        } else {
+          document
+            .querySelector(`#lkBtn${reviewId}`)
+            .classList.add("review-icon-like-full");
+          document
+            .querySelector(`#lkBtn${reviewId}`)
+            .classList.remove("review-icon-like-empty");
+          document.querySelector(`#lkCount${reviewId}`).textContent =
+            parseInt(
+              document.querySelector(`#lkCount${reviewId}`).textContent
+            ) + 1;
         }
       });
     }
@@ -443,20 +497,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const releaseBox = document.querySelector(".releaseBox");
   const typeOfMethod = document.querySelector(".reviewSubBtn").textContent;
   const releaseDateStr = releaseBox.getAttribute("data-release-date");
-  let formattedDate; 
-  let releaseDate ;
-  
+  let formattedDate;
+  let releaseDate;
+
   if (releaseDateStr) {
-      releaseDate = new Date(
+    releaseDate = new Date(
       releaseDateStr.substring(0, 4), // Year
       releaseDateStr.substring(4, 6) - 1, // Month (0-based index)
       releaseDateStr.substring(6, 9) // Day
-    )
+    );
     // yyyy-mm-dd
     formattedDate = releaseDate.toISOString().slice(0, 10);
-  }else{
-    releaseDate = '개봉일자를 알 수 없습니다. ';
+  } else {
+    releaseDate = "개봉일자를 알 수 없습니다. ";
     formattedDate = releaseDate;
   }
   document.getElementById("releaseDate").innerText = formattedDate;
+});
+
+//트레일러 컨트롤러 등장
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("trailer");
+
+  let controlsTimeout;
+
+  const showControls = () => {
+    video.controls = true;
+  };
+
+  video.addEventListener("mousemove", showControls);
+
+  video.addEventListener("play", showControls);
+
+  video.addEventListener("pause", showControls);
 });
