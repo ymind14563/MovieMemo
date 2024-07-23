@@ -283,15 +283,22 @@ input:focus {
 
 .modal-content{
     background-color: rgb(25, 26, 27);
+    position: sticky;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
 }
 
 .del-modal-content {
-   
     text-align: center;
-    margin: 20% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 30%;
+    position: sticky;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgb(25, 26, 27);
     color: #fff;
 }
@@ -381,7 +388,7 @@ input:focus {
   }
 
   .nick-field select{
-    width: 100%;
+    width: 80%;
   }
 
   .nick-field p{
@@ -407,10 +414,13 @@ input:focus {
     gap: 5px; /* 버튼 사이 간격 축소 */
 }
 
-
-  #sortBy {
-    
-  }
+.modal-content{
+    position: sticky;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
 
   h2{
     margin-left: 0;
