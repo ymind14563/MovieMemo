@@ -107,8 +107,8 @@ function shuffleArraysInSync(arr1, arr2) {
 
 // Function to create sections with shuffled genres and section classes
 async function createSection() {
-  const genres = ['액션', '코메디', '멜로','드라마','판타지','SF','어드벤처'];
-  const sectionClasses = ['action-section', 'comedy-section', 'romance-section','drama-section','fantasy-section', 'sf-section','adventure-section'];
+  const genres = ['액션', '코메디','드라마','판타지','SF','어드벤처'];
+  const sectionClasses = ['action-section', 'comedy-section', 'drama-section','fantasy-section', 'sf-section','adventure-section'];
 
   shuffleArraysInSync(genres, sectionClasses);
 
