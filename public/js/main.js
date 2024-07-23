@@ -31,6 +31,7 @@ async function initializeSwiper() {
       img.src = review.Movie.posterUrl;
       img.alt = review.title;
       img.classList.add('firstSlide-image');
+      img.id = review.movieId;
 
       const textContainer = document.createElement('div');
       textContainer.classList.add('firstSlide-text-container');
@@ -44,6 +45,19 @@ async function initializeSwiper() {
       slide.appendChild(textContainer);
 
       swiperWrapper.appendChild(slide);
+
+      img.addEventListener("click", (e) => {
+        let targetE =e.target;
+        const movieId = e.target.id;
+        if (movieId) {
+          sendMovieIdToBackend(movieId); // Send movie ID to backend
+          window.location.href = `/movie/movieInfo/${(movieId)}`;
+        } else {
+          console.error("No movieId for this movie", movieData);
+        }
+      });
+    
+
   });
 
   const swiper = new Swiper('.first-swiper', {
