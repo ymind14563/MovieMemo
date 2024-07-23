@@ -293,6 +293,7 @@ button {
 
 #reviewPost {
   margin-top: 1.25rem;
+  width: 100%;
 }
 
 .buttonClose {
@@ -498,7 +499,10 @@ button {
 }
 .rating_btn label {
   color: #000;
-  margin-right: 5px;
+  margin-left: 1rem;
+}
+.rating_btn label :nth-child(0) {
+  margin-left: 0rem;
 }
 
 .rating_btn span {
