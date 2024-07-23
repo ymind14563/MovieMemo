@@ -315,6 +315,7 @@ input:focus {
 #patch-content{
     background-color: rgb(40, 43, 44);
     color:#fefefe;
+    /* white-space: pre-wrap; */
 }
 
 
