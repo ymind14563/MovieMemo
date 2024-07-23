@@ -62,7 +62,7 @@
                             <td><%= formatDate(review.createdAt) %></td>
                             <td><%= formatDate(review.updatedAt) %></td>
                             <td><button class="del-btn" type="submit" data-review-id="<%= review.reviewId %>">삭제</button></td>
-                            <td><button class="patch-btn" type="submit" data-member-id="<%= review.memberId %>">회원탈퇴</button></td>
+                            <td><button class="patch-btn" type="submit" data-member-id="<%= review.memberId %>">추방</button></td>
                         </tr>
                     <% }); %>
                 <% } else { %>
