@@ -11,7 +11,33 @@ const createReview = document.querySelector(".createReviewBtn");
 const buttonClose = document.querySelector(".buttonClose");
 const rvmodal = document.querySelector(".movie_review_modal_bg");
 
-createReview.addEventListener("click", () => {
+
+async function getUserNickname() {
+  try {
+    let result = {};
+    await axios
+      .get("/member/nickname", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        result = res.data;
+      });
+
+    return result;
+  } catch (error) {
+    // console.error("사용자 닉네임을 가져오는 중 오류 발생:", error);
+    return '';
+  }
+}
+
+createReview.addEventListener("click", async() => {
+  let checkUser = await getUserNickname();
+  if(!checkUser){    
+    return alert('로그인이 필요합니다.');
+  }
+  
   rvmodal.classList.remove("hidden");
   rvmodal.classList.add("visible");
 });
@@ -57,25 +83,6 @@ function updateLikeCount(likeCount) {
 
 // 리뷰 작성 버튼
 
-async function getUserNickname() {
-  try {
-    let result = {};
-    await axios
-      .get("/member/nickname", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        result = res.data;
-      });
-
-    return result;
-  } catch (error) {
-    // console.error("사용자 닉네임을 가져오는 중 오류 발생:", error);
-    return '';
-  }
-}
 
 function getRating() {
   // name이 'rating'인 모든 라디오 버튼을 선택합니다.
@@ -96,11 +103,13 @@ document
   .querySelector(".reviewSubBtn")
   .addEventListener("click", async function (e) {
     e.preventDefault();
+    
+    let memberInfo = await getUserNickname();
+
     const typeOfMethod = document.querySelector(".reviewSubBtn").textContent;
     const RVRating = getRating();
     let reviewId;
     const reviewPost = document.getElementById("reviewPost").value;
-    const memberInfo = await getUserNickname();
     let userNick = memberInfo.nickname;
     let userId = memberInfo.userId;
 
