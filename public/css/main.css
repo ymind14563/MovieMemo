@@ -43,6 +43,12 @@ button a:visited {
   color: white;
 }
 
+/* slide 공통 */
+
+.swiper-wrapper{
+  align-items: center;
+}
+
 /* first slider */
 
 .first-swiper {
