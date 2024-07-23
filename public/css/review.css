@@ -371,6 +371,7 @@ button {
   margin-bottom: 1.875rem;
   /* color: #eee; */
   /* border: 1px solid #262626; */
+  overflow: hidden;
 }
 
 .rating {
@@ -473,7 +474,7 @@ button {
   margin-left: 0;
   border-radius: 0;
   padding: 5px;
-  width: auto;
+  /* width: auto; */
 }
 
 .deleteBtn:hover {
@@ -592,6 +593,7 @@ button {
   .review_box {
     width: 100%;
     margin-bottom: 1.25rem;
+    overflow: auto;
   }
 
   .load_more {
