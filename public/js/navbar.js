@@ -64,6 +64,7 @@ function updateUIForLoggedInUser(isAdmin) {
     loginBtn.addEventListener("click", logoutUser); // Add logout event listener
   }
   removeSignUpButton(); // Remove the sign-up button
+  updateNavBarForLoggedInUser()
 
 
   // 관리자 버튼을 보이거나 숨기는 로직 추가
