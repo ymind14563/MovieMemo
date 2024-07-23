@@ -32,12 +32,16 @@ async function initializeSwiper() {
       img.alt = review.title;
       img.classList.add('firstSlide-image');
 
+      const textContainer = document.createElement('div');
+      textContainer.classList.add('firstSlide-text-container');
+
       const content = document.createElement('p')
       content.textContent = review.content;
       content.classList.add('firstSlide-text')
       
+      textContainer.appendChild(content)
       slide.appendChild(img);
-      slide.appendChild(content);
+      slide.appendChild(textContainer);
 
       swiperWrapper.appendChild(slide);
   });

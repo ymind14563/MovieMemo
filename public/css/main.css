@@ -88,9 +88,21 @@ button a:visited {
   margin-right: 70px;
 }
 
-.firstSlide-text {
+.firstSlide-text-container{
+  max-width: 500px;
+  overflow: hidden;
   margin-left: 50px;
-  color: #fefefe !important
+}
+
+.firstSlide-text {
+  width: 100%;
+  color: #fefefe !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: block;
+  word-wrap: break-word; 
+  word-break: break-all;
 }
 
 /* hide the scrollbar temporary */
