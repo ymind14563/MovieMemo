@@ -1,7 +1,7 @@
 // (영화)상세 페이지  viewMovieDetails()
 //리뷰 등록
 // 리뷰 등록 버튼 postReview()
-let nowPage = 0;
+let nowPage = 1;
 
 const targerE = document.querySelector(".info_container");
 const targerId = targerE.id;
@@ -158,111 +158,159 @@ document
     }
   });
 
-document.addEventListener("DOMContentLoaded", async () => {
-  let data;
-
-  await axios({
-    method: "get",
-    url: `/review/movie/${targerId}`,
-  }).then((res) => {
-    data = res.data;
-  });
-
-  if (data.totalReviews - 6 * nowPage < 7) {
-    document.querySelector(".load_more").style.display = "none";
-  }
-
-  data.reviews.forEach(async (review) => {
-    let userInfo = await getUserNickname();
-    let usernick = await userInfo.nickname;
-
-    let checkReport = review.reportedUsers.some(
-      (user) => user.nick === usernick
-    );
-    let checkLike = review.likedUsers.some((user) => user.nick === usernick);
-
-    let reportElement = `<div class='review-icon review-icon-report-empty' id='rpBtn${review.reviewId}'></div>`;
-    let likeElement = `<div class='review-icon review-icon-like-empty' id='lkBtn${review.reviewId}'></div>`;
-
-    if (checkLike) {
-      likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>`;
-    }
-    if (checkReport) {
-      reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>`;
-    }
-
-    let reviewHtml;
-    usernick === review.Member.nick
-      ? (reviewHtml = `<div class="review_box">
-        <div class="review_user">
-          <div class="user_rating">
-            <span class="user_nickname">${review.Member.nick}</span>
-            <span> 별점 : ${review.reviewMovieRating}</span>
-          </div>
-          <div class="likeBox">
-            <div class='review-icon review-icon-like-full'></div>
-            <p class="likeCount">${review.likeCount}</p>
-          </div>
-          <button type="button" class="editBtn" id="editBtn${review.reviewId}">
-            <span class="material-symbols-rounded">
-              edit
-            </span>
-          </button>
-        </div>
-        <div class="review_content">
-          <p>${review.content}</p>
-        </div>
-        <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
-
-          <p class="review_btns_box">
-            <button type="button" class="deleteBtn" id="deleteBtn${
-              review.reviewId
-            }" data-review-id="123">
-              <span class="material-symbols-rounded">
-                delete
-              </span>
-            </button>
-            </p>
-        </div>`)
-      : (reviewHtml = `<div class="review_box">
-        <div class="review_user">
-          <div class="user_rating">
-            <span class="user_nickname">${review.Member.nick}</span>
-            <span> 별점 : ${review.reviewMovieRating}</span>
-          </div>
-          <div class="likeBox">
-            <button type="button" class="likeBtn" id="likeBtn${
-              review.reviewId
-            }">
-              ${likeElement}
-            </button>
-            <p class="likeCount" id='lkCount${review.reviewId}'>${
-          review.likeCount
-        }</p>
-          </div>
-        </div>
-        <div class="review_content">
-          <p>
-          ${review.content}
-          </p>
-        </div>
-        <div class="review_date">
-          <span class="write_date">${review.createdAt.substr(0, 10)}</span>
-          <p class="review_btns_box">
-            <button type="button" class="warningBtn" id="warningBtn${
-              review.reviewId
-            }">
-              ${reportElement}
-            </button>
-          </p>
-        </div>`);
-    const reviewSc = document.querySelector(".review_section");
-    reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
-  });
-});
-
 const moreBtn = document.querySelector(".load_more");
+
+document.addEventListener("DOMContentLoaded", async () => {
+    let data;
+    const reviewSc = document.querySelector(".review_section");
+    const loadMoreBtn = document.querySelector(".load_more");
+  
+    try {
+      const response = await axios.get(`/review/movie/${targerId}`);
+      data = response.data || {};
+      console.log('data>>>>>>>>>>>', data);
+    } catch (err) {
+      console.error("Error fetching review data:", err);
+      data = {};
+    }
+  
+    const totalReviews = data.totalReviews || 0;
+  
+    if (totalReviews === 0) {
+      if (loadMoreBtn) loadMoreBtn.style.display = "none";
+      const noReviewsMsg = `<span class="no_reviews">작성된 리뷰가 없습니다.</span>`;
+      reviewSc.insertAdjacentHTML("beforeend", noReviewsMsg);
+      return;
+    }
+  
+    if (totalReviews < 7 && loadMoreBtn) {
+      loadMoreBtn.style.display = "none";
+    }
+  
+    if (data.reviews && Array.isArray(data.reviews)) {
+      for (const review of data.reviews) {
+        const userInfo = await getUserNickname();
+        const usernick = userInfo.nickname;
+        let checkReport = review.reportedUsers.some(
+          (user) => user.nick === usernick
+        );
+        let checkLike = review.likedUsers.some((user) => user.nick === usernick);
+    
+        let reportElement = `<div class='review-icon review-icon-report-empty' id='rpBtn${review.reviewId}'></div>`;
+        let likeElement = `<div class='review-icon review-icon-like-empty' id='lkBtn${review.reviewId}'></div>`;
+    
+        if (checkLike) {
+          likeElement = `<div class='review-icon review-icon-like-full' id='lkBtn${review.reviewId}'></div>`;
+        }
+        if (checkReport) {
+          reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>`;
+        }
+    
+        let reviewHtml;
+        usernick === review.Member.nick
+          ? reviewHtml = `<div class="review_box">
+            <div class="review_user">
+              <div class="user_rating">
+                <span class="user_nickname">${review.Member.nick}</span>
+                <span> 별점 : ${review.reviewMovieRating}</span>
+              </div>
+              <div class="likeBox">
+                <div class='review-icon review-icon-like-full'></div>
+                <p class="likeCount">${review.likeCount}</p>
+              </div>
+              <button type="button" class="editBtn" id="editBtn${review.reviewId}">
+                <span class="material-symbols-rounded">
+                  edit
+                </span>
+              </button>
+            </div>
+            <div class="review_content">
+              <p>${review.content}</p>
+            </div>
+            <div class="review_date">
+              <span class="write_date">${review.createdAt.substr(0, 10)}</span>
+    
+              <p class="review_btns_box">
+                <button type="button" class="deleteBtn" id="deleteBtn${
+                  review.reviewId
+                }" data-review-id="123">
+                  <span class="material-symbols-rounded">
+                    delete
+                  </span>
+                </button>
+                </p>
+            </div>`
+          : reviewHtml = `<div class="review_box">
+            <div class="review_user">
+              <div class="user_rating">
+                <span class="user_nickname">${review.Member.nick}</span>
+                <span> 별점 : ${review.reviewMovieRating}</span>
+              </div>
+              <div class="likeBox">
+                <button type="button" class="likeBtn" id="likeBtn${
+                  review.reviewId
+                }">
+                  ${likeElement}
+                </button>
+                <p class="likeCount" id='lkCount${review.reviewId}'>${
+              review.likeCount
+            }</p>
+              </div>
+            </div>
+            <div class="review_content">
+              <p>
+              ${review.content}
+              </p>
+            </div>
+            <div class="review_date">
+              <span class="write_date">${review.createdAt.substr(0, 10)}</span>
+              <p class="review_btns_box">
+                <button type="button" class="warningBtn" id="warningBtn${
+                  review.reviewId
+                }">
+                  ${reportElement}
+                </button>
+              </p>
+            </div>`
+        reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
+      
+      }
+    }
+  });
+
+// document.addEventListener("DOMContentLoaded", async () => {
+//   let data;
+//   const reviewSc = document.querySelector(".review_section");
+
+//   await axios({
+//     method: "get",
+//     url: `/review/movie/${targerId}`,
+//   }).then((res) => {
+//     data = res.data || '';
+//     console.log('data>>>>>>>>>>>',data);
+//   }).catch((err)=>{
+
+//   });
+//   if (!data.totalReviews || data.totalReviews < 7 ) {
+//     document.querySelector(".load_more").style.display = "none";
+//   }
+
+//   if(!data.totalReviews){
+//     document.querySelector('load_more').display='none';
+//     let replaceHTML = `<span class="load_more"> 작성된 리뷰가 없습니다. </span>`;
+//     reviewSc.insertAdjacentHTML("beforeend", replaceHTML);
+    
+//     return null
+//   }
+
+//   data.reviews.forEach(async (review) => {
+//     let userInfo = await getUserNickname();
+//     let usernick = await userInfo.nickname;
+
+//     });
+// });
+
+
 
 moreBtn.addEventListener("click", async () => {
   nowPage = nowPage + 1;
@@ -278,20 +326,15 @@ moreBtn.addEventListener("click", async () => {
     pagedata = res.data;
   });
 
-  if (pagedata.totalReviews - 6 * nowPage < 7) {
+  if (((pagedata.totalReviews) - 6 * (nowPage-1)) < 7) {
     document.querySelector(".load_more").style.display = "none";
   }
+  
   pagedata.reviews.forEach(async (review) => {
-    let userInfo ;
-    let a = await getUserNickname()? userInfo = a : userInfo='';
-    if(!userInfo ===''){
-      let usernick = await userInfo.nickname;
-    }else{
-      let usernick = '';
-    }
-    let checkReport = review.reportedUsers.some(
-      (user) => user.nick === usernick
-    );
+    let userInfo = await getUserNickname();
+    let usernick = await userInfo.nickname;
+    
+    let checkReport = review.reportedUsers.some((user) => user.nick === usernick);
     let checkLike = review.likedUsers.some((user) => user.nick === usernick);
 
     let reportElement = `<div class='review-icon review-icon-report-empty' id='rpBtn${review.reviewId}'></div>`;
@@ -303,10 +346,12 @@ moreBtn.addEventListener("click", async () => {
     if (checkReport) {
       reportElement = `<div class='review-icon review-icon-report-full' id='rpBtn${review.reviewId}'></div>`;
     }
-
+    console.log('checkLike>>>>>>>>>>>>>>>', checkLike);
+    console.log('checkReport>>>>>>>>>>>>>>>', checkReport);
+    
     let reviewHtml;
     usernick === review.Member.nick
-      ? (reviewHtml = `<div class="review_box">
+      ? reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
@@ -337,8 +382,8 @@ moreBtn.addEventListener("click", async () => {
               </span>
             </button>
             </p>
-        </div>`)
-      : (reviewHtml = `<div class="review_box">
+        </div>`
+      : reviewHtml = `<div class="review_box">
         <div class="review_user">
           <div class="user_rating">
             <span class="user_nickname">${review.Member.nick}</span>
@@ -350,7 +395,7 @@ moreBtn.addEventListener("click", async () => {
             }">
               ${likeElement}
             </button>
-            <p class="likeCount">${review.likeCount}</p>
+            <p class="likeCount" id='lkCount${review.reviewId}'>${review.likeCount}</p>
           </div>
         </div>
         <div class="review_content">
@@ -367,7 +412,7 @@ moreBtn.addEventListener("click", async () => {
               ${reportElement}
             </button>
           </p>
-        </div>`);
+        </div>`
 
     const reviewSc = document.querySelector(".review_section");
     reviewSc.insertAdjacentHTML("beforeend", reviewHtml);
@@ -438,32 +483,14 @@ document
           reviewId: reviewId,
         },
       }).then((res) => {
-        if (
-          document
-            .querySelector(`#lkBtn${reviewId}`)
-            .classList.contains("review-icon-like-full")
-        ) {
-          document
-            .querySelector(`#lkBtn${reviewId}`)
-            .classList.add("review-icon-like-empty");
-          document
-            .querySelector(`#lkBtn${reviewId}`)
-            .classList.remove("review-icon-like-full");
-          document.querySelector(`#lkCount${reviewId}`).textContent =
-            parseInt(
-              document.querySelector(`#lkCount${reviewId}`).textContent
-            ) - 1;
+        if (document.querySelector(`#lkBtn${reviewId}`).classList.contains("review-icon-like-full")) {
+          document.querySelector(`#lkBtn${reviewId}`).classList.add("review-icon-like-empty");
+          document.querySelector(`#lkBtn${reviewId}`).classList.remove("review-icon-like-full");
+          document.querySelector(`#lkCount${reviewId}`).textContent = parseInt(document.querySelector(`#lkCount${reviewId}`).textContent) - 1;
         } else {
-          document
-            .querySelector(`#lkBtn${reviewId}`)
-            .classList.add("review-icon-like-full");
-          document
-            .querySelector(`#lkBtn${reviewId}`)
-            .classList.remove("review-icon-like-empty");
-          document.querySelector(`#lkCount${reviewId}`).textContent =
-            parseInt(
-              document.querySelector(`#lkCount${reviewId}`).textContent
-            ) + 1;
+          document.querySelector(`#lkBtn${reviewId}`).classList.add("review-icon-like-full");
+          document.querySelector(`#lkBtn${reviewId}`).classList.remove("review-icon-like-empty");
+          document.querySelector(`#lkCount${reviewId}`).textContent= parseInt( document.querySelector(`#lkCount${reviewId}`).textContent) + 1;
         }
       });
     }
