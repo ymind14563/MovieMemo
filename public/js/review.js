@@ -72,8 +72,8 @@ async function getUserNickname() {
 
     return result;
   } catch (error) {
-    console.error("사용자 닉네임을 가져오는 중 오류 발생:", error);
-    return null;
+    // console.error("사용자 닉네임을 가져오는 중 오류 발생:", error);
+    return '';
   }
 }
 
@@ -282,9 +282,13 @@ moreBtn.addEventListener("click", async () => {
     document.querySelector(".load_more").style.display = "none";
   }
   pagedata.reviews.forEach(async (review) => {
-    let userInfo = await getUserNickname();
-    let usernick = await userInfo.nickname;
-
+    let userInfo ;
+    let a = await getUserNickname()? userInfo = a : userInfo='';
+    if(!userInfo ===''){
+      let usernick = await userInfo.nickname;
+    }else{
+      let usernick = '';
+    }
     let checkReport = review.reportedUsers.some(
       (user) => user.nick === usernick
     );
