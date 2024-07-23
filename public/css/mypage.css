@@ -292,6 +292,8 @@ input:focus {
     padding: 20px;
     border: 1px solid #888;
     width: 30%;
+    background-color: rgb(25, 26, 27);
+    color: #fff;
 }
 
 .del-modal-content p {
@@ -375,6 +377,10 @@ input:focus {
   }
 
   .nick-field{
+    width: 100%;
+  }
+
+  .nick-field select{
     width: 100%;
   }
 
