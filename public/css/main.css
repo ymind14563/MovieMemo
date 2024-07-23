@@ -159,10 +159,11 @@ button a:visited {
   height: auto;
 }
 
-h3 {
+section h3 {
   color: white;
   margin-left: 30px;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 /* footer */
