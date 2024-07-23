@@ -34,7 +34,6 @@ button {
   background-color: transparent;
 }
 
-
 /* 15 픽셀 = 0.9375rem */
 /* 18 픽셀 = 1.125rem */
 /* 20 픽셀 = 1.25rem */
@@ -198,20 +197,25 @@ button {
 }
 
 .review_section {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
   flex-wrap: wrap;
+  justify-content: start; */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-items: center;
   width: 100%;
   margin-top: 3.125rem;
 }
-
+.review_section div {
+  width: 90%;
+}
 .createReviewBtn {
   display: flex;
   align-items: center;
   border-radius: 4px;
   background-color: #b20710;
   transition: all 600ms;
-  width:110px;
+  width: 110px;
 }
 
 .createReviewBtn:hover {
@@ -225,13 +229,13 @@ button {
   align-items: center;
   width: 10%;
 }
-.like-btn-img{
-    height: 15px;
-    width: 15px;
-    background-image: url('../img/icon-heart-full.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.like-btn-img {
+  height: 15px;
+  width: 15px;
+  background-image: url("../img/icon-heart-full.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .review_user {
@@ -280,7 +284,6 @@ button {
   background: #ffffff;
   border-radius: 10px;
 }
- 
 
 .form_btn_section {
   display: flex;
@@ -313,7 +316,7 @@ button {
   transition: box-shadow 0.2s;
 }
 
-.reviewSubBtn:hover{
+.reviewSubBtn:hover {
   background-color: green;
 }
 
@@ -335,27 +338,27 @@ button {
   color: #eee;
   font-size: 18px;
   border: 1px solid #eee;
-  width: 120px
+  width: 120px;
 }
 
-.review-icon{
+.review-icon {
   width: 20px;
   height: 20px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
 }
-.review-icon-like-empty{
-  background-image: url('../img/icon-heart-empty.png');
+.review-icon-like-empty {
+  background-image: url("../img/icon-heart-empty.png");
 }
-.review-icon-like-full{
-  background-image: url('../img/icon-heart-full.png');
+.review-icon-like-full {
+  background-image: url("../img/icon-heart-full.png");
 }
-.review-icon-report-empty{
-  background-image: url('../img/icon-siren-empty.png');
+.review-icon-report-empty {
+  background-image: url("../img/icon-siren-empty.png");
 }
-.review-icon-report-full{
-  background-image: url('../img//icon-siren-full.png');
+.review-icon-report-full {
+  background-image: url("../img//icon-siren-full.png");
 }
 
 /* 별점 주기 */
@@ -423,66 +426,64 @@ button {
   color: #fff;
 }
 
-.review_box span{
+.review_box span {
   color: #000;
 }
 
-.review_content p{
-  color: #000;;
+.review_content p {
+  color: #000;
 }
 
-
-
-
-.likeBtn, .editBtn{
+.likeBtn,
+.editBtn {
   margin-left: 0;
   border-radius: 0;
   padding: 0;
   font-weight: normal;
 }
 
-.editBtn{
+.editBtn {
   width: auto;
 }
 
-.likeBtn:hover{
+.likeBtn:hover {
   background-color: transparent;
 }
 
-.editBtn:hover{
+.editBtn:hover {
   background-color: transparent;
 }
 
-.likeCount{
+.likeCount {
   color: #000;
 }
 
-.write_date{
+.write_date {
   width: 50%;
 }
 
-.deleteBtn{
+.deleteBtn {
   margin-left: 0;
   border-radius: 0;
   padding: 5px;
   width: auto;
 }
 
-.warningBtn{
+.warningBtn {
   margin-left: 0;
   border-radius: 0;
   padding: 5px;
   width: auto;
 }
 
-.deleteBtn:hover{
+.deleteBtn:hover {
   background-color: transparent;
 }
-.warningBtn:hover{
+.warningBtn:hover {
   background-color: transparent;
 }
 
-.rating_btn input{
+.rating_btn input {
   width: auto;
   border: none;
   padding: 0;
@@ -490,16 +491,14 @@ button {
   border-radius: 0;
   background: transparent;
 }
-.rating_btn label{
+.rating_btn label {
   color: #000;
   margin-right: 5px;
 }
 
-.rating_btn span{
+.rating_btn span {
   color: #000;
 }
-
-
 
 @media (max-width: 800px) {
   #page_container {
