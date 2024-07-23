@@ -1,61 +1,92 @@
-function isOnMyPage(){
-  return window.location.pathname === "/mypage"
+function isOnMyPage() {
+  return window.location.pathname === "/mypage";
 }
 
 function navigateTo(url) {
   window.location.href = url;
 }
 
-const adminButton = document.getElementById('adminButton');
-const signupBtn = document.getElementById('signupBtn');
+const adminButton = document.getElementById("adminButton");
+const signupBtn = document.getElementById("signupBtn");
 
 if (adminButton) {
-  adminButton.addEventListener('click', function() {
-    navigateTo('/adminpage');
+  adminButton.addEventListener("click", function () {
+    navigateTo("/adminpage");
   });
 }
 
 if (signupBtn) {
-  signupBtn.addEventListener('click', function() {
-    navigateTo('/register');
+  signupBtn.addEventListener("click", function () {
+    navigateTo("/register");
   });
 }
 
-
-
-
 //nav-bar search Area
-const SmethodElement = document.querySelector('.search-box-Smethod');
+const SmethodElement = document.querySelector(".search-box-Smethod");
+const mSmethodElement = document.querySelector(".m-search-box-Smethod");
 
-SmethodElement.addEventListener('click', () => {
+SmethodElement.addEventListener("click", () => {
   let Smethod = SmethodElement.textContent.trim();
-  if (Smethod === 'Title') {
-    SmethodElement.innerHTML=`<span style="color: red; font-size: 2rem;">A</span>ctor`;
-    document.querySelector('.search-box-word').setAttribute('placeholder','배우 이름을 입력해주세요');
+  if (Smethod === "Title") {
+    SmethodElement.innerHTML = `<span style="color: red; font-size: 2rem;">A</span>ctor`;
+    document
+      .querySelector(".search-box-word")
+      .setAttribute("placeholder", "배우 이름을 입력해주세요");
   } else {
-    SmethodElement.innerHTML=`<span style="color: red; font-size: 2rem;">T</span>itle`;
-    document.querySelector('.search-box-word').setAttribute('placeholder','영화 제목을 입력해주세요');
+    SmethodElement.innerHTML = `<span style="color: red; font-size: 2rem;">T</span>itle`;
+    document
+      .querySelector(".search-box-word")
+      .setAttribute("placeholder", "영화 제목을 입력해주세요");
+  }
+});
+mSmethodElement.addEventListener("click", () => {
+  let mSmethod = mSmethodElement.textContent.trim();
+  if (mSmethod === "Title") {
+    mSmethodElement.innerHTML = `<span style="color: red; font-size: 2rem;">A</span>ctor`;
+    document
+      .querySelector(".m-search-box-word")
+      .setAttribute("placeholder", "배우 이름을 입력해주세요");
+  } else {
+    mSmethodElement.innerHTML = `<span style="color: red; font-size: 2rem;">T</span>itle`;
+    document
+      .querySelector(".m-search-box-word")
+      .setAttribute("placeholder", "영화 제목을 입력해주세요");
   }
 });
 
-const searchBtn = document.querySelector('.search-box-btn');
-const searchInput = document.querySelector('.search-box-word');
+const searchBtn = document.querySelector(".search-box-btn");
+const searchInput = document.querySelector(".search-box-word");
+const msearchBtn = document.querySelector(".m-search-box-btn");
+const msearchInput = document.querySelector(".m-search-box-word");
 
 function performSearch() {
   const searchTerm = searchInput.value;
-  const searchMethod = SmethodElement.textContent === 'Title' ? 'searchT' : 'searchA';
+  const searchMethod =
+    SmethodElement.textContent === "Title" ? "searchT" : "searchA";
   window.location.href = `/movie/${searchMethod}/${searchTerm}`;
 }
-searchInput.addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-      e.preventDefault();
-      performSearch();
+function mperformSearch() {
+  const msearchTerm = msearchInput.value;
+  const msearchMethod =
+    mSmethodElement.textContent === "Title" ? "searchT" : "searchA";
+  window.location.href = `/movie/${msearchMethod}/${msearchTerm}`;
+}
+searchInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    performSearch();
   }
 });
+msearchInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    mperformSearch();
+  }
+});
+
 // 버튼 클릭 이벤트
-searchBtn.addEventListener('click', performSearch);
-
-
+searchBtn.addEventListener("click", performSearch);
+msearchBtn.addEventListener("click", mperformSearch);
 
 function updateUIForLoggedInUser(isAdmin) {
   if (loginBtn) {
@@ -64,8 +95,7 @@ function updateUIForLoggedInUser(isAdmin) {
     loginBtn.addEventListener("click", logoutUser); // Add logout event listener
   }
   removeSignUpButton(); // Remove the sign-up button
-  updateNavBarForLoggedInUser()
-
+  updateNavBarForLoggedInUser();
 
   // 관리자 버튼을 보이거나 숨기는 로직 추가
   const adminButton = document.getElementById("adminButton");
@@ -73,11 +103,9 @@ function updateUIForLoggedInUser(isAdmin) {
     adminButton.classList.remove("hidden");
   } else {
     adminButton.classList.add("hidden");
-    updateNavBarForLoggedInUser()
+    updateNavBarForLoggedInUser();
   }
-  
 }
-
 
 // Function to update UI for logged-out users
 function updateUIForLoggedOutUser() {
@@ -99,11 +127,10 @@ function updateNavBarForLoggedInUser() {
   if (!existingMyPageButton) {
     const myPageButton = document.createElement("button");
     myPageButton.id = "myPageButton";
-    myPageButton.textContent="마이페이지"
-    myPageButton.addEventListener('click', function() {
-      navigateTo('/mypage');
+    myPageButton.textContent = "마이페이지";
+    myPageButton.addEventListener("click", function () {
+      navigateTo("/mypage");
     });
-
 
     const navList = document.querySelector("nav ul");
 
@@ -127,28 +154,27 @@ function logoutUser() {
 
 // Function to remove the sign-up button
 function removeSignUpButton() {
-  const signUpButton = document.getElementById('signupBtn');
+  const signUpButton = document.getElementById("signupBtn");
   if (signUpButton) {
-    signUpButton.remove(); 
+    signUpButton.remove();
   }
 }
 
 // Function to add back the sign-up button
 function addSignUpButton() {
-  const existingSignUpButton = document.getElementById('signupBtn');
+  const existingSignUpButton = document.getElementById("signupBtn");
   if (!existingSignUpButton) {
     const signUpButton = document.createElement("button");
-    signUpButton.id = 'signupBtn'; 
+    signUpButton.id = "signupBtn";
     signUpButton.textContent = "회원가입";
-    signUpButton.addEventListener('click', function() {
-      navigateTo('/register');
+    signUpButton.addEventListener("click", function () {
+      navigateTo("/register");
     });
 
     const navList = document.querySelector("nav ul");
     navList.appendChild(signUpButton);
   }
 }
-
 
 // Function to remove "마이페이지" button
 function removeMyPageButton() {
@@ -176,8 +202,6 @@ function initializeUI() {
 
 initializeUI(); // 초기화 함수 호출
 
-if(isOnMyPage()){
-  removeMyPageButton()
+if (isOnMyPage()) {
+  removeMyPageButton();
 }
-
-
