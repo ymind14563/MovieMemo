@@ -61,12 +61,18 @@ const msearchInput = document.querySelector(".m-search-box-word");
 
 function performSearch() {
   const searchTerm = searchInput.value;
+  if(!searchTerm){
+    return alert('검색어를 입력해주세요');
+  }
   const searchMethod =
     SmethodElement.textContent === "Title" ? "searchT" : "searchA";
   window.location.href = `/movie/${searchMethod}/${searchTerm}`;
 }
 function mperformSearch() {
   const msearchTerm = msearchInput.value;
+  if(!msearchTerm){
+    return alert('검색어를 입력해주세요');
+  }
   const msearchMethod =
     mSmethodElement.textContent === "Title" ? "searchT" : "searchA";
   window.location.href = `/movie/${msearchMethod}/${msearchTerm}`;
