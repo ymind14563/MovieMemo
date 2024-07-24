@@ -14,11 +14,10 @@ span {
 }
 
 .navbar {
-
-    background: #050C0A;
-    padding: 0 15px;
-    margin-bottom: 100px;
-    /* margin-top: 10px; */
+  background: #050c0a;
+  padding: 0 15px;
+  margin-bottom: 100px;
+  /* margin-top: 10px; */
 }
 
 .navdiv {
@@ -33,9 +32,6 @@ span {
   color: white;
 }
 
-
-
-
 button a {
   text-decoration: none;
 }
@@ -45,7 +41,7 @@ button a:visited {
 
 /* slide 공통 */
 
-.swiper-wrapper{
+.swiper-wrapper {
   align-items: center;
 }
 
@@ -60,7 +56,7 @@ button a:visited {
   display: flex !important;
   flex-direction: row;
   align-items: center;
-  background: rgb(25,26,27);
+  background: rgb(25, 26, 27);
   padding: 20px;
 }
 
@@ -94,7 +90,7 @@ button a:visited {
   margin-right: 70px;
 }
 
-.firstSlide-text-container{
+.firstSlide-text-container {
   max-width: 500px;
   overflow: hidden;
   margin-left: 50px;
@@ -107,7 +103,7 @@ button a:visited {
   text-overflow: ellipsis;
   white-space: normal;
   display: block;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   word-break: break-all;
 }
 
@@ -130,17 +126,17 @@ button a:visited {
 
 .card-container {
   display: inline-block;
-  overflow:hidden;
+  overflow: hidden;
   position: relative;
   padding: 10px;
 }
 
-.card-container img{
+.card-container img {
   transition: transform 0.3s ease;
 }
 
-.card-container img:hover{
-    transform: scale(1.3)
+.card-container img:hover {
+  transform: scale(1.3);
 }
 
 .card-content {
@@ -169,7 +165,8 @@ button a:visited {
 
 .second-swiper .card-container {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  height: 285px;
 }
 
 .second-swiper .card-content img {
