@@ -17,7 +17,7 @@
 * 기간 : 2024.07.10 ~ 2024.07.23 ( 14일 )
 * Repository: [https://github.com/ymind14563/MovieMemo](https://github.com/ymind14563/MovieMemo) 
 
-### 작동 영상 바로가기 [주요 페이지로 이동](#clipboard-주요-페이지)
+### [작동 영상으로 바로가기](#clipboard-주요-페이지)
 
 <br>
 
