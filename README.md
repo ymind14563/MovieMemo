@@ -133,6 +133,8 @@
   
 ![회원가입](https://github.com/user-attachments/assets/e2c08ee1-db28-4f6b-8c33-be9a993b723e)
 
+<br>
+
 ### - 메인 페이지
 - 메인베너(전체리뷰 TOP 3)
 - 영화 포스터 Swiper 적용
@@ -140,11 +142,15 @@
   
 ![메인페이지](https://github.com/user-attachments/assets/a98ea112-a119-43fa-b324-d236d01056ae)
 
+<br>
+
 ### - 영화검색 페이지
 - 영화 제목, 배우 로 검색
 - 무한스크롤 구현
   
 ![영화검색페이지](https://github.com/user-attachments/assets/8e44cc7d-6b69-400d-bcb0-d20056c212aa)
+
+<br>
 
 ### - 영화상세 페이지
 - 예고편 존재 시 예고편 최상단 노출
@@ -154,6 +160,7 @@
   
 ![영화상세페이지](https://github.com/user-attachments/assets/4d2b2193-753a-4d3a-af73-f8b737d73c66)
 
+<br>
 
 ### - 마이 페이지 (리뷰)
 - 회원정보수정, 회원탈퇴
@@ -163,6 +170,8 @@
   
 ![마이페이지](https://github.com/user-attachments/assets/5917c293-af8e-4b26-9d26-14725b220ac2)
 
+<br>
+
 ### - 관리자 페이지
 - 관리자 아이디로 접속 시 헤더에 관리자 전용 버튼 노출 (토큰으로 확인)
 - 전체 리뷰 목록 확인, 리뷰 삭제, 회원 추방
@@ -170,6 +179,8 @@
 - 페이지네이션, 정렬
    
 ![관리자페이지](https://github.com/user-attachments/assets/d2cf3a4e-0818-4b5d-b104-ff752eab8c9f)
+
+<br>
 
 ### - 마이 페이지 (회원정보)
 - 회원정보수정, 회원탈퇴
