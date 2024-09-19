@@ -1,9 +1,10 @@
 
 <div align="center">
-  <h1> <img src="https://github.com/user-attachments/assets/9c0be396-83d4-4642-a9b9-7dd91c79ef62" alt="Smile Hub" width="30"/> MovieMemo</h1>
+  <h1> <img src="https://github.com/user-attachments/assets/9c0be396-83d4-4642-a9b9-7dd91c79ef62" alt="MovieMemo" width="30"/> MovieMemo</h1>
   <br>
 </div>
 
+<br>
 
 ![대표이미지](https://github.com/user-attachments/assets/e8aeb71e-c7a8-4b6b-8327-fbe07a825c42)
 
