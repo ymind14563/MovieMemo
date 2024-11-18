@@ -38,8 +38,7 @@
 <br>
 <br>
 
-## == 내가 맡은 역할 ==
-[Repository](https://github.com/ymind14563/MovieMemo) 
+## ⭐️ 내가 맡은 역할
 #### 백엔드
   - 리뷰 CRUD - 리뷰등록, 리뷰수정, 리뷰확인, 리뷰삭제
     - 추천 Top3 리뷰
