@@ -38,6 +38,33 @@
 <br>
 <br>
 
+# 📙 사용한 기술
+
+---
+
+| **Category**         | **Technologies**                                                                 |
+|-----------------------|----------------------------------------------------------------------------------|
+| **Backend**          | Javascript, Node.js v20.14.0, Express v4.19.2, Sequelize v6.37.3               |
+| **Frontend**         | EJS, HTML, CSS3, Swiper                                                        |
+| **Database**         | MySQL v8.4.3 LTS                                                               |
+| **Cloud**            | NCP, NCP Cloud DB for MySQL                                                    |
+| **Tool**             | GitHub, Notion, Slack, Gather, Postman                                         |
+
+<br>
+<br>
+
+## ❓ 주요 채택 이유
+
+- **JWT** (JSON Web Token) : 보안 및 서버의 부하를 줄이고, 확장성을 높이기 위해 채택
+- **Sequelize**: Node.js 환경에 최적화 되어있어 비동기 프로그래밍에 적합하고, 복잡한 쿼리문 대신 ORM을 사용하여 데이터 추출을 위해 채택
+- **NCP** (Naver Cloud Platform) : 국내 클라우드 시장에서 점유율을 높여가고 있으며, 서버, 데이터베이스 등 다양한 서비스를 지원하고 유연성의 이점으로 인해 채택
+- **Swiper** : 원하는 대로 슬라이더를 커스터마이징 할 수 있는 편리성과 높은 브라우저 호환성을 가져서 채택
+- **badWordsFilter** : CommonJS로 작동, 다국어 비속어 필터링이 가능해서 채택
+- **KMDB API** : 예고편, 포스터 등 주요 필요한 정보들을 가진 유일한 API로 인해 채택
+
+<br>
+<br>
+  
 ## ⭐️ 내가 맡은 역할
 #### 백엔드
   - 리뷰 CRUD - 리뷰등록, 리뷰수정, 리뷰확인, 리뷰삭제
@@ -66,20 +93,14 @@
   
 
 <br>
+<br>
 
 
 ## 🧰 Architecture
 ![Architecture](https://file.notion.so/f/f/2b05e2ab-2434-4f23-af54-0262da5521d9/be91fff4-1f55-443f-8eeb-d79eae6eee88/368597227-4a0ad14c-6ad8-4474-bd85-784a399e79ff.png?table=block&id=140f2360-e2bf-8035-a011-cb220473599d&spaceId=2b05e2ab-2434-4f23-af54-0262da5521d9&expirationTimestamp=1732032000000&signature=9xhOJScxZ6BMAPwo7fWs0vwIVAzBpI4OaJG3evO3Nx4&downloadName=368597227-4a0ad14c-6ad8-4474-bd85-784a399e79ff.png)
 
 
-## ❓ 주요 채택 이유
 
-- **JWT** (JSON Web Token) : 보안 및 서버의 부하를 줄이고, 확장성을 높이기 위해 채택
-- **Sequelize**: Node.js 환경에 최적화 되어있어 비동기 프로그래밍에 적합하고, 복잡한 쿼리문 대신 ORM을 사용하여 데이터 추출을 위해 채택
-- **NCP** (Naver Cloud Platform) : 국내 클라우드 시장에서 점유율을 높여가고 있으며, 서버, 데이터베이스 등 다양한 서비스를 지원하고 유연성의 이점으로 인해 채택
-- **Swiper** : 원하는 대로 슬라이더를 커스터마이징 할 수 있는 편리성과 높은 브라우저 호환성을 가져서 채택
-- **badWordsFilter** : CommonJS로 작동, 다국어 비속어 필터링이 가능해서 채택
-- **KMDB API** : 예고편, 포스터 등 주요 필요한 정보들을 가진 유일한 API로 인해 채택
 
 
 <br>
@@ -106,13 +127,13 @@
 
 <br>
 
-## :bulb: 요구사항정의서
-![사용자요구사항정의서](https://github.com/user-attachments/assets/7c0068e5-e3bc-48b8-9187-bffaa91ee98f)
+## 📚 데이터베이스 ERD
+![ERD](https://github.com/user-attachments/assets/e6bc271b-2d6b-4616-828f-1b3a05a58c37)
 
 <br>
 
-## 📚 데이터베이스 ERD
-![ERD](https://github.com/user-attachments/assets/e6bc271b-2d6b-4616-828f-1b3a05a58c37)
+## :bulb: 요구사항정의서
+![사용자요구사항정의서](https://github.com/user-attachments/assets/7c0068e5-e3bc-48b8-9187-bffaa91ee98f)
 
 <br>
 
@@ -120,6 +141,10 @@
 ![테이블명세서](https://github.com/user-attachments/assets/0d2561e9-880b-459b-bebe-a23c9a1061e8)
 
 <br>
+
+
+
+
 
 ## 📚 KanbanBoard 
 ![KanbanBoard](https://github.com/user-attachments/assets/8d44c66e-bc87-41dc-8a6b-7285b4f8b4a0)
