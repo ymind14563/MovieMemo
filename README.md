@@ -97,7 +97,7 @@
 
 
 ## 🧰 Architecture
-![Architecture](https://file.notion.so/f/f/2b05e2ab-2434-4f23-af54-0262da5521d9/be91fff4-1f55-443f-8eeb-d79eae6eee88/368597227-4a0ad14c-6ad8-4474-bd85-784a399e79ff.png?table=block&id=140f2360-e2bf-8035-a011-cb220473599d&spaceId=2b05e2ab-2434-4f23-af54-0262da5521d9&expirationTimestamp=1732032000000&signature=9xhOJScxZ6BMAPwo7fWs0vwIVAzBpI4OaJG3evO3Nx4&downloadName=368597227-4a0ad14c-6ad8-4474-bd85-784a399e79ff.png)
+![Architecture](https://github.com/user-attachments/assets/281838e0-8129-412b-8981-cc28ce385cc1)
 
 
 
